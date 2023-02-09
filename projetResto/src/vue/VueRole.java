@@ -23,10 +23,27 @@ import javax.swing.JTextArea;
 public class VueRole extends JPanel {
 	private JTextField textField;
 	private JTable table;
+	/*
+	 * instanciation Class roleMetier
+	 */
 	RoleMetier roleM =new RoleMetier();
+	/*
+	 * instanciation Class roleDao
+	 */
 	RoleDao roleD = new RoleDao();
+	/*
+	 * creation variable string role pour les differents messages d'affichage fenetre role
+	 */
 	String nomModel = "rôle";
+	/*
+	 * creation variable pour les 2 actions create et update
+	 */
 	String action = "";
+	/*
+	 * creation variable pour recupere ancien nom lors de la modification de registre
+	 */
+	String ancienNom="";
+	
 	private JTextField textNom;
 	private JTextField textId;
 	/**
@@ -46,6 +63,9 @@ public class VueRole extends JPanel {
 		panelMain.setBounds(0, 10, 1136, 555);
 		panel.add(panelMain);
 		panelMain.setLayout(null);
+		/*
+		 * creation double intercalaires
+		 */
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(10, 31, 1116, 514);
@@ -66,6 +86,10 @@ public class VueRole extends JPanel {
 		panelListe.add(textField);
 		textField.setColumns(10);
 		
+		/*
+		 * Creation table liste Role
+		 */
+		
 		table = new JTable();
 		table.setModel(roleM.lister(""));
 		JLabel lblAffichage = new JLabel("Affichage de "+roleM.totalM +" registres sur un total de "+ roleD.total()+" registres");
@@ -74,37 +98,66 @@ public class VueRole extends JPanel {
 		btnChercher.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				table.setModel(roleM.lister(textField.getText()));
-				
 				lblAffichage.setText("Affichage de "+roleM.totalM +" registres sur un total de "+ roleD.total()+" registres");
-				//JOptionPane.showMessageDialog(null, "salut");
 			}
 		});
 		btnChercher.setBounds(518, 34, 106, 23);
 		panelListe.add(btnChercher);
+		/*
+		 * conditions pour les create et update, en fonction de la variable Action initialisée plus haut
+		 */
 		JButton btnSauvegarder = new JButton("Sauvegarder");
 		btnSauvegarder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 if(action.equalsIgnoreCase("modifier")){
-					 if(textNom.getText().equalsIgnoreCase("")) {
-						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire", "Création", JOptionPane.ERROR_MESSAGE);
+					 
+					 if(textNom.getText().equalsIgnoreCase("") 	|| textNom.getText().length() >40  || textDescription.getText().length()>100) {
+						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Modification", JOptionPane.ERROR_MESSAGE);
 					 }else {
-					 Role newRole =new Role(Integer.parseInt(textId.getText()),textNom.getText(),textDescription.getText());
-						 if(roleD.update(newRole)) {
-							 JOptionPane.showMessageDialog(null,"Le rôle "+newRole.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
-						 }//fin if create
+						 if(ancienNom.equalsIgnoreCase(textNom.getText())) {
+							 Role newRole =new Role(Integer.parseInt(textId.getText()),textNom.getText(),textDescription.getText());
+							 if(roleD.update(newRole)) {
+								 JOptionPane.showMessageDialog(null,"Le rôle "+newRole.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
+							 }else {
+								 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
+							 }
+						 }else {
+						 
+							 if(!roleD.isExist(textNom.getText())) {
+								 Role newRole =new Role(Integer.parseInt(textId.getText()),textNom.getText(),textDescription.getText());
+								
+								 if(roleD.update(newRole)) {
+									 JOptionPane.showMessageDialog(null,"Le rôle "+newRole.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
+								 }else {
+									 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
+								 }//fin du update
+							 }else {	 
+								 JOptionPane.showMessageDialog(null,"Ce "+nomModel+" existe déjà", "Modification", JOptionPane.ERROR_MESSAGE);
+							 }//fin if isExiste
+						 }//fin if ancienNom egual new nom
 					 }
 				 }else if(action.equalsIgnoreCase("Sauvegarder")){
-					 if(textNom.getText().equalsIgnoreCase("")) {
-						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire", "Création", JOptionPane.ERROR_MESSAGE);
+					 if(textNom.getText().equalsIgnoreCase("")	|| textNom.getText().length() >40  || textDescription.getText().length()>100) {
+						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Création", JOptionPane.ERROR_MESSAGE);
 					 }else {
-						 Role newRole =new Role(textNom.getText(),textDescription.getText());
-						 if(roleD.create(newRole)) {
-							 JOptionPane.showMessageDialog(null,"Le rôle "+newRole.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
-						 }//fin if create
-					 } //fin if nom ==""
-				 }//fin if modifier ou sauvegarder
+						 if(!roleD.isExist(textNom.getText())) {
+							 Role newRole =new Role(textNom.getText(),textDescription.getText());
+							 if(roleD.create(newRole)) {
+								 JOptionPane.showMessageDialog(null,"Le rôle "+newRole.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
+							 }else {
+								 JOptionPane.showMessageDialog(null,"Impossible de créer le "+nomModel, "Création", JOptionPane.ERROR_MESSAGE);
+							 }
+						 }else {
+							 JOptionPane.showMessageDialog(null,"Ce "+nomModel+" existe déjà", "Création", JOptionPane.ERROR_MESSAGE);
+						 }
+					 } //fin if name ==""
+				 }//fin if modifier or save
 			}//fin ActionPerformed
 		});//fin ActionListener
+		
+		/*
+		 * passage vers la page creation de role 
+		 */
 		JButton btnNouveau = new JButton("Nouveau");
 		btnNouveau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -117,15 +170,19 @@ public class VueRole extends JPanel {
 		});
 		btnNouveau.setBounds(653, 34, 106, 23);
 		panelListe.add(btnNouveau);
-		
+		/*
+		 * passage vers la page modification de role 
+		 */
 		JButton btnModifier = new JButton("Modifier");
 		btnModifier.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(table.getSelectedColumnCount()==0) {
 					JOptionPane.showMessageDialog(null,"Merci de selectionner un "+nomModel+" dans le tableau","Statut",JOptionPane.WARNING_MESSAGE);
 				}else {
+					
 					textId.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
 					textNom.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
+					ancienNom= String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
 					textDescription.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 2)));
 					tabbedPane.setEnabledAt(1, true);
 	                tabbedPane.setEnabledAt(0, false);
@@ -141,8 +198,6 @@ public class VueRole extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(20, 95, 1069, 282);
 		panelListe.add(scrollPane);
-		
-		
 		scrollPane.setViewportView(table);
 		
 		JPanel panel_1 = new JPanel();
@@ -150,44 +205,48 @@ public class VueRole extends JPanel {
 		panel_1.setBounds(20, 438, 346, 49);
 		panelListe.add(panel_1);
 		panel_1.setLayout(null);
-		
+		/*
+		 * condition (choix d'une ligne dans tableau)et activation (statut) d'un role
+		 */
 		JButton btnActiver = new JButton("Activer");
 		btnActiver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(table.getSelectedColumnCount()==0) {
 					JOptionPane.showMessageDialog(null,"Merci de selectionner un "+nomModel+" dans le tableau","Statut",JOptionPane.WARNING_MESSAGE);
 				}else {
-					
+					/*
+					 * recupération des données selectionnées avant instanciation
+					 */
 					String id = String.valueOf(table.getValueAt(table.getSelectedRow(), 0));
 					String nom = String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
 					String desc = String.valueOf(table.getValueAt(table.getSelectedRow(), 2));
 					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
 						if(stat.equalsIgnoreCase("active")) {
 							JOptionPane.showMessageDialog(null,"Le "+nomModel+" est déjà actif","Statut",JOptionPane.WARNING_MESSAGE);
-							
 						}else {
-								Role newRole =new Role(Integer.parseInt(id), nom, desc, stat);
-							
+							Role newRole =new Role(Integer.parseInt(id), nom, desc, stat);
 								if(roleD.activer(newRole)) {
 									JOptionPane.showMessageDialog(null,"Le "+nomModel+" est maintenant actif","Statut",JOptionPane.INFORMATION_MESSAGE);
 									table.setModel(roleM.lister(textField.getText()));	
-									
 								}
 						}
-				
 				}
 			}
 		});
 		btnActiver.setBounds(40, 18, 106, 23);
 		panel_1.add(btnActiver);
-		
+		/*
+		 * condition (choix d'une ligne dans tableau)et desactivation (statut) d'un role
+		 */
 		JButton btnDesactiver = new JButton("Desactiver");
 		btnDesactiver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(table.getSelectedColumnCount()==0) {
 					JOptionPane.showMessageDialog(null,"Merci de selectionner un "+nomModel+" dans le tableau","Statut",JOptionPane.WARNING_MESSAGE);
 				}else {
-					
+					/*
+					 * recupération des données selectionnées avant instanciation
+					 */
 					String id = String.valueOf(table.getValueAt(table.getSelectedRow(), 0));
 					String nom = String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
 					String desc = String.valueOf(table.getValueAt(table.getSelectedRow(), 2));
@@ -197,13 +256,11 @@ public class VueRole extends JPanel {
 							
 						}else {
 								Role roleNew =new Role(Integer.parseInt(id), nom, desc, stat);
-							
 								if(roleD.desactiver(roleNew)) {
 									JOptionPane.showMessageDialog(null,"Le "+nomModel+" est maintenant inactif","Statut",JOptionPane.INFORMATION_MESSAGE);
 									table.setModel(roleM.lister(textField.getText()));	
 								}
 						}
-				
 				}
 			}
 		});
@@ -216,6 +273,10 @@ public class VueRole extends JPanel {
 		JPanel panelGestion = new JPanel();
 		tabbedPane.addTab("Gestion", null, panelGestion, null);
 		panelGestion.setLayout(null);
+		
+		tabbedPane.setEnabledAt(1, false);
+        tabbedPane.setEnabledAt(0, true);
+        tabbedPane.setSelectedIndex(0);
 		
 		JLabel lblNom = new JLabel("Nom : (*)");
 		lblNom.setBounds(10, 76, 70, 21);
@@ -242,19 +303,32 @@ public class VueRole extends JPanel {
 		JLabel lblNewLabel_2 = new JLabel("(*) Champs obligatoires");
 		lblNewLabel_2.setBounds(10, 304, 142, 21);
 		panelGestion.add(lblNewLabel_2);
-		
+		/*
+		 * Annulation et retour a la page accueil role
+		 */
 		JButton btnAnnuler = new JButton("Annuler");
 		btnAnnuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tabbedPane.setEnabledAt(1, false);
                 tabbedPane.setEnabledAt(0, true);
                 tabbedPane.setSelectedIndex(0);
+                table.setModel(roleM.lister(textField.getText()));
 			}
 		});
-		btnAnnuler.setBounds(92, 388, 106, 23);
+		btnAnnuler.setBounds(92, 388, 106, 23);	
 		panelGestion.add(btnAnnuler);
 		
 		btnSauvegarder.setBounds(270, 389, 108, 23);
 		panelGestion.add(btnSauvegarder);
+		
+		JLabel lblNewLabel = new JLabel("40 caractères maximum");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblNewLabel.setBounds(115, 96, 119, 18);
+		panelGestion.add(lblNewLabel);
+		
+		JLabel lblCaratresMaximum = new JLabel("100 caractères maximum");
+		lblCaratresMaximum.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblCaratresMaximum.setBounds(115, 266, 119, 18);
+		panelGestion.add(lblCaratresMaximum);
 	}
 }
