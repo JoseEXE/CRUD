@@ -74,6 +74,14 @@ public class VueFrameMain extends JFrame {
 		 *Gestion sous-menu Catégorie
 		 */
 		JMenuItem mntmCategories = new JMenuItem("Catégories");
+		mntmCategories.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				desktopPane.removeAll();
+				desktopPane.add(new VueCat_produit());
+				desktopPane.repaint();
+				desktopPane.revalidate();
+			}
+		});
 		mntmCategories.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
 		mnCarte.add(mntmCategories);
 		/*
