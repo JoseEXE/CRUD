@@ -60,6 +60,7 @@ public class VueRole extends JPanel {
 		lblRecherche.setBounds(20, 30, 124, 27);
 		panelListe.add(lblRecherche);
 		
+		
 		textField = new JTextField();
 		textField.setBounds(194, 35, 237, 19);
 		panelListe.add(textField);
