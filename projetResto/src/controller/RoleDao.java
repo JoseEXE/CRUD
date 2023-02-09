@@ -12,9 +12,16 @@ import model.Role;
 
 
 public class RoleDao implements IDao<Role>{
+	/*
+	 * Connection a la bdd
+	 * instanciation des class plusieurs fois utilisées
+	 */
  Connection conn= ConnectionSql.myConnection();
  PreparedStatement sql = null;
  ResultSet rs = null;
+ /*
+  * methode Create du CRUD
+  */
 	@Override
 	public Boolean create(Role role) {
 		try {
@@ -28,9 +35,11 @@ public class RoleDao implements IDao<Role>{
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
-		return null;
+		return false;
 	}
-
+	/*
+	  * methode Read du CRUD, qui peut devenir FindByName grace au parametre txt
+	  */
 	@Override
 	public ArrayList<Role> read(String txt) {
 		ArrayList<Role> list=new ArrayList<>();
@@ -56,7 +65,9 @@ public class RoleDao implements IDao<Role>{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+/*
+ * méthode update du CRUD
+ */
 	@Override
 	public Boolean update(Role role) {
 		try {
@@ -74,13 +85,17 @@ public class RoleDao implements IDao<Role>{
 		}
 				return false;
 	}
-
+	/*
+	 * méthode delete du CRUD
+	 */
 	@Override
 	public Boolean Delete(Role role) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	/*
+	 * méthode pour rendre le role actif
+	 */
 	@Override
 	public Boolean activer(Role role) {
 		try {
@@ -97,7 +112,9 @@ public class RoleDao implements IDao<Role>{
 		}
 				return false;
 	}
-
+	/*
+	 * méthode pour rendre le role inactif
+	 */
 	@Override
 	public Boolean desactiver(Role role) {
 		try {
@@ -115,13 +132,30 @@ public class RoleDao implements IDao<Role>{
 				return false;
 		
 	}
-
+	/*
+	 * méthode pour vérifier l'existence d'un objet role avant INSERT INTO
+	 */
 	@Override
 	public Boolean isExist(String txt) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			sql = conn.prepareStatement("SELECT nom FROM role WHERE nom=?");
+			sql.setString(1, txt);
+			rs=sql.executeQuery();
+			while (rs.next()) {
+				if(rs.getString("nom").equalsIgnoreCase(txt)) {
+					return true;
+				}
+			}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+			}
+		return false;
 	}
-
+	/*
+	 * méthode pour compte le nombre de registe total de la bdd role
+	 */
 	@Override
 	public int total() {
 		int total =0;
