@@ -1,10 +1,29 @@
 package model;
 
 public class Role {
+	
+	/*
+	 * Initialisation des elements de la class MODELE Role 
+	 * */
+	
 	private int id;
 	private String nom;
 	private String description;
 	private String statut;
+	
+
+	
+	/**
+	 * @param id
+	 * @param nom
+	 * @param description
+	 * @param statut
+	 * @
+	 */
+	
+	/*
+	 * Initialisation de constructors
+	 * */
 	
 	public Role(String nom, String description) {
 		this.nom = nom;
@@ -31,6 +50,11 @@ public class Role {
 		this.description = description;
 	}
 
+	
+	/*
+	 * Génération de getters et setters
+	 * */
+	
 	public int getId() {
 		return id;
 	}
@@ -62,10 +86,14 @@ public class Role {
 	public void setStatut(String statut) {
 		this.statut = statut;
 	}
+	
+	/*
+	 * Génération de toString de la classe Role
+	 * */
 
 	@Override
 	public String toString() {
-		return "Role [nom=" + nom + "]";
+		return nom;
 	}
 	
 	
