@@ -24,6 +24,9 @@ public class Role {
 	/*
 	 * Initialisation de constructors
 	 * */
+	public Role() {
+
+	}
 	
 	public Role(String nom, String description) {
 		this.nom = nom;
@@ -50,7 +53,10 @@ public class Role {
 		this.description = description;
 	}
 
-	
+	public Role(int id, String nom) {
+		this.id = id;
+		this.nom = nom;
+	}
 	/*
 	 * Génération de getters et setters
 	 * */

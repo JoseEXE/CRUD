@@ -172,6 +172,25 @@ public class RoleDao implements IDao<Role>{
 			}
 		return total;
 	}
+	
+	public ArrayList<Role> selectRoles() {
+		ArrayList<Role> list = new ArrayList<>();
+		try {
+		sql = conn.prepareStatement("SELECT id, nom FROM role");
+		System.out.println(sql);
+		rs=sql.executeQuery();
+		
+		while (rs.next()) {
+			list.add(new Role(rs.getInt("id"),rs.getString("nom")));
+		}
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		return list;
+	}
 
 
 

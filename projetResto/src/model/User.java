@@ -41,8 +41,12 @@ public class User {
 		this.nom = nom;
 		this.prenom = prenom;
 	}
-
-
+	
+	public User(int id, String nom, String prenom) {
+	    this.id = id;
+	    this.nom = nom;
+	    this.prenom = prenom;
+	}
 
 
 	public User(Role id_role, String nom, String prenom, String email, String url, String password, String statut) {
@@ -55,14 +59,6 @@ public class User {
 		this.statut = statut;
 	}
 	
-	
-	
-	
-	
-	
-	
-
-
 
 	public User(int id, Role id_role, String nom, String prenom, String email, String url, String statut) {
 		this.id = id;
@@ -74,17 +70,24 @@ public class User {
 		this.statut = statut;
 	}
 
-
-
-
-	public User(Role id_role, String nom, String prenom, String email, String password, String statut) {
-
+	
+	public User(Role id_role, String nom, String prenom, String email, String url, String password) {
 		this.id_role = id_role;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.email = email;
+		this.url = url;
 		this.password = password;
-		this.statut = statut;
+	}
+
+
+	public User(int id, Role id_role, String nom, String prenom, String email, String url) {
+		this.id = id;
+		this.id_role = id_role;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.email = email;
+		this.url = url;
 	}
 
 

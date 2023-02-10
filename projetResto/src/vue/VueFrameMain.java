@@ -110,6 +110,14 @@ public class VueFrameMain extends JFrame {
 		 *Gestion sous-menu users
 		 */
 		JMenuItem mntmUser = new JMenuItem("Utilisateurs");
+		mntmUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				desktopPane.removeAll();
+				desktopPane.add(new VueUser());
+				desktopPane.repaint();
+				desktopPane.revalidate();
+			}
+		});
 		mntmUser.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK));
 		mnAcces.add(mntmUser);
 		/*
@@ -122,6 +130,7 @@ public class VueFrameMain extends JFrame {
 				desktopPane.add(new VueRole());
 				desktopPane.repaint();
 				desktopPane.revalidate();
+			
 			}
 		});
 		mntmRole.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));

@@ -26,10 +26,16 @@ public class UserDao implements IDao<User>{
 	@Override
 	public Boolean create(User user) {
 		try {
-//			sql = conn.prepareStatement("INSERT INTO role (nom,description) VALUES (?,?)");
-//			sql.setString(1, role.getNom());
-//			sql.setString(2, role.getDescription());
-//			sql.execute();
+			System.out.println("Entra Insert: ");
+			sql = conn.prepareStatement("INSERT INTO user (id_role, nom, prenom, email, url, password) VALUES (?,?,?,?,?,PASSWORD(?))");
+			sql.setInt(1, user.getId_role().getId());
+			sql.setString(2, user.getNom());
+			sql.setString(3, user.getPrenom());
+			sql.setString(4, user.getEmail());
+			sql.setString(5, user.getUrl());
+			sql.setString(6, user.getPassword());
+			System.out.println("Insert: "+sql);
+			sql.execute();
 			return true;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -52,7 +58,7 @@ public class UserDao implements IDao<User>{
 		
 		while (rs.next()) {
 			
-			Role role = new Role(rs.getInt("idRol"), rs.getString("nomRol"), rs.getString("description"), rs.getString("statuts"));
+			Role role = new Role(rs.getInt("idRol"), rs.getString("nomRol"), rs.getString("description"), rs.getString("statutRol"));
 			list.add(new User(rs.getInt("id"), role ,rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), rs.getString("url"), rs.getString("statut")));
 			
 		}
@@ -75,10 +81,15 @@ public class UserDao implements IDao<User>{
 	@Override
 	public Boolean update(User user) {
 		try {
-//			sql = conn.prepareStatement("UPDATE role SET nom = ?,description = ? WHERE id=?");
-//			sql.setString(1, role.getNom());
-//			sql.setString(2, role.getDescription());
-//			sql.setInt(3,role.getId() );
+			sql = conn.prepareStatement("UPDATE user SET id_role = ?, nom = ?, prenom = ?, email = ?, url = ? WHERE id=?");
+
+			sql.setObject(1, user.getId_role());
+			sql.setString(2, user.getNom());
+			sql.setString(3, user.getPrenom());
+			sql.setString(4, user.getEmail());
+			sql.setString(5, user.getUrl());
+			sql.setObject(6, user.getId());
+			
 			if(sql.executeUpdate()>0) {
 				return true;
 			}
@@ -103,11 +114,11 @@ public class UserDao implements IDao<User>{
 	@Override
 	public Boolean activer(User user) {
 		try {
-//			sql = conn.prepareStatement("UPDATE role SET statut = 'Active' WHERE id=?");
-//			sql.setInt(1,role.getId() );
-//			if(sql.executeUpdate()>0) {
-//				return true;
-//			}
+			sql = conn.prepareStatement("UPDATE user SET statut = 'Active' WHERE id=?");
+			sql.setInt(1,user.getId() );
+			if(sql.executeUpdate()>0) {
+				return true;
+			}
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -122,11 +133,11 @@ public class UserDao implements IDao<User>{
 	@Override
 	public Boolean desactiver(User user) {
 		try {
-//			sql = conn.prepareStatement("UPDATE role SET statut = 'Inactive' WHERE id=?");
-//			sql.setInt(1,role.getId() );
-//			if(sql.executeUpdate()>0) {
-//				return true;
-//			}
+			sql = conn.prepareStatement("UPDATE user SET statut = 'Inactive' WHERE id=?");
+			sql.setInt(1,user.getId() );
+			if(sql.executeUpdate()>0) {
+				return true;
+			}
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -142,11 +153,12 @@ public class UserDao implements IDao<User>{
 	@Override
 	public Boolean isExist(String txt) {
 		try {
-			sql = conn.prepareStatement("SELECT nom FROM user WHERE nom=?");
+			sql = conn.prepareStatement("SELECT email FROM user WHERE email=?");
 			sql.setString(1, txt);
+			System.out.println("Emailsql: "+sql);
 			rs=sql.executeQuery();
 			while (rs.next()) {
-				if(rs.getString("nom").equalsIgnoreCase(txt)) {
+				if(rs.getString("email").equalsIgnoreCase(txt)) {
 					return true;
 				}
 			}
@@ -199,7 +211,43 @@ public class UserDao implements IDao<User>{
 		}
 		return role;
 	}
-
+	
+	//VAlidation password Login
+	public Boolean isExistOk(String txt, int id) {
+		try {
+			sql = conn.prepareStatement("SELECT password FROM user WHERE id=? and password=PASSWORD(?) and statut='Active'");
+			sql.setInt(1, id);
+			sql.setString(2, txt);
+			rs=sql.executeQuery();
+			while (rs.next()) {
+				if(rs.getString("password").equalsIgnoreCase(txt)) {
+					return true;
+				}
+			}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+			}
+		return false;
+	}
+	
+	public Boolean changePass(String txt, int id) {
+		try {
+			sql = conn.prepareStatement("INSERT INTO user SET password=PASSWORD(?) WHERE id=?");
+			sql.setInt(1, id);
+			sql.setString(2, txt);
+			rs=sql.executeQuery();
+			if(sql.executeUpdate()>0) {
+				return true;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+				return false;
+	}
 
 
 }
