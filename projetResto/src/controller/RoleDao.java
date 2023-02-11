@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
 import connetion.ConnectionSql;
 import model.Role;
 
@@ -45,7 +44,6 @@ public class RoleDao implements IDao<Role>{
 		try {
 		sql = conn.prepareStatement("SELECT * FROM role WHERE nom LIKE ?");
 		sql.setString(1, "%"+txt+"%");
-		System.out.println(sql);
 		rs=sql.executeQuery();
 		
 		while (rs.next()) {
@@ -62,7 +60,7 @@ public class RoleDao implements IDao<Role>{
 	@Override
 	public Object findById(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 /*
  * méthode update du CRUD

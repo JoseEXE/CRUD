@@ -11,6 +11,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.TableRowSorter;
 
 import controller.RoleDao;
 import metier.RoleMetier;
@@ -49,6 +50,7 @@ public class VueRole extends JPanel {
 	/**
 	 * Create the panel.
 	 */
+	@SuppressWarnings("unchecked")
 	public VueRole() {
 		setBounds(0, 0, 1136, 565);
 		setLayout(null);
@@ -98,6 +100,8 @@ public class VueRole extends JPanel {
 		btnChercher.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				table.setModel(roleM.lister(textField.getText()));
+				TableRowSorter order = new TableRowSorter(table.getModel());
+				table.setRowSorter(order);
 				lblAffichage.setText("Affichage de "+roleM.totalM +" registres sur un total de "+ roleD.total()+" registres");
 			}
 		});
@@ -151,7 +155,7 @@ public class VueRole extends JPanel {
 						 if(!roleD.isExist(textNom.getText())) {
 							 Role newRole =new Role(textNom.getText(),textDescription.getText());
 							 if(roleD.create(newRole)) {
-								 JOptionPane.showMessageDialog(null,"Le rôle "+newRole.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
+								 JOptionPane.showMessageDialog(null,"Le role "+newRole.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
 								 tabbedPane.setEnabledAt(1, false);
 					             tabbedPane.setEnabledAt(0, true);
 					             tabbedPane.setSelectedIndex(0);
@@ -342,5 +346,11 @@ public class VueRole extends JPanel {
 		lblCaratresMaximum.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblCaratresMaximum.setBounds(115, 266, 119, 18);
 		panelGestion.add(lblCaratresMaximum);
+		/*
+		 * Tri asc desc pour le tabeau produit
+		 */
+		@SuppressWarnings("rawtypes")
+		TableRowSorter order = new TableRowSorter(table.getModel());
+		table.setRowSorter(order);
 	}
 }

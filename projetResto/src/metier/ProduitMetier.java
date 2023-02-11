@@ -15,11 +15,11 @@ public class ProduitMetier {
 	 * méthode qui affiche la iste la bdd role et l'affiche dans vue role
 	 * @param txt: contenu de la barre recherche si on faire un findByName
 	 */
-	public DefaultTableModel lister(String txt) {
+	public DefaultTableModel lister(String txt,String tri) {
 		String col[]= {"id","Nom","Description","Code","Categorie","Type","Prix","modifiant","Date-modif","statut"};
 		DefaultTableModel tableau=new DefaultTableModel(null,col);
 		
-		for (Produit item : prodD.read(txt)) {
+		for (Produit item : prodD.filtrer(txt,tri)) {
 			tableau.addRow(new Object[] {
 					item.getId(),
 					item.getNom(),

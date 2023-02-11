@@ -1,6 +1,5 @@
 package vue;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,37 +11,34 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableRowSorter;
 
-import controller.Cat_produitDao;
-import controller.ProduitDao;
-import metier.ProduitMetier;
-import model.Cat_produit;
-import model.Produit;
-import model.User;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
+import controller.ClientDao;
+import metier.ClientMetier;
+import model.Client;
+import javax.swing.border.EtchedBorder;
+import java.awt.Color;
+
+
 
 @SuppressWarnings("serial")
-public class VueProduit extends JPanel {
+public class VueClient extends JPanel {
 	private JTextField textField;
 	private JTable table;
 	/*
 	 * instanciation Class roleMetier
 	 */
-	ProduitMetier prodM=new ProduitMetier();
+	ClientMetier clientM =new ClientMetier();
 	/*
 	 * instanciation Class roleDao
 	 */
-	ProduitDao prodD=new ProduitDao();
+	ClientDao clientD=new ClientDao();
 	/*
 	 * creation variable string role pour les differents messages d'affichage fenetre role
 	 */
-	String nomModel = "Produit";
+	String nomModel = "Client";
 	/*
 	 * creation variable pour les 2 actions create et update
 	 */
@@ -51,18 +47,18 @@ public class VueProduit extends JPanel {
 	 * creation variable pour recupere ancien nom lors de la modification de registre
 	 */
 	String ancienNom="";
-	Cat_produitDao cat_produitDao = new Cat_produitDao();
-	User currentUser =new User(1,"Moris","Ambroise");
+	
 	private JTextField textNom;
 	private JTextField textId;
-	private JTextField textCode;
-	private JTextField textPrix;
-
+	private JTextField textPrenom;
+	private JTextField textTel;
+	
+	
 	/**
 	 * Create the panel.
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes"})
-	public VueProduit() {
+	@SuppressWarnings("unchecked")
+	public VueClient() {
 		setBounds(0, 0, 1136, 565);
 		setLayout(null);
 		
@@ -72,15 +68,14 @@ public class VueProduit extends JPanel {
 		panel.setLayout(null);
 		
 		JPanel panelMain = new JPanel();
-		panelMain.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255),
-				new Color(160, 160, 160)), "Produits", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelMain.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Clients", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelMain.setBounds(0, 10, 1136, 555);
 		panel.add(panelMain);
 		panelMain.setLayout(null);
-		
 		/*
 		 * creation double intercalaires
 		 */
+		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(10, 31, 1116, 514);
 		panelMain.add(tabbedPane);
@@ -96,42 +91,27 @@ public class VueProduit extends JPanel {
 		
 		
 		textField = new JTextField();
-		textField.setBounds(142, 35, 237, 19);
+		textField.setBounds(194, 35, 237, 19);
 		panelListe.add(textField);
 		textField.setColumns(10);
 		
 		/*
 		 * Creation table liste Role
 		 */
-		table = new JTable();
-		table.setModel(prodM.lister("",""));
 		
-		/*
-		 * Les  3 combobox 
-		 */
-        JComboBox comboBoxCat = new JComboBox();
-		comboBoxCat.setModel(new DefaultComboBoxModel(new String[] {"Plat", "Menu", "Boisson ", "Dessert"}));
-		comboBoxCat.setBounds(472, 213, 82, 20);
-		JComboBox comboBoxType = new JComboBox();
-		comboBoxType.setModel(new DefaultComboBoxModel(new String[] {"Chaud", "Froid"}));
-		comboBoxType.setBounds(470, 137, 82, 20);
-		JComboBox comboBoxTri = new JComboBox();
-		comboBoxTri.setBounds(639, 35, 80, 19);
-		panelListe.add(comboBoxTri);
-        
-		JLabel lblAffichage = new JLabel("Affichage de "+prodM.totalM +" registres sur un total de "+ prodD.total()+" registres");
+		table = new JTable();
+		table.setModel(clientM.lister(""));
+		JLabel lblAffichage = new JLabel("Affichage de "+clientM.totalM +" registres sur un total de "+ clientD.total()+" registres");
 		JButton btnChercher = new JButton("Chercher");
-		JTextArea textDescription = new JTextArea();
 		btnChercher.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String tri = String.valueOf(comboBoxTri.getSelectedItem());
-				table.setModel(prodM.lister(textField.getText(),tri));
+				table.setModel(clientM.lister(textField.getText()));
 				TableRowSorter order = new TableRowSorter(table.getModel());
 				table.setRowSorter(order);
-				lblAffichage.setText("Affichage de "+prodM.totalM +" registres sur un total de "+ prodD.total()+" registres");
+				lblAffichage.setText("Affichage de "+clientM.totalM +" registres sur un total de "+ clientD.total()+" registres");
 			}
 		});
-		btnChercher.setBounds(405, 33, 106, 23);
+		btnChercher.setBounds(518, 34, 106, 23);
 		panelListe.add(btnChercher);
 		/*
 		 * conditions pour les create et update, en fonction de la variable Action initialisée plus haut
@@ -139,42 +119,33 @@ public class VueProduit extends JPanel {
 		JButton btnSauvegarder = new JButton("Sauvegarder");
 		btnSauvegarder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*  Variable contenant la combobox type de plat 
-				 * 	Method pour retourner l'objet cat_produit en fonction pendant l'instanciation de Poduit		
-				 */
-				String typePlatcat= String.valueOf(comboBoxType.getSelectedItem());
-				Cat_produit Cat_produit = cat_produitDao.findByName(String.valueOf(comboBoxCat.getSelectedItem()));
 				 if(action.equalsIgnoreCase("modifier")){
 					 
-					 if(textNom.getText().equalsIgnoreCase("") || textCode.getText().equalsIgnoreCase("") || textPrix.getText().equalsIgnoreCase("")
-							 || textNom.getText().length() >40  || textDescription.getText().length()>100) {
+					 if(textNom.getText().equalsIgnoreCase("") 	|| textNom.getText().length() >40  || textPrenom.getText().length()>100) {
 						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Modification", JOptionPane.ERROR_MESSAGE);
 					 }else {
 						 if(ancienNom.equalsIgnoreCase(textNom.getText())) {
-							 Produit newProd =new Produit(Integer.parseInt(textId.getText()),Cat_produit,currentUser,textCode.getText(),textNom.getText(),
-									 typePlatcat,textDescription.getText(),(Double.parseDouble(textPrix.getText())));
-							 if(prodD.update(newProd)) {
-								 JOptionPane.showMessageDialog(null,"Le rôle "+newProd.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
+							 Client newClient =new Client(Integer.parseInt(textId.getText()),textNom.getText(),textPrenom.getText(),textTel.getText());
+							 if(clientD.update(newClient)) {
+								 JOptionPane.showMessageDialog(null,"Le rôle "+newClient.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
 								 tabbedPane.setEnabledAt(1, false);
 					             tabbedPane.setEnabledAt(0, true);
 					             tabbedPane.setSelectedIndex(0);
-					             String tri = String.valueOf(comboBoxTri.getSelectedItem());
-					             table.setModel(prodM.lister(textField.getText(),tri));
+					             table.setModel(clientM.lister(textField.getText()));
 							 }else {
 								 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
 							 }
 						 }else {
 						 
-							 if(!prodD.isExist(textNom.getText())) {
-								 Produit newProd =new Produit(Integer.parseInt(textId.getText()),Cat_produit,currentUser,textCode.getText(),textNom.getText(),
-										 typePlatcat,textDescription.getText(),(Double.parseDouble(textPrix.getText())));
-								 if(prodD.update(newProd)) {
-									 JOptionPane.showMessageDialog(null,"Le produit "+newProd.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
+							 if(!clientD.isExist(textTel.getText())) {
+								 Client newClient =new Client(Integer.parseInt(textId.getText()),textNom.getText(),textPrenom.getText(),textTel.getText());
+								
+								 if(clientD.update(newClient)) {
+									 JOptionPane.showMessageDialog(null,"Le rôle "+newClient.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
 									 tabbedPane.setEnabledAt(1, false);
 					                 tabbedPane.setEnabledAt(0, true);
 					                 tabbedPane.setSelectedIndex(0);
-					                 String tri = String.valueOf(comboBoxTri.getSelectedItem());
-					                 table.setModel(prodM.lister(textField.getText(),tri));
+					                 table.setModel(clientM.lister(textField.getText()));
 								 }else {
 									 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
 								 }//fin du update
@@ -184,20 +155,17 @@ public class VueProduit extends JPanel {
 						 }//fin if ancienNom egual new nom
 					 }
 				 }else if(action.equalsIgnoreCase("Sauvegarder")){
-					 if(textNom.getText().equalsIgnoreCase("")|| textCode.getText().equalsIgnoreCase("") || textPrix.getText().equalsIgnoreCase("")
-							 || textNom.getText().length() >40  || textDescription.getText().length()>100) {
+					 if(textNom.getText().equalsIgnoreCase("")	|| textNom.getText().length() >40  || textPrenom.getText().length()>100) {
 						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Création", JOptionPane.ERROR_MESSAGE);
 					 }else {
-						 if(!prodD.isExist(textNom.getText())) {
-							 Produit newProd =new Produit(Cat_produit,currentUser,textCode.getText(),textNom.getText(),
-									 typePlatcat,textDescription.getText(),(Double.parseDouble(textPrix.getText())));
-							 if(prodD.create(newProd)) {
-								 JOptionPane.showMessageDialog(null,"Le produit "+newProd.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
+						 if(!clientD.isExist(textTel.getText())) {
+							 Client newClient =new Client(textNom.getText(),textPrenom.getText(),textTel.getText());
+							 if(clientD.create(newClient)) {
+								 JOptionPane.showMessageDialog(null,"Le client "+newClient.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
 								 tabbedPane.setEnabledAt(1, false);
 					             tabbedPane.setEnabledAt(0, true);
 					             tabbedPane.setSelectedIndex(0);
-					             String tri = String.valueOf(comboBoxTri.getSelectedItem());
-					             table.setModel(prodM.lister(textField.getText(),tri));
+					             table.setModel(clientM.lister(textField.getText()));
 							 }else {
 								 JOptionPane.showMessageDialog(null,"Impossible de créer le "+nomModel, "Création", JOptionPane.ERROR_MESSAGE);
 							 }
@@ -220,10 +188,9 @@ public class VueProduit extends JPanel {
                 tabbedPane.setSelectedIndex(1);
                 action="Sauvegarder";
                 btnSauvegarder.setText("Sauvegarder");
-                System.out.println(comboBoxCat.getSelectedItem());
 			}
 		});
-		btnNouveau.setBounds(729, 33, 106, 23);
+		btnNouveau.setBounds(653, 34, 106, 23);
 		panelListe.add(btnNouveau);
 		/*
 		 * passage vers la page modification de role 
@@ -237,12 +204,8 @@ public class VueProduit extends JPanel {
 					
 					textId.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
 					textNom.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
-					textPrix.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 7)));
-					textCode.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 3)));
 					ancienNom= String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
-					comboBoxCat.setSelectedItem(table.getValueAt(table.getSelectedRow(), 4));
-					comboBoxType.setSelectedItem(table.getValueAt(table.getSelectedRow(), 5));
-					textDescription.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 2)));
+					textPrenom.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 2)));
 					tabbedPane.setEnabledAt(1, true);
 	                tabbedPane.setEnabledAt(0, false);
 	                tabbedPane.setSelectedIndex(1);
@@ -251,7 +214,7 @@ public class VueProduit extends JPanel {
 				}
 			}
 		});
-		btnModifier.setBounds(845, 33, 106, 23);
+		btnModifier.setBounds(786, 34, 106, 23);
 		panelListe.add(btnModifier);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -277,15 +240,17 @@ public class VueProduit extends JPanel {
 					 * recupération des données selectionnées avant instanciation
 					 */
 					String id = String.valueOf(table.getValueAt(table.getSelectedRow(), 0));
-					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
+					String nom = String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
+					String prenom = String.valueOf(table.getValueAt(table.getSelectedRow(), 2));
+					String tel = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
+					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 4));
 						if(stat.equalsIgnoreCase("active")) {
 							JOptionPane.showMessageDialog(null,"Le "+nomModel+" est déjà actif","Statut",JOptionPane.WARNING_MESSAGE);
 						}else {
-							Produit newProd =new Produit(Integer.parseInt(id), currentUser);
-								if(prodD.activer(newProd)) {
+							Client newClient =new Client(Integer.parseInt(id), nom, prenom,tel, stat);
+								if(clientD.activer(newClient)) {
 									JOptionPane.showMessageDialog(null,"Le "+nomModel+" est maintenant actif","Statut",JOptionPane.INFORMATION_MESSAGE);
-									String tri = String.valueOf(comboBoxTri.getSelectedItem());
-									table.setModel(prodM.lister(textField.getText(),tri));	
+									table.setModel(clientM.lister(textField.getText()));	
 								}
 						}
 				}
@@ -306,16 +271,18 @@ public class VueProduit extends JPanel {
 					 * recupération des données selectionnées avant instanciation
 					 */
 					String id = String.valueOf(table.getValueAt(table.getSelectedRow(), 0));
-					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
+					String nom = String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
+					String prenom = String.valueOf(table.getValueAt(table.getSelectedRow(), 2));
+					String tel = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
+					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 4));
 						if(stat.equalsIgnoreCase("inactif")) {
 							JOptionPane.showMessageDialog(null,"Le "+nomModel+" est déjà inactif","Statut",JOptionPane.WARNING_MESSAGE);
 							
 						}else {
-							Produit newProd =new Produit(Integer.parseInt(id), currentUser);
-								if(prodD.desactiver(newProd)) {
+								Client newClient =new Client(Integer.parseInt(id), nom, prenom,tel, stat);
+								if(clientD.desactiver(newClient)) {
 									JOptionPane.showMessageDialog(null,"Le "+nomModel+" est maintenant inactif","Statut",JOptionPane.INFORMATION_MESSAGE);
-									String tri = String.valueOf(comboBoxTri.getSelectedItem());
-									table.setModel(prodM.lister(textField.getText(),tri));	
+									table.setModel(clientM.lister(textField.getText()));	
 								}
 						}
 				}
@@ -326,12 +293,6 @@ public class VueProduit extends JPanel {
 		
 		lblAffichage.setBounds(476, 387, 367, 19);
 		panelListe.add(lblAffichage);
-		
-		JLabel lblNewLabel_1 = new JLabel("Filtrer la recherche");
-		lblNewLabel_1.setBounds(521, 38, 108, 13);
-		panelListe.add(lblNewLabel_1);
-		
-		
 		
 		JPanel panelGestion = new JPanel();
 		tabbedPane.addTab("Gestion", null, panelGestion, null);
@@ -345,7 +306,7 @@ public class VueProduit extends JPanel {
 		lblNom.setBounds(10, 76, 70, 21);
 		panelGestion.add(lblNom);
 		
-		JLabel lblDescription = new JLabel("Description :");
+		JLabel lblDescription = new JLabel("Prénom :");
 		lblDescription.setBounds(10, 137, 70, 21);
 		panelGestion.add(lblDescription);
 		
@@ -356,12 +317,9 @@ public class VueProduit extends JPanel {
 		
 		textId = new JTextField();
 		textId.setColumns(10);
-		textId.setBounds(818, 77, 142, 20);
+		textId.setBounds(368, 76, 142, 20);
 		panelGestion.add(textId);
 		textId.setVisible(false);
-		
-		textDescription.setBounds(115, 135, 210, 133);
-		panelGestion.add(textDescription);
 		
 		JLabel lblNewLabel_2 = new JLabel("(*) Champs obligatoires");
 		lblNewLabel_2.setBounds(10, 304, 142, 21);
@@ -375,8 +333,7 @@ public class VueProduit extends JPanel {
 				tabbedPane.setEnabledAt(1, false);
                 tabbedPane.setEnabledAt(0, true);
                 tabbedPane.setSelectedIndex(0);
-                String tri = String.valueOf(comboBoxTri.getSelectedItem());
-                table.setModel(prodM.lister(textField.getText(),tri));
+                table.setModel(clientM.lister(textField.getText()));
 			}
 		});
 		btnAnnuler.setBounds(92, 388, 106, 23);	
@@ -390,43 +347,36 @@ public class VueProduit extends JPanel {
 		lblNewLabel.setBounds(115, 96, 119, 18);
 		panelGestion.add(lblNewLabel);
 		
-		JLabel lblCaratresMaximum = new JLabel("100 caractères maximum");
-		lblCaratresMaximum.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblCaratresMaximum.setBounds(115, 266, 119, 18);
-		panelGestion.add(lblCaratresMaximum);
+		textPrenom = new JTextField();
+		textPrenom.setColumns(10);
+		textPrenom.setBounds(115, 138, 210, 20);
+		panelGestion.add(textPrenom);
 		
-		JLabel lblNom_1 = new JLabel("Code : (*)");
-		lblNom_1.setBounds(378, 76, 70, 21);
-		panelGestion.add(lblNom_1);
+		JLabel lblTlphone = new JLabel("Téléphone:");
+		lblTlphone.setBounds(10, 198, 70, 21);
+		panelGestion.add(lblTlphone);
 		
-		JLabel lblNom_2 = new JLabel("Type de plat : ");
-		lblNom_2.setBounds(378, 137, 82, 21);
-		panelGestion.add(lblNom_2);
+		textTel = new JTextField();
+		textTel.setColumns(10);
+		textTel.setBounds(115, 199, 210, 20);
+		panelGestion.add(textTel);
 		
-		textCode = new JTextField();
-		textCode.setColumns(10);
-		textCode.setBounds(469, 77, 210, 20);
-		panelGestion.add(textCode);
+		JLabel lblNewLabel_1 = new JLabel("40 caractères maximum");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblNewLabel_1.setBounds(115, 158, 119, 18);
+		panelGestion.add(lblNewLabel_1);
 		
-		JLabel lblNom_2_1 = new JLabel("Catégorie : ");
-		lblNom_2_1.setBounds(378, 213, 70, 21);
-		panelGestion.add(lblNom_2_1);
-		
-		JLabel lblNom_1_1 = new JLabel("Prix: (*)");
-		lblNom_1_1.setBounds(727, 137, 70, 21);
-		panelGestion.add(lblNom_1_1);
-		
-		textPrix = new JTextField();
-		textPrix.setColumns(10);
-		textPrix.setBounds(818, 138, 142, 20);
-		panelGestion.add(textPrix);
-		panelGestion.add(comboBoxCat);
-		panelGestion.add(comboBoxType);
-		
+		JLabel lblNewLabel_1_1 = new JLabel("10 chiffres maximum");
+		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblNewLabel_1_1.setBounds(115, 217, 119, 18);
+		panelGestion.add(lblNewLabel_1_1);
 		/*
 		 * Tri asc desc pour le tabeau produit
 		 */
-//		TableRowSorter order = new TableRowSorter(table.getModel());
-//        table.setRowSorter(order);
+		@SuppressWarnings("rawtypes")
+		TableRowSorter order = new TableRowSorter(table.getModel());
+		table.setRowSorter(order);
 	}
+	
+
 }

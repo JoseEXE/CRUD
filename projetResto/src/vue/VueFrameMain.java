@@ -101,6 +101,14 @@ public class VueFrameMain extends JFrame {
 		 *Gestion sous-menu clients
 		 */
 		JMenuItem mntmClients = new JMenuItem("Clients");
+		mntmClients.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				desktopPane.removeAll();
+				desktopPane.add(new VueClient());
+				desktopPane.repaint();
+				desktopPane.revalidate();
+			}
+		});
 		mntmClients.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
 		mnCommandes.add(mntmClients);
 		/*

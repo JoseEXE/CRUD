@@ -35,12 +35,14 @@ public class ProduitDao implements IDao<Produit>{
 		return false;
 	}
 	@Override
-
+/*
+ * Cette methode n'est plus utilisée (remplacer par Filtrer())
+ */
 	public ArrayList<Produit> read(String txt) {
 		ArrayList<Produit> list = new ArrayList<>();
 	try {
 		sql = conn.prepareStatement("SELECT *,p.id as idprod,ct.id as idcat,u.id as iduser,p.nom as nomprod,ct.nom as nomcat,u.nom as nomuser,p.description as descprod,p.statut as statprod"
-				+ " FROM produit p INNER JOIN cat_produit ct ON id_cat_produit=ct.id INNER JOIN user u ON u.id=id_user WHERE p.nom LIKE ? ORDER BY ct.nom desc");
+				+ " FROM produit p INNER JOIN cat_produit ct ON id_cat_produit=ct.id INNER JOIN user u ON u.id=id_user WHERE p.nom LIKE ? ");
 		sql.setString(1, "%"+txt+"%");
 		rs=sql.executeQuery();
 		while (rs.next()) {
@@ -60,7 +62,7 @@ public class ProduitDao implements IDao<Produit>{
 	@Override
 	public Object findById(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 
 	@Override
@@ -164,12 +166,13 @@ public class ProduitDao implements IDao<Produit>{
 			}
 		return total;
 	}
-	public ArrayList<Produit> filtrer(String txt,String ordre,String tri) {
+	public ArrayList<Produit> filtrer(String txt,String tri) {
 		ArrayList<Produit> list = new ArrayList<>();
 	try {
 		sql = conn.prepareStatement("SELECT *,p.id as idprod,ct.id as idcat,u.id as iduser,p.nom as nomprod,ct.nom as nomcat,u.nom as nomuser,p.description as descprod,p.statut as statprod"
-				+ " FROM produit p INNER JOIN cat_produit ct ON id_cat_produit=ct.id INNER JOIN user u ON u.id=id_user WHERE p.nom LIKE ? ORDER BY ct.nom desc");
-		sql.setString(1, "%"+txt+"%");
+				+ " FROM produit p INNER JOIN cat_produit ct ON id_cat_produit=ct.id INNER JOIN user u ON u.id=id_user WHERE ct.nom LIKE ? AND p.nom LIKE ?");
+		sql.setString(1, "%"+tri+"%");
+		sql.setString(2, "%"+txt+"%");
 		rs=sql.executeQuery();
 		while (rs.next()) {
 			User  user = new User(rs.getInt("iduser"),rs.getString("nomuser"),rs.getString("prenom"));
