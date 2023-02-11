@@ -68,6 +68,14 @@ public class VueFrameMain extends JFrame {
 		 *Gestion sous-menu produit
 		 */
 		JMenuItem mntmProduit = new JMenuItem("Produits");
+		mntmProduit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				desktopPane.removeAll();
+				desktopPane.add(new VueProduit());
+				desktopPane.repaint();
+				desktopPane.revalidate();
+			}
+		});
 		mntmProduit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_DOWN_MASK));
 		mnCarte.add(mntmProduit);
 		/*

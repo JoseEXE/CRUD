@@ -3,7 +3,6 @@ package controller;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import connetion.ConnectionSql;
@@ -99,7 +98,7 @@ public class RoleDao implements IDao<Role>{
 	@Override
 	public Boolean activer(Role role) {
 		try {
-			sql = conn.prepareStatement("UPDATE role SET statut = 'Active' WHERE id=?");
+			sql = conn.prepareStatement("UPDATE role SET statut = 'Actif' WHERE id=?");
 			sql.setInt(1,role.getId() );
 			if(sql.executeUpdate()>0) {
 				return true;
@@ -118,7 +117,7 @@ public class RoleDao implements IDao<Role>{
 	@Override
 	public Boolean desactiver(Role role) {
 		try {
-			sql = conn.prepareStatement("UPDATE role SET statut = 'Inactive' WHERE id=?");
+			sql = conn.prepareStatement("UPDATE role SET statut = 'Inactif' WHERE id=?");
 			sql.setInt(1,role.getId() );
 			if(sql.executeUpdate()>0) {
 				return true;
