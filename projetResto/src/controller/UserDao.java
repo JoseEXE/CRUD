@@ -83,12 +83,13 @@ public class UserDao implements IDao<User>{
 		try {
 			sql = conn.prepareStatement("UPDATE user SET id_role = ?, nom = ?, prenom = ?, email = ?, url = ? WHERE id=?");
 
-			sql.setObject(1, user.getId_role());
+			sql.setInt(1, user.getId_role().getId());
 			sql.setString(2, user.getNom());
 			sql.setString(3, user.getPrenom());
 			sql.setString(4, user.getEmail());
 			sql.setString(5, user.getUrl());
-			sql.setObject(6, user.getId());
+			sql.setInt(6, user.getId());
+	
 			
 			if(sql.executeUpdate()>0) {
 				return true;
@@ -114,7 +115,7 @@ public class UserDao implements IDao<User>{
 	@Override
 	public Boolean activer(User user) {
 		try {
-			sql = conn.prepareStatement("UPDATE user SET statut = 'Active' WHERE id=?");
+			sql = conn.prepareStatement("UPDATE user SET statut = 'Actif' WHERE id=?");
 			sql.setInt(1,user.getId() );
 			if(sql.executeUpdate()>0) {
 				return true;
@@ -133,7 +134,7 @@ public class UserDao implements IDao<User>{
 	@Override
 	public Boolean desactiver(User user) {
 		try {
-			sql = conn.prepareStatement("UPDATE user SET statut = 'Inactive' WHERE id=?");
+			sql = conn.prepareStatement("UPDATE user SET statut = 'Inactif' WHERE id=?");
 			sql.setInt(1,user.getId() );
 			if(sql.executeUpdate()>0) {
 				return true;
@@ -212,17 +213,18 @@ public class UserDao implements IDao<User>{
 		return role;
 	}
 	
-	//VAlidation password Login
-	public Boolean isExistOk(String txt, int id) {
+	//VAlidation changement password
+	public Boolean isExistPass(int id, String txt) {
 		try {
-			sql = conn.prepareStatement("SELECT password FROM user WHERE id=? and password=PASSWORD(?) and statut='Active'");
+			sql = conn.prepareStatement("SELECT PASSWORD(password) as 'password' FROM user WHERE id=? and password=PASSWORD(?)");
 			sql.setInt(1, id);
 			sql.setString(2, txt);
+			System.out.println(sql);
 			rs=sql.executeQuery();
 			while (rs.next()) {
-				if(rs.getString("password").equalsIgnoreCase(txt)) {
-					return true;
-				}
+				rs.getString("password");
+				return true;
+			
 			}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -232,12 +234,12 @@ public class UserDao implements IDao<User>{
 		return false;
 	}
 	
-	public Boolean changePass(String txt, int id) {
+	//Changement de password
+	public Boolean changePass(int id, String txt) {
 		try {
-			sql = conn.prepareStatement("INSERT INTO user SET password=PASSWORD(?) WHERE id=?");
-			sql.setInt(1, id);
-			sql.setString(2, txt);
-			rs=sql.executeQuery();
+			sql = conn.prepareStatement("UPDATE user SET password=PASSWORD(?) WHERE id=?");
+			sql.setString(1, txt);
+			sql.setInt(2, id);
 			if(sql.executeUpdate()>0) {
 				return true;
 			}
@@ -247,6 +249,38 @@ public class UserDao implements IDao<User>{
 			System.out.println(e.getMessage());
 		}
 				return false;
+	}
+	
+	//Login
+	public boolean loginPass(String email, String pass) {
+		User user = null;
+		try {
+			
+			sql = conn.prepareStatement("SELECT user.id as 'IDUSER', user.nom as 'NOMUSER', user.prenom as 'PRENOMUSER', user.email as 'USEREMAIL', user.url as 'URL', role.id, role.nom, etablissement.nom as 'NOMET'  "
+					+ " FROM user INNER JOIN user_etablis ON user_etablis.id_user = user.id INNER JOIN etablissement "
+					+ " ON user_etablis.id_etablissment = etablissement.id INNER JOIN role ON user.id_role ="
+					+ " role.id WHERE user.email=? AND user.password=PASSWORD(?) AND user.statut='Actif'");
+			sql.setString(1, email);
+			sql.setString(2, pass);
+			System.out.println(sql);
+			rs=sql.executeQuery();
+			while (rs.next()) {
+				Role role = new Role(rs.getInt("id"), rs.getString("nom"));
+				user = new User(rs.getInt("IDUSER"), role, rs.getString("NOMUSER"), rs.getString("PRENOMUSER"), rs.getString("USEREMAIL"), rs.getString("URL"));
+				user.nomEtablissement = rs.getString("NOMET");
+			}
+			if(user== null) {
+				return true;			
+			}
+			
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+			
+			}
+			return false;
 	}
 
 

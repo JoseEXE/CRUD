@@ -15,10 +15,8 @@ public class User {
 	private String password;
 	private String statut;
 	
-	
-									
-	
-
+	public static User userLogin = new User();
+	public static String nomEtablissement;
 	
 	/**
 	 * @param id
@@ -35,7 +33,9 @@ public class User {
 	/*
 	 * Initialisation de constructors
 	 * */
-	
+	public User() {
+
+	}
 	
 	public User(String nom, String prenom) {
 		this.nom = nom;

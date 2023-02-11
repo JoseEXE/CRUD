@@ -18,6 +18,9 @@ import javax.swing.SwingConstants;
 import javax.swing.JDesktopPane;
 import java.awt.SystemColor;
 import javax.swing.border.TitledBorder;
+
+import model.User;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.EtchedBorder;
@@ -29,7 +32,7 @@ import java.awt.event.MouseEvent;
 public class VueFrameMain extends JFrame {
 
 	private JPanel contentPane;
-
+	private User userLog = new User();
 	/**
 	 * Launch the application.
 	 */
@@ -39,6 +42,7 @@ public class VueFrameMain extends JFrame {
 				try {
 					VueFrameMain frame = new VueFrameMain();
 					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -50,6 +54,8 @@ public class VueFrameMain extends JFrame {
 	 * Create the frame.
 	 */
 	public VueFrameMain() {
+		
+		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1180, 779);
@@ -113,7 +119,7 @@ public class VueFrameMain extends JFrame {
 		mntmUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				desktopPane.removeAll();
-				desktopPane.add(new VueUser());
+				desktopPane.add(new VueUser(1));
 				desktopPane.repaint();
 				desktopPane.revalidate();
 			}
@@ -133,6 +139,22 @@ public class VueFrameMain extends JFrame {
 			
 			}
 		});
+		
+		JMenuItem mntmChangePassword = new JMenuItem("Changer password");
+		mntmChangePassword.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				desktopPane.removeAll();
+				desktopPane.add(new VueUser(2));
+				desktopPane.repaint();
+				desktopPane.revalidate();
+
+				
+				
+			}
+		});
+		mntmChangePassword.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_DOWN_MASK));
+		mnAcces.add(mntmChangePassword);
 		mntmRole.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));
 		mnAcces.add(mntmRole);
 		/*
@@ -163,10 +185,10 @@ public class VueFrameMain extends JFrame {
 		/*
 		 * Nom dynamique de l'utilisateur
 		 */
-		JLabel lblNewLabel = new JLabel("Bienvenue Nom User");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblNewLabel.setBounds(10, 87, 269, 28);
-		contentPane.add(lblNewLabel);
+		JLabel lblNomUtilisateur = new JLabel("Bienvenue Nom User");
+		lblNomUtilisateur.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblNomUtilisateur.setBounds(10, 87, 269, 28);
+		contentPane.add(lblNomUtilisateur);
 		/*
 		 * creation panneau qui recois toutes les autres vues
 		 */
@@ -183,5 +205,10 @@ public class VueFrameMain extends JFrame {
 		lblNewLabel_1.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/bateau_sushis.jpg")));
 		lblNewLabel_1.setBounds(6, 19, 1122, 535);
 		desktopPane.add(lblNewLabel_1);
+		
+		if(userLog.userLogin != null) {
+			lblNomResto.setText(userLog.userLogin.nomEtablissement);
+			lblNomUtilisateur.setText("Bienvenue "+userLog.userLogin);
+		}
 	}
 }

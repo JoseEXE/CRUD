@@ -11,7 +11,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.TableRowSorter;
 
 import controller.RoleDao;
 import controller.UserDao;
@@ -26,6 +28,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 import javax.swing.JPasswordField;
 import javax.swing.JComboBox;
+import java.awt.Color;
+import javax.swing.border.EtchedBorder;
+import javax.swing.ImageIcon;
 
 public class VueUser extends JPanel {
 	private JTextField textField;
@@ -40,6 +45,7 @@ public class VueUser extends JPanel {
 	UserDao userD = new UserDao();
 	RoleDao roleD = new RoleDao();
 	Role roledeTest = new Role("","");
+	User userLog = new User();
 	/*
 	 * creation variable string role pour les differents messages d'affichage fenetre role
 	 */
@@ -60,10 +66,14 @@ public class VueUser extends JPanel {
 	private JPasswordField textPassword1;
 	private JPasswordField textPassword2;
 	private JTextField textUrl;
+	private JPasswordField textPassword3;
 	/**
 	 * Create the panel.
 	 */
-	public VueUser() {
+	public VueUser(int optionM) {
+		
+
+		
 		setBounds(0, 0, 1136, 565);
 		setLayout(null);
 		
@@ -72,8 +82,18 @@ public class VueUser extends JPanel {
 		add(panel);
 		panel.setLayout(null);
 		
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setBackground(new Color(0, 0, 0));
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/bateau_sushis.jpg")));
+		lblNewLabel_1.setBounds(6, 19, 1122, 535);
+		
+		
+		
+
+		
 		JPanel panelMain = new JPanel();
-		panelMain.setBorder(new TitledBorder(null, "R\u00F4les", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelMain.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Utilisateurs", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelMain.setBounds(0, 10, 1136, 555);
 		panel.add(panelMain);
 		panelMain.setLayout(null);
@@ -83,9 +103,14 @@ public class VueUser extends JPanel {
 		 * creation double intercalaires
 		 */
 		JPanel panelGestion = new JPanel();
-	
+		JPanel panel_2 = new JPanel();
 		//Pour charger des donnes dan le comboBox roles
 
+		JButton btnAnnuler = new JButton("Annuler");
+		JButton btnSauvegarder = new JButton("Sauvegarder");
+		JLabel lblPassword1 = new JLabel("Password : (*)");
+		JLabel lblPassword2 = new JLabel("Réécrivez votre Password : (*)");
+		JLabel lblPassword3 = new JLabel("Réécrivez votre nouvelle Password : (*)");
 		
 		JComboBox cmbRoles = new JComboBox();
 		DefaultComboBoxModel itemCmb = userM.selectCmb();
@@ -96,6 +121,8 @@ public class VueUser extends JPanel {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(10, 31, 1116, 514);
 		panelMain.add(tabbedPane);
+		
+
 		
 		JPanel panelListe = new JPanel();
 		tabbedPane.addTab("Liste", null, panelListe, null);
@@ -120,7 +147,6 @@ public class VueUser extends JPanel {
 		table.setModel(userM.lister(""));
 		JLabel lblAffichage = new JLabel("Affichage de "+userM.totalM +" registres sur un total de "+ userD.total()+" registres");
 		JButton btnChercher = new JButton("Chercher");
-		JTextArea textDescription = new JTextArea();
 		btnChercher.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				table.setModel(userM.lister(textField.getText()));
@@ -133,6 +159,9 @@ public class VueUser extends JPanel {
 				table.getColumnModel().getColumn(5).setMinWidth(0);
 				table.getTableHeader().getColumnModel().getColumn(5).setMaxWidth(0);
 				table.getTableHeader().getColumnModel().getColumn(5).setMinWidth(0);
+				// Pour faire le order by de tableau Asc Desc
+				TableRowSorter order = new TableRowSorter(table.getModel());
+				table.setRowSorter(order);
 			}
 		});
 		btnChercher.setBounds(476, 33, 106, 23);
@@ -141,45 +170,64 @@ public class VueUser extends JPanel {
 		 * conditions pour les create et update, en fonction de la variable Action initialisée plus haut
 		 */
 
-		JButton btnSauvegarder = new JButton("Sauvegarder");
+		
 		btnSauvegarder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 if(action.equalsIgnoreCase("modifier")){
 					 
-					 if(textNom.getText().equalsIgnoreCase("") 	|| textNom.getText().length() >40  || textEmail.getText().equalsIgnoreCase("") 	|| textEmail.getText().length() >60 || textPassword1.getText().equalsIgnoreCase("") ) {
+					 if(textNom.getText().equalsIgnoreCase("") 	|| textNom.getText().length() >40  || textEmail.getText().equalsIgnoreCase("") 	|| textEmail.getText().length() >60 ) {
 						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Modification", JOptionPane.ERROR_MESSAGE);
 					 }else {
 						 if(ancienMail.equalsIgnoreCase(textEmail.getText())) {
 							 
 							 
 	
-							 
-							 User newUser = new User(Integer.parseInt(textId.getText()), roledeTest , textNom.getText(), textPrenom.getText(), textEmail.getText(), textUrl.getText());
+							 Role selectedRole = (Role) cmbRoles.getSelectedItem();
+							 User newUser = new User(Integer.parseInt(textId.getText()), selectedRole , textNom.getText(), textPrenom.getText(), textEmail.getText(), textUrl.getText());
 							 if(userD.update(newUser)) {
 								 JOptionPane.showMessageDialog(null,"Le "+ nomModel +" "+newUser.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
-//								 tabbedPane.setEnabledAt(1, false);
-//					             tabbedPane.setEnabledAt(0, true);
-//					             tabbedPane.setSelectedIndex(0);
+								 tabbedPane.setEnabledAt(1, false);
+					             tabbedPane.setEnabledAt(0, true);
+					             tabbedPane.setSelectedIndex(0);
 					             table.setModel(userM.lister(textField.getText()));
+								 table.getColumnModel().getColumn(4).setMaxWidth(0);
+								 table.getColumnModel().getColumn(4).setMinWidth(0);
+								 table.getTableHeader().getColumnModel().getColumn(4).setMaxWidth(0);
+								 table.getTableHeader().getColumnModel().getColumn(4).setMinWidth(0);		
+								 table.getColumnModel().getColumn(5).setMaxWidth(0);
+								 table.getColumnModel().getColumn(5).setMinWidth(0);
+								 table.getTableHeader().getColumnModel().getColumn(5).setMaxWidth(0);
+								 table.getTableHeader().getColumnModel().getColumn(5).setMinWidth(0);				
+					             
 							 }else {
 								 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
 							 }
 						 }else {
 						 
-							 if(!userD.isExist(textNom.getText())) {
-								 User newUser = new User(Integer.parseInt(textId.getText()), roledeTest , textNom.getText(), textPrenom.getText(), textEmail.getText(), textUrl.getText());
-								
+							 if(!userD.isExist(textEmail.getText())) {
+								 
+								 Role selectedRole = (Role) cmbRoles.getSelectedItem();
+								 User newUser = new User(Integer.parseInt(textId.getText()), selectedRole , textNom.getText(), textPrenom.getText(), textEmail.getText(), textUrl.getText());
+							
 								 if(userD.update(newUser)) {
 									 JOptionPane.showMessageDialog(null,"Le "+ nomModel +" "+newUser.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
-//									 tabbedPane.setEnabledAt(1, false);
-//					                 tabbedPane.setEnabledAt(0, true);
-//					                 tabbedPane.setSelectedIndex(0);
+									 tabbedPane.setEnabledAt(1, false);
+					                 tabbedPane.setEnabledAt(0, true);
+					                 tabbedPane.setSelectedIndex(0);
 					                 table.setModel(userM.lister(textField.getText()));
+					 				 table.getColumnModel().getColumn(4).setMaxWidth(0);
+									 table.getColumnModel().getColumn(4).setMinWidth(0);
+									 table.getTableHeader().getColumnModel().getColumn(4).setMaxWidth(0);
+									 table.getTableHeader().getColumnModel().getColumn(4).setMinWidth(0);		
+									 table.getColumnModel().getColumn(5).setMaxWidth(0);
+									 table.getColumnModel().getColumn(5).setMinWidth(0);
+									 table.getTableHeader().getColumnModel().getColumn(5).setMaxWidth(0);
+									 table.getTableHeader().getColumnModel().getColumn(5).setMinWidth(0);
 								 }else {
 									 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
 								 }//fin du update
 							 }else {	 
-								 JOptionPane.showMessageDialog(null,"Ce "+ nomModel +" existe déjà", "Modification", JOptionPane.ERROR_MESSAGE);
+								 JOptionPane.showMessageDialog(null,"Ce email existe déjà", "Création", JOptionPane.ERROR_MESSAGE);
 							 }//fin if isExiste
 						 }//fin if ancienNom egual new nom
 					 }
@@ -207,6 +255,15 @@ public class VueUser extends JPanel {
 					             tabbedPane.setEnabledAt(0, true);
 					             tabbedPane.setSelectedIndex(0);
 					             table.setModel(userM.lister(textField.getText()));
+					     		table.getColumnModel().getColumn(4).setMaxWidth(0);
+					    		table.getColumnModel().getColumn(4).setMinWidth(0);
+					    		table.getTableHeader().getColumnModel().getColumn(4).setMaxWidth(0);
+					    		table.getTableHeader().getColumnModel().getColumn(4).setMinWidth(0);
+					    		table.getColumnModel().getColumn(5).setMaxWidth(0);
+					    		table.getColumnModel().getColumn(5).setMinWidth(0);
+					    		table.getTableHeader().getColumnModel().getColumn(5).setMaxWidth(0);
+					    		table.getTableHeader().getColumnModel().getColumn(5).setMinWidth(0);
+					             
 
 							 }else {
 								 JOptionPane.showMessageDialog(null,"Impossible de créer le "+nomModel, "Création", JOptionPane.ERROR_MESSAGE);
@@ -228,6 +285,89 @@ public class VueUser extends JPanel {
 		 * passage vers la page creation de role 
 		 */
 		JButton btnModifierPass = new JButton("Modifier");
+		btnModifierPass.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				
+				if(!userD.isExistPass(Integer.parseInt(textId.getText()) , String.valueOf(textPassword1.getText()))) {
+					JOptionPane.showMessageDialog(null,"Password invalid","Password",JOptionPane.WARNING_MESSAGE);
+					lblPassword1.setForeground(new Color(255, 0, 0));
+					textPassword1.requestFocus();
+					return;
+				}else {
+					if(String.valueOf(textPassword2.getText()).equals("") || String.valueOf(textPassword3.getText()).equals("")) {
+						JOptionPane.showMessageDialog(null,"Le champ (*) sont obligatoires","Password",JOptionPane.WARNING_MESSAGE);
+						lblPassword1.setForeground(new Color(0, 0, 0));
+						textPassword2.requestFocus();
+						lblPassword2.setForeground(new Color(255, 0, 0));
+						lblPassword3.setForeground(new Color(255, 0, 0));
+						return ;
+						
+					}
+					if(!String.valueOf(textPassword2.getText()).equals(String.valueOf(textPassword3.getText()))) {
+						JOptionPane.showMessageDialog(null,"Les password doivent coïncider","Password",JOptionPane.WARNING_MESSAGE);
+						lblPassword1.setForeground(new Color(0, 0, 0));
+						textPassword2.requestFocus();
+						lblPassword2.setForeground(new Color(255, 0, 0));
+						lblPassword3.setForeground(new Color(255, 0, 0));
+						return ;
+					}else {
+						lblPassword1.setForeground(new Color(0, 0, 0));
+						lblPassword2.setForeground(new Color(0, 0, 0));
+						lblPassword3.setForeground(new Color(0, 0, 0));
+						
+						if(userD.changePass(Integer.parseInt(textId.getText()), String.valueOf(textPassword2.getText()))) {
+							JOptionPane.showMessageDialog(null,"Votre password vient d'avoir été modifiée correctement...","Password",JOptionPane.INFORMATION_MESSAGE);
+							textId.setEditable(true);
+							textNom.setEditable(true);
+							textPrenom.setEditable(true);
+							textEmail.setEditable(true);
+						    btnAnnuler.setEnabled(true);
+							btnSauvegarder.setEnabled(true);
+							cmbRoles.setEnabled(true);
+			                panel_2.setVisible(false);
+			            	textPassword3.setVisible(false);
+			            	lblPassword3.setVisible(false);
+							lblPassword1.setText("Password : (*)");
+							lblPassword2.setText("Réécrivez votre Password : (*)");
+					        textPassword1.setText("");
+				            textPassword2.setText("");
+				            textPassword3.setText("");
+				            
+				            if(userLog.userLogin != null) {       		
+				            	tabbedPane.removeAll();
+				            	tabbedPane.repaint();
+				            	tabbedPane.revalidate();
+				            	
+				            	panelMain.add(lblNewLabel_1);
+
+								
+				            }else {
+				            	tabbedPane.setEnabledAt(1, false);
+				            	tabbedPane.setEnabledAt(0, true);
+				            	tabbedPane.setSelectedIndex(0);
+				            }
+			     
+						}else {
+							JOptionPane.showMessageDialog(null,"Error votre password n'est pas été modifiée correctement...","Password",JOptionPane.ERROR_MESSAGE);
+						}
+				
+						
+					}
+					
+					
+					
+
+					
+				}
+				
+				
+	
+				
+	
+				
+			}
+		});
 		JButton btnNouveau = new JButton("Nouveau");
 		btnNouveau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -283,6 +423,8 @@ public class VueUser extends JPanel {
 	                tabbedPane.setSelectedIndex(1);
 	                action="Modifier";
 	                btnSauvegarder.setText("Modifier");
+	        		panel_2.setVisible(false);
+	                
 				}
 			}
 		});
@@ -326,6 +468,14 @@ public class VueUser extends JPanel {
 								if(userD.activer(userNew)) {
 									JOptionPane.showMessageDialog(null,"Le "+nomModel+" est maintenant actif","Statut",JOptionPane.INFORMATION_MESSAGE);
 									table.setModel(userM.lister(textField.getText()));	
+									table.getColumnModel().getColumn(4).setMaxWidth(0);
+									table.getColumnModel().getColumn(4).setMinWidth(0);
+									table.getTableHeader().getColumnModel().getColumn(4).setMaxWidth(0);
+									table.getTableHeader().getColumnModel().getColumn(4).setMinWidth(0);
+									table.getColumnModel().getColumn(5).setMaxWidth(0);
+									table.getColumnModel().getColumn(5).setMinWidth(0);
+									table.getTableHeader().getColumnModel().getColumn(5).setMaxWidth(0);
+									table.getTableHeader().getColumnModel().getColumn(5).setMinWidth(0);
 								}
 						}
 				}
@@ -363,6 +513,14 @@ public class VueUser extends JPanel {
 								if(userD.desactiver(userNew)) {
 									JOptionPane.showMessageDialog(null,"Le "+nomModel+" est maintenant inactif","Statut",JOptionPane.INFORMATION_MESSAGE);
 									table.setModel(userM.lister(textField.getText()));	
+									table.getColumnModel().getColumn(4).setMaxWidth(0);
+									table.getColumnModel().getColumn(4).setMinWidth(0);
+									table.getTableHeader().getColumnModel().getColumn(4).setMaxWidth(0);
+									table.getTableHeader().getColumnModel().getColumn(4).setMinWidth(0);
+									table.getColumnModel().getColumn(5).setMaxWidth(0);
+									table.getColumnModel().getColumn(5).setMinWidth(0);
+									table.getTableHeader().getColumnModel().getColumn(5).setMaxWidth(0);
+									table.getTableHeader().getColumnModel().getColumn(5).setMinWidth(0);
 								}
 						}
 				}
@@ -375,6 +533,66 @@ public class VueUser extends JPanel {
 		panelListe.add(lblAffichage);
 		
 		JButton btnNewButton = new JButton("Changer Password");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/*
+				 * Changemen de Password
+				 * 
+				 * */
+				if(table.getSelectedColumnCount()==0) {
+					JOptionPane.showMessageDialog(null,"Merci de selectionner un "+nomModel+" dans le tableau","Statut",JOptionPane.WARNING_MESSAGE);
+				}else {
+
+					textId.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
+					textNom.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
+					textPrenom.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 2)));
+					textEmail.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 3)));
+					ancienMail= String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
+					textUrl.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 4)));
+					//Chargement de Role 
+					Role SelectedRole = new Role(Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 5))), String.valueOf(table.getValueAt(table.getSelectedRow(), 6)));
+				    System.out.println(SelectedRole.getId()+" "+SelectedRole.getNom());
+					
+					ArrayList<Role> items = new ArrayList<>();
+					items = roleD.selectRoles();
+					System.err.println(items.size());
+					
+					//Pour recuperer le index de tableau pour afficher le nom de Role que appartient au user
+					int cont = 0;
+					for (Role Itemrole : items) {
+						if(Itemrole.getNom().equalsIgnoreCase(SelectedRole.getNom())) {
+							break;
+						}
+						cont++;
+					}
+				    //cmbRoles.setSelectedItem(SelectedRole);
+				    cmbRoles.setSelectedIndex(cont);
+				    
+				   
+				    //=================================================================================
+					textId.setEditable(false);
+					textNom.setEditable(false);
+					textPrenom.setEditable(false);
+					textEmail.setEditable(false);
+				    btnAnnuler.setEnabled(false);
+					btnSauvegarder.setEnabled(false);
+					cmbRoles.setEnabled(false);
+					tabbedPane.setEnabledAt(1, true);
+	                tabbedPane.setEnabledAt(0, false);
+	                tabbedPane.setSelectedIndex(1);
+	                action="Modifier";
+	                btnSauvegarder.setText("Modifier");
+	                panel_2.setVisible(true);
+	            	textPassword3.setVisible(true);
+	            	lblPassword3.setVisible(true);
+	            	lblPassword1.setText("Entrez votre password : (*)");
+	                lblPassword2.setText("Entrez votre nouvelle password : (*)");
+	                
+				}
+				
+				
+			}
+		});
 		btnNewButton.setBounds(833, 33, 207, 23);
 		panelListe.add(btnNewButton);
 		
@@ -382,17 +600,13 @@ public class VueUser extends JPanel {
 		tabbedPane.addTab("Gestion", null, panelGestion, null);
 		panelGestion.setLayout(null);
 		
-//		tabbedPane.setEnabledAt(1, false);
-//        tabbedPane.setEnabledAt(0, true);
-//        tabbedPane.setSelectedIndex(0);
+		tabbedPane.setEnabledAt(1, false);
+        tabbedPane.setEnabledAt(0, true);
+        tabbedPane.setSelectedIndex(0);
 		
 		JLabel lblNom = new JLabel("Nom : (*)");
 		lblNom.setBounds(10, 11, 70, 21);
 		panelGestion.add(lblNom);
-		
-		JLabel lblDescription = new JLabel("Description :");
-		lblDescription.setBounds(646, 187, 70, 21);
-		panelGestion.add(lblDescription);
 		
 		textNom = new JTextField();
 		textNom.setBounds(115, 12, 210, 20);
@@ -405,16 +619,14 @@ public class VueUser extends JPanel {
 		panelGestion.add(textId);
 		textId.setVisible(false);
 		
-		textDescription.setBounds(864, 233, 210, 65);
-		panelGestion.add(textDescription);
 		
 		JLabel lblNewLabel_2 = new JLabel("(*) Champs obligatoires");
-		lblNewLabel_2.setBounds(10, 388, 142, 21);
+		lblNewLabel_2.setBounds(10, 247, 142, 21);
 		panelGestion.add(lblNewLabel_2);
 		/*
 		 * Annulation et retour a la page accueil role
 		 */
-		JButton btnAnnuler = new JButton("Annuler");
+
 		btnAnnuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tabbedPane.setEnabledAt(1, false);
@@ -431,10 +643,10 @@ public class VueUser extends JPanel {
         		table.getTableHeader().getColumnModel().getColumn(5).setMinWidth(0);
 			}
 		});
-		btnAnnuler.setBounds(93, 431, 106, 23);	
+		btnAnnuler.setBounds(70, 328, 106, 23);	
 		panelGestion.add(btnAnnuler);
 		
-		btnSauvegarder.setBounds(271, 432, 108, 23);
+		btnSauvegarder.setBounds(213, 328, 108, 23);
 		panelGestion.add(btnSauvegarder);
 		
 		JLabel lblNewLabel = new JLabel("40 caractères maximum");
@@ -442,9 +654,9 @@ public class VueUser extends JPanel {
 		lblNewLabel.setBounds(115, 31, 119, 18);
 		panelGestion.add(lblNewLabel);
 		
-		JLabel lblCaratresMaximum = new JLabel("100 caractères maximum");
+		JLabel lblCaratresMaximum = new JLabel("Email unique");
 		lblCaratresMaximum.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblCaratresMaximum.setBounds(751, 248, 119, 18);
+		lblCaratresMaximum.setBounds(115, 207, 119, 18);
 		panelGestion.add(lblCaratresMaximum);
 		
 		JLabel lblPrenom = new JLabel("Prenom :");
@@ -456,10 +668,10 @@ public class VueUser extends JPanel {
 		textPrenom.setBounds(115, 59, 210, 20);
 		panelGestion.add(textPrenom);
 		
-		JLabel lblNewLabel_1 = new JLabel("40 caractères maximum");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblNewLabel_1.setBounds(115, 78, 119, 18);
-		panelGestion.add(lblNewLabel_1);
+		JLabel lblNewLabelchar = new JLabel("40 caractères maximum");
+		lblNewLabelchar.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblNewLabelchar.setBounds(115, 78, 119, 18);
+		panelGestion.add(lblNewLabelchar);
 		
 		JLabel lblEmail = new JLabel("Email : (*)");
 		lblEmail.setBounds(10, 187, 70, 21);
@@ -483,36 +695,113 @@ public class VueUser extends JPanel {
 		textUrl = new JTextField();
 		textUrl.setColumns(10);
 		textUrl.setBounds(932, 42, 142, 20);
+		textUrl.setVisible(false);
 		panelGestion.add(textUrl);
 		
-		JPanel panel_2 = new JPanel();
+
 		panel_2.setBorder(new TitledBorder(null, "Password", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_2.setBounds(369, 14, 401, 160);
+		panel_2.setBounds(392, 64, 524, 193);
 		panelGestion.add(panel_2);
 		panel_2.setLayout(null);
 		
-		JLabel lblPassword = new JLabel("Password : (*)");
-		lblPassword.setBounds(89, 27, 97, 21);
-		panel_2.add(lblPassword);
+		
+		lblPassword1.setBounds(124, 27, 166, 21);
+		panel_2.add(lblPassword1);
 		textPassword1 = new JPasswordField();
-		textPassword1.setBounds(196, 27, 176, 20);
+		textPassword1.setBounds(281, 27, 176, 20);
 		panel_2.add(textPassword1);
+	
 		
 		textPassword2 = new JPasswordField();
-		textPassword2.setBounds(196, 66, 176, 20);
+		textPassword2.setBounds(281, 66, 176, 20);
 		panel_2.add(textPassword2);
 		
-		JLabel lblRcrivezVotrePassword = new JLabel("Réécrivez votre Password : (*)");
-		lblRcrivezVotrePassword.setBounds(10, 69, 176, 21);
-		panel_2.add(lblRcrivezVotrePassword);
 		
-		btnModifierPass.setBounds(137, 115, 91, 23);
+		lblPassword2.setBounds(45, 66, 245, 21);
+		panel_2.add(lblPassword2);
+		
+		
+		btnModifierPass.setBounds(199, 159, 91, 23);
 		panel_2.add(btnModifierPass);
 		
+		textPassword3 = new JPasswordField();
+		textPassword3.setBounds(281, 110, 176, 20);
+		panel_2.add(textPassword3);
+		textPassword3.setVisible(false);
+		
+		
+		
+		lblPassword3.setBounds(45, 110, 245, 21);
+		panel_2.add(lblPassword3);
+		lblPassword3.setVisible(false);
 
 		
+		
 		this.oculter();
+		
+		// Pour faire le order by de tableau Asc Desc
+		TableRowSorter order = new TableRowSorter(table.getModel());
+		table.setRowSorter(order);
 
+	if(optionM == 2) {
+		//=====Changement de fenêtre pour changer le password================================
+		tabbedPane.setSelectedIndex(1);
+		tabbedPane.setEnabledAt(1, true);
+	    tabbedPane.setEnabledAt(0, false);
+	    //=====Chargement de donnes de utilisateur actuelle=================================
+	    
+	    //======================================
+		textId.setEditable(false);
+		textNom.setEditable(false);
+		textPrenom.setEditable(false);
+		textEmail.setEditable(false);
+	    btnAnnuler.setEnabled(false);
+		btnSauvegarder.setEnabled(false);
+		cmbRoles.setEnabled(false);
+		tabbedPane.setEnabledAt(1, true);
+        tabbedPane.setEnabledAt(0, false);
+        tabbedPane.setSelectedIndex(1);
+        action="Modifier";
+        btnSauvegarder.setText("Modifier");
+        panel_2.setVisible(true);
+    	textPassword3.setVisible(true);
+    	lblPassword3.setVisible(true);
+    	lblPassword1.setText("Entrez votre password : (*)");
+        lblPassword2.setText("Entrez votre nouvelle password : (*)");
+	    
+        textId.setText(String.valueOf(userLog.userLogin.getId()));
+		textNom.setText(String.valueOf(userLog.userLogin.getNom()));
+		textPrenom.setText(String.valueOf(userLog.userLogin.getPrenom()));
+		textEmail.setText(String.valueOf(userLog.userLogin.getEmail()));
+		ancienMail= userLog.userLogin.getEmail();
+		textUrl.setText(String.valueOf(userLog.userLogin.getUrl()));
+		//Chargement de Role 
+		Role SelectedRole = new Role(userLog.userLogin.getId_role().getId(), userLog.userLogin.getId_role().getNom());
+	    System.out.println(SelectedRole.getId()+" "+SelectedRole.getNom());
+		
+		ArrayList<Role> items = new ArrayList<>();
+		items = roleD.selectRoles();
+		System.err.println(items.size());
+		
+		//Pour recuperer le index de tableau pour afficher le nom de Role que appartient au user
+		int cont = 0;
+		for (Role Itemrole : items) {
+			if(Itemrole.getNom().equalsIgnoreCase(SelectedRole.getNom())) {
+				break;
+			}
+			cont++;
+		}
+	    //cmbRoles.setSelectedItem(SelectedRole);
+	    cmbRoles.setSelectedIndex(cont);
+	    //=================================================================================
+	    
+
+	}else {
+		tabbedPane.setEnabledAt(1, false);
+        tabbedPane.setEnabledAt(0, true);
+        tabbedPane.setSelectedIndex(0);
+	}
+		
 	}
 	
 	public void oculter() {
@@ -520,7 +809,6 @@ public class VueUser extends JPanel {
 		table.getColumnModel().getColumn(4).setMinWidth(0);
 		table.getTableHeader().getColumnModel().getColumn(4).setMaxWidth(0);
 		table.getTableHeader().getColumnModel().getColumn(4).setMinWidth(0);
-		
 		table.getColumnModel().getColumn(5).setMaxWidth(0);
 		table.getColumnModel().getColumn(5).setMinWidth(0);
 		table.getTableHeader().getColumnModel().getColumn(5).setMaxWidth(0);
