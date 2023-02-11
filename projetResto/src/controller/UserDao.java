@@ -253,7 +253,8 @@ public class UserDao implements IDao<User>{
 	
 	//Login
 	public boolean loginPass(String email, String pass) {
-		User user = null;
+		User user = new User();
+		user = null;
 		try {
 			
 			sql = conn.prepareStatement("SELECT user.id as 'IDUSER', user.nom as 'NOMUSER', user.prenom as 'PRENOMUSER', user.email as 'USEREMAIL', user.url as 'URL', role.id, role.nom, etablissement.nom as 'NOMET'  "
@@ -264,14 +265,20 @@ public class UserDao implements IDao<User>{
 			sql.setString(2, pass);
 			System.out.println(sql);
 			rs=sql.executeQuery();
+			
 			while (rs.next()) {
 				Role role = new Role(rs.getInt("id"), rs.getString("nom"));
-				user = new User(rs.getInt("IDUSER"), role, rs.getString("NOMUSER"), rs.getString("PRENOMUSER"), rs.getString("USEREMAIL"), rs.getString("URL"));
+				user.userLogin.setId(rs.getInt("IDUSER"));
+				user.userLogin.setNom(rs.getString("NOMUSER"));
+				user.userLogin.setPrenom(rs.getString("PRENOMUSER"));
+				user.userLogin.setEmail(rs.getString("USEREMAIL"));
+				user.userLogin.setUrl(rs.getString("URL"));
+				user.userLogin.setId_role(role);
 				user.nomEtablissement = rs.getString("NOMET");
+				
+				return true;
 			}
-			if(user== null) {
-				return true;			
-			}
+	
 			
 
 			} catch (Exception e) {

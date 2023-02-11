@@ -69,6 +69,9 @@ public class VueUser extends JPanel {
 	private JPasswordField textPassword3;
 	/**
 	 * Create the panel.
+	 * @optionM 
+	 * 1-Pour administrer les utilisateurs
+	 * 2-Pour changer le mot de pass de utilisateur
 	 */
 	public VueUser(int optionM) {
 		
@@ -368,6 +371,40 @@ public class VueUser extends JPanel {
 				
 			}
 		});
+		JButton btnAnullerPass = new JButton("Anuller");
+		btnAnullerPass.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textId.setEditable(true);
+				textNom.setEditable(true);
+				textPrenom.setEditable(true);
+				textEmail.setEditable(true);
+			    btnAnnuler.setEnabled(true);
+				btnSauvegarder.setEnabled(true);
+				cmbRoles.setEnabled(true);
+                panel_2.setVisible(false);
+            	textPassword3.setVisible(false);
+            	lblPassword3.setVisible(false);
+				lblPassword1.setText("Password : (*)");
+				lblPassword2.setText("Réécrivez votre Password : (*)");
+		        textPassword1.setText("");
+	            textPassword2.setText("");
+	            textPassword3.setText("");
+	            
+	            if(optionM == 2) {  
+	            	
+	            	tabbedPane.removeAll();
+	            	tabbedPane.repaint();
+	            	tabbedPane.revalidate();
+	            	panelMain.add(lblNewLabel_1);
+
+					
+	            }else {
+	            	tabbedPane.setEnabledAt(1, false);
+	            	tabbedPane.setEnabledAt(0, true);
+	            	tabbedPane.setSelectedIndex(0);
+	            }
+			}
+		});
 		JButton btnNouveau = new JButton("Nouveau");
 		btnNouveau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -377,6 +414,7 @@ public class VueUser extends JPanel {
                 action="Sauvegarder";
                 btnSauvegarder.setText("Sauvegarder");
                 btnModifierPass.setVisible(false);
+                btnAnullerPass.setVisible(false);
 			}
 		});
 		btnNouveau.setBounds(601, 33, 106, 23);
@@ -700,7 +738,7 @@ public class VueUser extends JPanel {
 		
 
 		panel_2.setBorder(new TitledBorder(null, "Password", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_2.setBounds(392, 64, 524, 193);
+		panel_2.setBounds(392, 64, 524, 204);
 		panelGestion.add(panel_2);
 		panel_2.setLayout(null);
 		
@@ -721,7 +759,7 @@ public class VueUser extends JPanel {
 		panel_2.add(lblPassword2);
 		
 		
-		btnModifierPass.setBounds(199, 159, 91, 23);
+		btnModifierPass.setBounds(292, 159, 91, 23);
 		panel_2.add(btnModifierPass);
 		
 		textPassword3 = new JPasswordField();
@@ -733,6 +771,10 @@ public class VueUser extends JPanel {
 		
 		lblPassword3.setBounds(45, 110, 245, 21);
 		panel_2.add(lblPassword3);
+		
+	
+		btnAnullerPass.setBounds(149, 159, 91, 23);
+		panel_2.add(btnAnullerPass);
 		lblPassword3.setVisible(false);
 
 		
