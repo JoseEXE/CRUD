@@ -154,14 +154,7 @@ public class VueUser extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				table.setModel(userM.lister(textField.getText()));
 				lblAffichage.setText("Affichage de "+ userM.totalM +" registres sur un total de "+ userD.total()+" registres");
-				table.getColumnModel().getColumn(4).setMaxWidth(0);
-				table.getColumnModel().getColumn(4).setMinWidth(0);
-				table.getTableHeader().getColumnModel().getColumn(4).setMaxWidth(0);
-				table.getTableHeader().getColumnModel().getColumn(4).setMinWidth(0);		
-				table.getColumnModel().getColumn(5).setMaxWidth(0);
-				table.getColumnModel().getColumn(5).setMinWidth(0);
-				table.getTableHeader().getColumnModel().getColumn(5).setMaxWidth(0);
-				table.getTableHeader().getColumnModel().getColumn(5).setMinWidth(0);
+				oculter();
 				// Pour faire le order by de tableau Asc Desc
 				TableRowSorter order = new TableRowSorter(table.getModel());
 				table.setRowSorter(order);
@@ -192,15 +185,7 @@ public class VueUser extends JPanel {
 								 tabbedPane.setEnabledAt(1, false);
 					             tabbedPane.setEnabledAt(0, true);
 					             tabbedPane.setSelectedIndex(0);
-					             table.setModel(userM.lister(textField.getText()));
-								 table.getColumnModel().getColumn(4).setMaxWidth(0);
-								 table.getColumnModel().getColumn(4).setMinWidth(0);
-								 table.getTableHeader().getColumnModel().getColumn(4).setMaxWidth(0);
-								 table.getTableHeader().getColumnModel().getColumn(4).setMinWidth(0);		
-								 table.getColumnModel().getColumn(5).setMaxWidth(0);
-								 table.getColumnModel().getColumn(5).setMinWidth(0);
-								 table.getTableHeader().getColumnModel().getColumn(5).setMaxWidth(0);
-								 table.getTableHeader().getColumnModel().getColumn(5).setMinWidth(0);				
+					             oculter();			
 					             
 							 }else {
 								 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
@@ -217,15 +202,7 @@ public class VueUser extends JPanel {
 									 tabbedPane.setEnabledAt(1, false);
 					                 tabbedPane.setEnabledAt(0, true);
 					                 tabbedPane.setSelectedIndex(0);
-					                 table.setModel(userM.lister(textField.getText()));
-					 				 table.getColumnModel().getColumn(4).setMaxWidth(0);
-									 table.getColumnModel().getColumn(4).setMinWidth(0);
-									 table.getTableHeader().getColumnModel().getColumn(4).setMaxWidth(0);
-									 table.getTableHeader().getColumnModel().getColumn(4).setMinWidth(0);		
-									 table.getColumnModel().getColumn(5).setMaxWidth(0);
-									 table.getColumnModel().getColumn(5).setMinWidth(0);
-									 table.getTableHeader().getColumnModel().getColumn(5).setMaxWidth(0);
-									 table.getTableHeader().getColumnModel().getColumn(5).setMinWidth(0);
+					                 oculter();
 								 }else {
 									 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
 								 }//fin du update
@@ -257,15 +234,7 @@ public class VueUser extends JPanel {
 								 tabbedPane.setEnabledAt(1, false);
 					             tabbedPane.setEnabledAt(0, true);
 					             tabbedPane.setSelectedIndex(0);
-					             table.setModel(userM.lister(textField.getText()));
-					     		table.getColumnModel().getColumn(4).setMaxWidth(0);
-					    		table.getColumnModel().getColumn(4).setMinWidth(0);
-					    		table.getTableHeader().getColumnModel().getColumn(4).setMaxWidth(0);
-					    		table.getTableHeader().getColumnModel().getColumn(4).setMinWidth(0);
-					    		table.getColumnModel().getColumn(5).setMaxWidth(0);
-					    		table.getColumnModel().getColumn(5).setMinWidth(0);
-					    		table.getTableHeader().getColumnModel().getColumn(5).setMaxWidth(0);
-					    		table.getTableHeader().getColumnModel().getColumn(5).setMinWidth(0);
+					             oculter();
 					             
 
 							 }else {
@@ -505,15 +474,7 @@ public class VueUser extends JPanel {
 							User userNew =new User(Integer.parseInt(id), (Role) userD.findRolUser(Integer.parseInt(id)), nom, prenom, email, url, stat);
 								if(userD.activer(userNew)) {
 									JOptionPane.showMessageDialog(null,"Le "+nomModel+" est maintenant actif","Statut",JOptionPane.INFORMATION_MESSAGE);
-									table.setModel(userM.lister(textField.getText()));	
-									table.getColumnModel().getColumn(4).setMaxWidth(0);
-									table.getColumnModel().getColumn(4).setMinWidth(0);
-									table.getTableHeader().getColumnModel().getColumn(4).setMaxWidth(0);
-									table.getTableHeader().getColumnModel().getColumn(4).setMinWidth(0);
-									table.getColumnModel().getColumn(5).setMaxWidth(0);
-									table.getColumnModel().getColumn(5).setMinWidth(0);
-									table.getTableHeader().getColumnModel().getColumn(5).setMaxWidth(0);
-									table.getTableHeader().getColumnModel().getColumn(5).setMinWidth(0);
+									oculter();
 								}
 						}
 				}
@@ -550,15 +511,7 @@ public class VueUser extends JPanel {
 								User userNew =new User(Integer.parseInt(id), (Role) userD.findRolUser(Integer.parseInt(id)), nom, prenom, email, url, stat);
 								if(userD.desactiver(userNew)) {
 									JOptionPane.showMessageDialog(null,"Le "+nomModel+" est maintenant inactif","Statut",JOptionPane.INFORMATION_MESSAGE);
-									table.setModel(userM.lister(textField.getText()));	
-									table.getColumnModel().getColumn(4).setMaxWidth(0);
-									table.getColumnModel().getColumn(4).setMinWidth(0);
-									table.getTableHeader().getColumnModel().getColumn(4).setMaxWidth(0);
-									table.getTableHeader().getColumnModel().getColumn(4).setMinWidth(0);
-									table.getColumnModel().getColumn(5).setMaxWidth(0);
-									table.getColumnModel().getColumn(5).setMinWidth(0);
-									table.getTableHeader().getColumnModel().getColumn(5).setMaxWidth(0);
-									table.getTableHeader().getColumnModel().getColumn(5).setMinWidth(0);
+									oculter();
 								}
 						}
 				}
@@ -670,15 +623,7 @@ public class VueUser extends JPanel {
 				tabbedPane.setEnabledAt(1, false);
                 tabbedPane.setEnabledAt(0, true);
                 tabbedPane.setSelectedIndex(0);
-                table.setModel(userM.lister(textField.getText()));
-        		table.getColumnModel().getColumn(4).setMaxWidth(0);
-        		table.getColumnModel().getColumn(4).setMinWidth(0);
-        		table.getTableHeader().getColumnModel().getColumn(4).setMaxWidth(0);
-        		table.getTableHeader().getColumnModel().getColumn(4).setMinWidth(0);
-        		table.getColumnModel().getColumn(5).setMaxWidth(0);
-        		table.getColumnModel().getColumn(5).setMinWidth(0);
-        		table.getTableHeader().getColumnModel().getColumn(5).setMaxWidth(0);
-        		table.getTableHeader().getColumnModel().getColumn(5).setMinWidth(0);
+                oculter();
 			}
 		});
 		btnAnnuler.setBounds(70, 328, 106, 23);	
@@ -847,6 +792,7 @@ public class VueUser extends JPanel {
 	}
 	
 	public void oculter() {
+        table.setModel(userM.lister(textField.getText()));
 		table.getColumnModel().getColumn(4).setMaxWidth(0);
 		table.getColumnModel().getColumn(4).setMinWidth(0);
 		table.getTableHeader().getColumnModel().getColumn(4).setMaxWidth(0);
