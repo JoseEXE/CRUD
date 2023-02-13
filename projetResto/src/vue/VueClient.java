@@ -1,6 +1,8 @@
 package vue;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -13,29 +15,30 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableRowSorter;
 
-import controller.RoleDao;
-import metier.RoleMetier;
-import model.Role;
+import controller.ClientDao;
+import metier.ClientMetier;
+import model.Client;
+import javax.swing.border.EtchedBorder;
+import java.awt.Color;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JTextArea;
 
-public class VueRole extends JPanel {
+
+@SuppressWarnings("serial")
+public class VueClient extends JPanel {
 	private JTextField textField;
 	private JTable table;
 	/*
 	 * instanciation Class roleMetier
 	 */
-	RoleMetier roleM =new RoleMetier();
+	ClientMetier clientM =new ClientMetier();
 	/*
 	 * instanciation Class roleDao
 	 */
-	RoleDao roleD = new RoleDao();
+	ClientDao clientD=new ClientDao();
 	/*
 	 * creation variable string role pour les differents messages d'affichage fenetre role
 	 */
-	String nomModel = "rôle";
+	String nomModel = "Client";
 	/*
 	 * creation variable pour les 2 actions create et update
 	 */
@@ -47,11 +50,15 @@ public class VueRole extends JPanel {
 	
 	private JTextField textNom;
 	private JTextField textId;
+	private JTextField textPrenom;
+	private JTextField textTel;
+	
+	
 	/**
 	 * Create the panel.
 	 */
 	@SuppressWarnings("unchecked")
-	public VueRole() {
+	public VueClient() {
 		setBounds(0, 0, 1136, 565);
 		setLayout(null);
 		
@@ -61,7 +68,7 @@ public class VueRole extends JPanel {
 		panel.setLayout(null);
 		
 		JPanel panelMain = new JPanel();
-		panelMain.setBorder(new TitledBorder(null, "R\u00F4les", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelMain.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Clients", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelMain.setBounds(0, 10, 1136, 555);
 		panel.add(panelMain);
 		panelMain.setLayout(null);
@@ -93,16 +100,15 @@ public class VueRole extends JPanel {
 		 */
 		
 		table = new JTable();
-		table.setModel(roleM.lister(""));
-		JLabel lblAffichage = new JLabel("Affichage de "+roleM.totalM +" registres sur un total de "+ roleD.total()+" registres");
+		table.setModel(clientM.lister(""));
+		JLabel lblAffichage = new JLabel("Affichage de "+clientM.totalM +" registres sur un total de "+ clientD.total()+" registres");
 		JButton btnChercher = new JButton("Chercher");
-		JTextArea textDescription = new JTextArea();
 		btnChercher.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				table.setModel(roleM.lister(textField.getText()));
+				table.setModel(clientM.lister(textField.getText()));
 				TableRowSorter order = new TableRowSorter(table.getModel());
 				table.setRowSorter(order);
-				lblAffichage.setText("Affichage de "+roleM.totalM +" registres sur un total de "+ roleD.total()+" registres");
+				lblAffichage.setText("Affichage de "+clientM.totalM +" registres sur un total de "+ clientD.total()+" registres");
 			}
 		});
 		btnChercher.setBounds(518, 34, 106, 23);
@@ -115,31 +121,31 @@ public class VueRole extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				 if(action.equalsIgnoreCase("modifier")){
 					 
-					 if(textNom.getText().equalsIgnoreCase("") 	|| textNom.getText().length() >40  || textDescription.getText().length()>100) {
+					 if(textNom.getText().equalsIgnoreCase("") 	|| textNom.getText().length() >40  || textPrenom.getText().length()>100) {
 						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Modification", JOptionPane.ERROR_MESSAGE);
 					 }else {
 						 if(ancienNom.equalsIgnoreCase(textNom.getText())) {
-							 Role newRole =new Role(Integer.parseInt(textId.getText()),textNom.getText(),textDescription.getText());
-							 if(roleD.update(newRole)) {
-								 JOptionPane.showMessageDialog(null,"Le rôle "+newRole.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
+							 Client newClient =new Client(Integer.parseInt(textId.getText()),textNom.getText(),textPrenom.getText(),textTel.getText());
+							 if(clientD.update(newClient)) {
+								 JOptionPane.showMessageDialog(null,"Le rôle "+newClient.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
 								 tabbedPane.setEnabledAt(1, false);
 					             tabbedPane.setEnabledAt(0, true);
 					             tabbedPane.setSelectedIndex(0);
-					             table.setModel(roleM.lister(textField.getText()));
+					             table.setModel(clientM.lister(textField.getText()));
 							 }else {
 								 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
 							 }
 						 }else {
 						 
-							 if(!roleD.isExist(textNom.getText())) {
-								 Role newRole =new Role(Integer.parseInt(textId.getText()),textNom.getText(),textDescription.getText());
+							 if(!clientD.isExist(textTel.getText())) {
+								 Client newClient =new Client(Integer.parseInt(textId.getText()),textNom.getText(),textPrenom.getText(),textTel.getText());
 								
-								 if(roleD.update(newRole)) {
-									 JOptionPane.showMessageDialog(null,"Le rôle "+newRole.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
+								 if(clientD.update(newClient)) {
+									 JOptionPane.showMessageDialog(null,"Le rôle "+newClient.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
 									 tabbedPane.setEnabledAt(1, false);
 					                 tabbedPane.setEnabledAt(0, true);
 					                 tabbedPane.setSelectedIndex(0);
-					                 table.setModel(roleM.lister(textField.getText()));
+					                 table.setModel(clientM.lister(textField.getText()));
 								 }else {
 									 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
 								 }//fin du update
@@ -149,17 +155,17 @@ public class VueRole extends JPanel {
 						 }//fin if ancienNom egual new nom
 					 }
 				 }else if(action.equalsIgnoreCase("Sauvegarder")){
-					 if(textNom.getText().equalsIgnoreCase("")	|| textNom.getText().length() >40  || textDescription.getText().length()>100) {
+					 if(textNom.getText().equalsIgnoreCase("")	|| textNom.getText().length() >40  || textPrenom.getText().length()>100) {
 						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Création", JOptionPane.ERROR_MESSAGE);
 					 }else {
-						 if(!roleD.isExist(textNom.getText())) {
-							 Role newRole =new Role(textNom.getText(),textDescription.getText());
-							 if(roleD.create(newRole)) {
-								 JOptionPane.showMessageDialog(null,"Le role "+newRole.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
+						 if(!clientD.isExist(textTel.getText())) {
+							 Client newClient =new Client(textNom.getText(),textPrenom.getText(),textTel.getText());
+							 if(clientD.create(newClient)) {
+								 JOptionPane.showMessageDialog(null,"Le client "+newClient.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
 								 tabbedPane.setEnabledAt(1, false);
 					             tabbedPane.setEnabledAt(0, true);
 					             tabbedPane.setSelectedIndex(0);
-					             table.setModel(roleM.lister(textField.getText()));
+					             table.setModel(clientM.lister(textField.getText()));
 							 }else {
 								 JOptionPane.showMessageDialog(null,"Impossible de créer le "+nomModel, "Création", JOptionPane.ERROR_MESSAGE);
 							 }
@@ -199,7 +205,7 @@ public class VueRole extends JPanel {
 					textId.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
 					textNom.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
 					ancienNom= String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
-					textDescription.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 2)));
+					textPrenom.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 2)));
 					tabbedPane.setEnabledAt(1, true);
 	                tabbedPane.setEnabledAt(0, false);
 	                tabbedPane.setSelectedIndex(1);
@@ -235,15 +241,16 @@ public class VueRole extends JPanel {
 					 */
 					String id = String.valueOf(table.getValueAt(table.getSelectedRow(), 0));
 					String nom = String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
-					String desc = String.valueOf(table.getValueAt(table.getSelectedRow(), 2));
-					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
+					String prenom = String.valueOf(table.getValueAt(table.getSelectedRow(), 2));
+					String tel = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
+					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 4));
 						if(stat.equalsIgnoreCase("active")) {
 							JOptionPane.showMessageDialog(null,"Le "+nomModel+" est déjà actif","Statut",JOptionPane.WARNING_MESSAGE);
 						}else {
-							Role newRole =new Role(Integer.parseInt(id), nom, desc, stat);
-								if(roleD.activer(newRole)) {
+							Client newClient =new Client(Integer.parseInt(id), nom, prenom,tel, stat);
+								if(clientD.activer(newClient)) {
 									JOptionPane.showMessageDialog(null,"Le "+nomModel+" est maintenant actif","Statut",JOptionPane.INFORMATION_MESSAGE);
-									table.setModel(roleM.lister(textField.getText()));	
+									table.setModel(clientM.lister(textField.getText()));	
 								}
 						}
 				}
@@ -265,16 +272,17 @@ public class VueRole extends JPanel {
 					 */
 					String id = String.valueOf(table.getValueAt(table.getSelectedRow(), 0));
 					String nom = String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
-					String desc = String.valueOf(table.getValueAt(table.getSelectedRow(), 2));
-					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
+					String prenom = String.valueOf(table.getValueAt(table.getSelectedRow(), 2));
+					String tel = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
+					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 4));
 						if(stat.equalsIgnoreCase("inactif")) {
 							JOptionPane.showMessageDialog(null,"Le "+nomModel+" est déjà inactif","Statut",JOptionPane.WARNING_MESSAGE);
 							
 						}else {
-								Role roleNew =new Role(Integer.parseInt(id), nom, desc, stat);
-								if(roleD.desactiver(roleNew)) {
+								Client newClient =new Client(Integer.parseInt(id), nom, prenom,tel, stat);
+								if(clientD.desactiver(newClient)) {
 									JOptionPane.showMessageDialog(null,"Le "+nomModel+" est maintenant inactif","Statut",JOptionPane.INFORMATION_MESSAGE);
-									table.setModel(roleM.lister(textField.getText()));	
+									table.setModel(clientM.lister(textField.getText()));	
 								}
 						}
 				}
@@ -298,7 +306,7 @@ public class VueRole extends JPanel {
 		lblNom.setBounds(10, 76, 70, 21);
 		panelGestion.add(lblNom);
 		
-		JLabel lblDescription = new JLabel("Description :");
+		JLabel lblDescription = new JLabel("Prénom :");
 		lblDescription.setBounds(10, 137, 70, 21);
 		panelGestion.add(lblDescription);
 		
@@ -313,9 +321,6 @@ public class VueRole extends JPanel {
 		panelGestion.add(textId);
 		textId.setVisible(false);
 		
-		textDescription.setBounds(115, 135, 210, 133);
-		panelGestion.add(textDescription);
-		
 		JLabel lblNewLabel_2 = new JLabel("(*) Champs obligatoires");
 		lblNewLabel_2.setBounds(10, 304, 142, 21);
 		panelGestion.add(lblNewLabel_2);
@@ -328,7 +333,7 @@ public class VueRole extends JPanel {
 				tabbedPane.setEnabledAt(1, false);
                 tabbedPane.setEnabledAt(0, true);
                 tabbedPane.setSelectedIndex(0);
-                table.setModel(roleM.lister(textField.getText()));
+                table.setModel(clientM.lister(textField.getText()));
 			}
 		});
 		btnAnnuler.setBounds(92, 388, 106, 23);	
@@ -342,10 +347,29 @@ public class VueRole extends JPanel {
 		lblNewLabel.setBounds(115, 96, 119, 18);
 		panelGestion.add(lblNewLabel);
 		
-		JLabel lblCaratresMaximum = new JLabel("100 caractères maximum");
-		lblCaratresMaximum.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblCaratresMaximum.setBounds(115, 266, 119, 18);
-		panelGestion.add(lblCaratresMaximum);
+		textPrenom = new JTextField();
+		textPrenom.setColumns(10);
+		textPrenom.setBounds(115, 138, 210, 20);
+		panelGestion.add(textPrenom);
+		
+		JLabel lblTlphone = new JLabel("Téléphone:");
+		lblTlphone.setBounds(10, 198, 70, 21);
+		panelGestion.add(lblTlphone);
+		
+		textTel = new JTextField();
+		textTel.setColumns(10);
+		textTel.setBounds(115, 199, 210, 20);
+		panelGestion.add(textTel);
+		
+		JLabel lblNewLabel_1 = new JLabel("40 caractères maximum");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblNewLabel_1.setBounds(115, 158, 119, 18);
+		panelGestion.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_1_1 = new JLabel("10 chiffres maximum");
+		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblNewLabel_1_1.setBounds(115, 217, 119, 18);
+		panelGestion.add(lblNewLabel_1_1);
 		/*
 		 * Tri asc desc pour le tabeau produit
 		 */
@@ -353,4 +377,6 @@ public class VueRole extends JPanel {
 		TableRowSorter order = new TableRowSorter(table.getModel());
 		table.setRowSorter(order);
 	}
+	
+
 }

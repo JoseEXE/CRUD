@@ -3,6 +3,7 @@ package controller;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import connetion.ConnectionSql;
@@ -59,6 +60,22 @@ public class Cat_produitDao implements IDao<Cat_produit>{
 	public Object findById(int id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public Cat_produit findByName(String nom) {
+		Cat_produit catProd=null;
+		try {
+			sql=conn.prepareStatement("SELECT * FROM cat_produit WHERE nom=?");
+			sql.setString(1, nom);
+			rs=sql.executeQuery();
+			while (rs.next()) {
+			catProd= new Cat_produit(rs.getInt("id"),rs.getString("nom"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return catProd;
 	}
 
 	@Override

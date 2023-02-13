@@ -3,9 +3,7 @@ package controller;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-
 import connetion.ConnectionSql;
 import model.Role;
 
@@ -46,7 +44,6 @@ public class RoleDao implements IDao<Role>{
 		try {
 		sql = conn.prepareStatement("SELECT * FROM role WHERE nom LIKE ?");
 		sql.setString(1, "%"+txt+"%");
-		System.out.println(sql);
 		rs=sql.executeQuery();
 		
 		while (rs.next()) {
@@ -63,7 +60,7 @@ public class RoleDao implements IDao<Role>{
 	@Override
 	public Object findById(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 /*
  * méthode update du CRUD
@@ -99,7 +96,7 @@ public class RoleDao implements IDao<Role>{
 	@Override
 	public Boolean activer(Role role) {
 		try {
-			sql = conn.prepareStatement("UPDATE role SET statut = 'Active' WHERE id=?");
+			sql = conn.prepareStatement("UPDATE role SET statut = 'Actif' WHERE id=?");
 			sql.setInt(1,role.getId() );
 			if(sql.executeUpdate()>0) {
 				return true;
@@ -118,7 +115,7 @@ public class RoleDao implements IDao<Role>{
 	@Override
 	public Boolean desactiver(Role role) {
 		try {
-			sql = conn.prepareStatement("UPDATE role SET statut = 'Inactive' WHERE id=?");
+			sql = conn.prepareStatement("UPDATE role SET statut = 'Inactif' WHERE id=?");
 			sql.setInt(1,role.getId() );
 			if(sql.executeUpdate()>0) {
 				return true;

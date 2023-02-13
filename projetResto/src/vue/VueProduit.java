@@ -1,6 +1,9 @@
 package vue;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -9,33 +12,37 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableRowSorter;
 
-import controller.RoleDao;
-import metier.RoleMetier;
-import model.Role;
+import controller.Cat_produitDao;
+import controller.ProduitDao;
+import metier.ProduitMetier;
+import model.Cat_produit;
+import model.Produit;
+import model.User;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JTextArea;
-
-public class VueRole extends JPanel {
+@SuppressWarnings("serial")
+public class VueProduit extends JPanel {
 	private JTextField textField;
 	private JTable table;
 	/*
 	 * instanciation Class roleMetier
 	 */
-	RoleMetier roleM =new RoleMetier();
+	ProduitMetier prodM=new ProduitMetier();
 	/*
 	 * instanciation Class roleDao
 	 */
-	RoleDao roleD = new RoleDao();
+	ProduitDao prodD=new ProduitDao();
 	/*
 	 * creation variable string role pour les differents messages d'affichage fenetre role
 	 */
-	String nomModel = "rôle";
+	String nomModel = "Produit";
 	/*
 	 * creation variable pour les 2 actions create et update
 	 */
@@ -44,14 +51,18 @@ public class VueRole extends JPanel {
 	 * creation variable pour recupere ancien nom lors de la modification de registre
 	 */
 	String ancienNom="";
-	
+	Cat_produitDao cat_produitDao = new Cat_produitDao();
+	User currentUser =new User(1,"Moris","Ambroise");
 	private JTextField textNom;
 	private JTextField textId;
+	private JTextField textCode;
+	private JTextField textPrix;
+
 	/**
 	 * Create the panel.
 	 */
-	@SuppressWarnings("unchecked")
-	public VueRole() {
+	@SuppressWarnings({ "unchecked", "rawtypes"})
+	public VueProduit() {
 		setBounds(0, 0, 1136, 565);
 		setLayout(null);
 		
@@ -61,14 +72,15 @@ public class VueRole extends JPanel {
 		panel.setLayout(null);
 		
 		JPanel panelMain = new JPanel();
-		panelMain.setBorder(new TitledBorder(null, "R\u00F4les", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelMain.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255),
+				new Color(160, 160, 160)), "Produits", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelMain.setBounds(0, 10, 1136, 555);
 		panel.add(panelMain);
 		panelMain.setLayout(null);
+		
 		/*
 		 * creation double intercalaires
 		 */
-		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(10, 31, 1116, 514);
 		panelMain.add(tabbedPane);
@@ -84,28 +96,42 @@ public class VueRole extends JPanel {
 		
 		
 		textField = new JTextField();
-		textField.setBounds(194, 35, 237, 19);
+		textField.setBounds(142, 35, 237, 19);
 		panelListe.add(textField);
 		textField.setColumns(10);
 		
 		/*
 		 * Creation table liste Role
 		 */
-		
 		table = new JTable();
-		table.setModel(roleM.lister(""));
-		JLabel lblAffichage = new JLabel("Affichage de "+roleM.totalM +" registres sur un total de "+ roleD.total()+" registres");
+		table.setModel(prodM.lister("",""));
+		
+		/*
+		 * Les  3 combobox 
+		 */
+        JComboBox comboBoxCat = new JComboBox();
+		comboBoxCat.setModel(new DefaultComboBoxModel(new String[] {"Plat", "Menu", "Boisson ", "Dessert"}));
+		comboBoxCat.setBounds(472, 213, 82, 20);
+		JComboBox comboBoxType = new JComboBox();
+		comboBoxType.setModel(new DefaultComboBoxModel(new String[] {"Chaud", "Froid"}));
+		comboBoxType.setBounds(470, 137, 82, 20);
+		JComboBox comboBoxTri = new JComboBox();
+		comboBoxTri.setBounds(639, 35, 80, 19);
+		panelListe.add(comboBoxTri);
+        
+		JLabel lblAffichage = new JLabel("Affichage de "+prodM.totalM +" registres sur un total de "+ prodD.total()+" registres");
 		JButton btnChercher = new JButton("Chercher");
 		JTextArea textDescription = new JTextArea();
 		btnChercher.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				table.setModel(roleM.lister(textField.getText()));
+				String tri = String.valueOf(comboBoxTri.getSelectedItem());
+				table.setModel(prodM.lister(textField.getText(),tri));
 				TableRowSorter order = new TableRowSorter(table.getModel());
 				table.setRowSorter(order);
-				lblAffichage.setText("Affichage de "+roleM.totalM +" registres sur un total de "+ roleD.total()+" registres");
+				lblAffichage.setText("Affichage de "+prodM.totalM +" registres sur un total de "+ prodD.total()+" registres");
 			}
 		});
-		btnChercher.setBounds(518, 34, 106, 23);
+		btnChercher.setBounds(405, 33, 106, 23);
 		panelListe.add(btnChercher);
 		/*
 		 * conditions pour les create et update, en fonction de la variable Action initialisée plus haut
@@ -113,33 +139,42 @@ public class VueRole extends JPanel {
 		JButton btnSauvegarder = new JButton("Sauvegarder");
 		btnSauvegarder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				/*  Variable contenant la combobox type de plat 
+				 * 	Method pour retourner l'objet cat_produit en fonction pendant l'instanciation de Poduit		
+				 */
+				String typePlatcat= String.valueOf(comboBoxType.getSelectedItem());
+				Cat_produit Cat_produit = cat_produitDao.findByName(String.valueOf(comboBoxCat.getSelectedItem()));
 				 if(action.equalsIgnoreCase("modifier")){
 					 
-					 if(textNom.getText().equalsIgnoreCase("") 	|| textNom.getText().length() >40  || textDescription.getText().length()>100) {
+					 if(textNom.getText().equalsIgnoreCase("") || textCode.getText().equalsIgnoreCase("") || textPrix.getText().equalsIgnoreCase("")
+							 || textNom.getText().length() >40  || textDescription.getText().length()>100) {
 						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Modification", JOptionPane.ERROR_MESSAGE);
 					 }else {
 						 if(ancienNom.equalsIgnoreCase(textNom.getText())) {
-							 Role newRole =new Role(Integer.parseInt(textId.getText()),textNom.getText(),textDescription.getText());
-							 if(roleD.update(newRole)) {
-								 JOptionPane.showMessageDialog(null,"Le rôle "+newRole.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
+							 Produit newProd =new Produit(Integer.parseInt(textId.getText()),Cat_produit,currentUser,textCode.getText(),textNom.getText(),
+									 typePlatcat,textDescription.getText(),(Double.parseDouble(textPrix.getText())));
+							 if(prodD.update(newProd)) {
+								 JOptionPane.showMessageDialog(null,"Le rôle "+newProd.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
 								 tabbedPane.setEnabledAt(1, false);
 					             tabbedPane.setEnabledAt(0, true);
 					             tabbedPane.setSelectedIndex(0);
-					             table.setModel(roleM.lister(textField.getText()));
+					             String tri = String.valueOf(comboBoxTri.getSelectedItem());
+					             table.setModel(prodM.lister(textField.getText(),tri));
 							 }else {
 								 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
 							 }
 						 }else {
 						 
-							 if(!roleD.isExist(textNom.getText())) {
-								 Role newRole =new Role(Integer.parseInt(textId.getText()),textNom.getText(),textDescription.getText());
-								
-								 if(roleD.update(newRole)) {
-									 JOptionPane.showMessageDialog(null,"Le rôle "+newRole.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
+							 if(!prodD.isExist(textNom.getText())) {
+								 Produit newProd =new Produit(Integer.parseInt(textId.getText()),Cat_produit,currentUser,textCode.getText(),textNom.getText(),
+										 typePlatcat,textDescription.getText(),(Double.parseDouble(textPrix.getText())));
+								 if(prodD.update(newProd)) {
+									 JOptionPane.showMessageDialog(null,"Le produit "+newProd.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
 									 tabbedPane.setEnabledAt(1, false);
 					                 tabbedPane.setEnabledAt(0, true);
 					                 tabbedPane.setSelectedIndex(0);
-					                 table.setModel(roleM.lister(textField.getText()));
+					                 String tri = String.valueOf(comboBoxTri.getSelectedItem());
+					                 table.setModel(prodM.lister(textField.getText(),tri));
 								 }else {
 									 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
 								 }//fin du update
@@ -149,17 +184,20 @@ public class VueRole extends JPanel {
 						 }//fin if ancienNom egual new nom
 					 }
 				 }else if(action.equalsIgnoreCase("Sauvegarder")){
-					 if(textNom.getText().equalsIgnoreCase("")	|| textNom.getText().length() >40  || textDescription.getText().length()>100) {
+					 if(textNom.getText().equalsIgnoreCase("")|| textCode.getText().equalsIgnoreCase("") || textPrix.getText().equalsIgnoreCase("")
+							 || textNom.getText().length() >40  || textDescription.getText().length()>100) {
 						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Création", JOptionPane.ERROR_MESSAGE);
 					 }else {
-						 if(!roleD.isExist(textNom.getText())) {
-							 Role newRole =new Role(textNom.getText(),textDescription.getText());
-							 if(roleD.create(newRole)) {
-								 JOptionPane.showMessageDialog(null,"Le role "+newRole.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
+						 if(!prodD.isExist(textNom.getText())) {
+							 Produit newProd =new Produit(Cat_produit,currentUser,textCode.getText(),textNom.getText(),
+									 typePlatcat,textDescription.getText(),(Double.parseDouble(textPrix.getText())));
+							 if(prodD.create(newProd)) {
+								 JOptionPane.showMessageDialog(null,"Le produit "+newProd.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
 								 tabbedPane.setEnabledAt(1, false);
 					             tabbedPane.setEnabledAt(0, true);
 					             tabbedPane.setSelectedIndex(0);
-					             table.setModel(roleM.lister(textField.getText()));
+					             String tri = String.valueOf(comboBoxTri.getSelectedItem());
+					             table.setModel(prodM.lister(textField.getText(),tri));
 							 }else {
 								 JOptionPane.showMessageDialog(null,"Impossible de créer le "+nomModel, "Création", JOptionPane.ERROR_MESSAGE);
 							 }
@@ -182,9 +220,10 @@ public class VueRole extends JPanel {
                 tabbedPane.setSelectedIndex(1);
                 action="Sauvegarder";
                 btnSauvegarder.setText("Sauvegarder");
+                System.out.println(comboBoxCat.getSelectedItem());
 			}
 		});
-		btnNouveau.setBounds(653, 34, 106, 23);
+		btnNouveau.setBounds(729, 33, 106, 23);
 		panelListe.add(btnNouveau);
 		/*
 		 * passage vers la page modification de role 
@@ -198,7 +237,11 @@ public class VueRole extends JPanel {
 					
 					textId.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
 					textNom.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
+					textPrix.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 7)));
+					textCode.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 3)));
 					ancienNom= String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
+					comboBoxCat.setSelectedItem(table.getValueAt(table.getSelectedRow(), 4));
+					comboBoxType.setSelectedItem(table.getValueAt(table.getSelectedRow(), 5));
 					textDescription.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 2)));
 					tabbedPane.setEnabledAt(1, true);
 	                tabbedPane.setEnabledAt(0, false);
@@ -208,7 +251,7 @@ public class VueRole extends JPanel {
 				}
 			}
 		});
-		btnModifier.setBounds(786, 34, 106, 23);
+		btnModifier.setBounds(845, 33, 106, 23);
 		panelListe.add(btnModifier);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -234,16 +277,15 @@ public class VueRole extends JPanel {
 					 * recupération des données selectionnées avant instanciation
 					 */
 					String id = String.valueOf(table.getValueAt(table.getSelectedRow(), 0));
-					String nom = String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
-					String desc = String.valueOf(table.getValueAt(table.getSelectedRow(), 2));
 					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
 						if(stat.equalsIgnoreCase("active")) {
 							JOptionPane.showMessageDialog(null,"Le "+nomModel+" est déjà actif","Statut",JOptionPane.WARNING_MESSAGE);
 						}else {
-							Role newRole =new Role(Integer.parseInt(id), nom, desc, stat);
-								if(roleD.activer(newRole)) {
+							Produit newProd =new Produit(Integer.parseInt(id), currentUser);
+								if(prodD.activer(newProd)) {
 									JOptionPane.showMessageDialog(null,"Le "+nomModel+" est maintenant actif","Statut",JOptionPane.INFORMATION_MESSAGE);
-									table.setModel(roleM.lister(textField.getText()));	
+									String tri = String.valueOf(comboBoxTri.getSelectedItem());
+									table.setModel(prodM.lister(textField.getText(),tri));	
 								}
 						}
 				}
@@ -264,17 +306,16 @@ public class VueRole extends JPanel {
 					 * recupération des données selectionnées avant instanciation
 					 */
 					String id = String.valueOf(table.getValueAt(table.getSelectedRow(), 0));
-					String nom = String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
-					String desc = String.valueOf(table.getValueAt(table.getSelectedRow(), 2));
 					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
 						if(stat.equalsIgnoreCase("inactif")) {
 							JOptionPane.showMessageDialog(null,"Le "+nomModel+" est déjà inactif","Statut",JOptionPane.WARNING_MESSAGE);
 							
 						}else {
-								Role roleNew =new Role(Integer.parseInt(id), nom, desc, stat);
-								if(roleD.desactiver(roleNew)) {
+							Produit newProd =new Produit(Integer.parseInt(id), currentUser);
+								if(prodD.desactiver(newProd)) {
 									JOptionPane.showMessageDialog(null,"Le "+nomModel+" est maintenant inactif","Statut",JOptionPane.INFORMATION_MESSAGE);
-									table.setModel(roleM.lister(textField.getText()));	
+									String tri = String.valueOf(comboBoxTri.getSelectedItem());
+									table.setModel(prodM.lister(textField.getText(),tri));	
 								}
 						}
 				}
@@ -285,6 +326,12 @@ public class VueRole extends JPanel {
 		
 		lblAffichage.setBounds(476, 387, 367, 19);
 		panelListe.add(lblAffichage);
+		
+		JLabel lblNewLabel_1 = new JLabel("Filtrer la recherche");
+		lblNewLabel_1.setBounds(521, 38, 108, 13);
+		panelListe.add(lblNewLabel_1);
+		
+		
 		
 		JPanel panelGestion = new JPanel();
 		tabbedPane.addTab("Gestion", null, panelGestion, null);
@@ -309,7 +356,7 @@ public class VueRole extends JPanel {
 		
 		textId = new JTextField();
 		textId.setColumns(10);
-		textId.setBounds(368, 76, 142, 20);
+		textId.setBounds(818, 77, 142, 20);
 		panelGestion.add(textId);
 		textId.setVisible(false);
 		
@@ -328,7 +375,8 @@ public class VueRole extends JPanel {
 				tabbedPane.setEnabledAt(1, false);
                 tabbedPane.setEnabledAt(0, true);
                 tabbedPane.setSelectedIndex(0);
-                table.setModel(roleM.lister(textField.getText()));
+                String tri = String.valueOf(comboBoxTri.getSelectedItem());
+                table.setModel(prodM.lister(textField.getText(),tri));
 			}
 		});
 		btnAnnuler.setBounds(92, 388, 106, 23);	
@@ -346,11 +394,39 @@ public class VueRole extends JPanel {
 		lblCaratresMaximum.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblCaratresMaximum.setBounds(115, 266, 119, 18);
 		panelGestion.add(lblCaratresMaximum);
+		
+		JLabel lblNom_1 = new JLabel("Code : (*)");
+		lblNom_1.setBounds(378, 76, 70, 21);
+		panelGestion.add(lblNom_1);
+		
+		JLabel lblNom_2 = new JLabel("Type de plat : ");
+		lblNom_2.setBounds(378, 137, 82, 21);
+		panelGestion.add(lblNom_2);
+		
+		textCode = new JTextField();
+		textCode.setColumns(10);
+		textCode.setBounds(469, 77, 210, 20);
+		panelGestion.add(textCode);
+		
+		JLabel lblNom_2_1 = new JLabel("Catégorie : ");
+		lblNom_2_1.setBounds(378, 213, 70, 21);
+		panelGestion.add(lblNom_2_1);
+		
+		JLabel lblNom_1_1 = new JLabel("Prix: (*)");
+		lblNom_1_1.setBounds(727, 137, 70, 21);
+		panelGestion.add(lblNom_1_1);
+		
+		textPrix = new JTextField();
+		textPrix.setColumns(10);
+		textPrix.setBounds(818, 138, 142, 20);
+		panelGestion.add(textPrix);
+		panelGestion.add(comboBoxCat);
+		panelGestion.add(comboBoxType);
+		
 		/*
 		 * Tri asc desc pour le tabeau produit
 		 */
-		@SuppressWarnings("rawtypes")
-		TableRowSorter order = new TableRowSorter(table.getModel());
-		table.setRowSorter(order);
+//		TableRowSorter order = new TableRowSorter(table.getModel());
+//        table.setRowSorter(order);
 	}
 }

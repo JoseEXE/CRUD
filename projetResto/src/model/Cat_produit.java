@@ -4,6 +4,7 @@ public class Cat_produit {
 	private int id;
 	private String nom;
 	private String description;
+	
 	/*
 	 * constructeur complet pour update(), delete()...
 	 */
@@ -19,6 +20,17 @@ public class Cat_produit {
 		this.nom = nom;
 		this.description = description;
 	}
+	/*
+	 * constructeur pour le ProduitDao.read()
+	 */
+	
+	public Cat_produit(int id, String nom) {
+		this.id = id;
+		this.nom = nom;
+	}
+	/*
+	 * getters/setters
+	 */
 	public int getId() {
 		return id;
 	}
@@ -36,6 +48,10 @@ public class Cat_produit {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	@Override
+	public String toString() {
+		return "Cat_produit [nom=" + nom + "]";
 	}
 	
 
