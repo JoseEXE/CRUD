@@ -124,7 +124,7 @@ public class VueFrameMain extends JFrame {
 		mntmCreerCom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				desktopPane.removeAll();
-				desktopPane.add(new VueCommande());
+				//desktopPane.add(new VueCommande());
 				desktopPane.repaint();
 				desktopPane.revalidate();
 			}

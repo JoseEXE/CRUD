@@ -32,6 +32,7 @@ import java.awt.Color;
 import javax.swing.border.EtchedBorder;
 import javax.swing.ImageIcon;
 
+@SuppressWarnings("serial")
 public class VueUser extends JPanel {
 	private JTextField textField;
 	private JTable table;
@@ -72,6 +73,7 @@ public class VueUser extends JPanel {
 	 * 1-Pour administrer les utilisateurs
 	 * 2-Pour changer le mot de pass de utilisateur
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public VueUser(int optionM) {
 		
 
@@ -765,11 +767,19 @@ public class VueUser extends JPanel {
 		Role SelectedRole = new Role(User.userLogin.getId_role().getId(), User.userLogin.getId_role().getNom());
 	    System.out.println(SelectedRole.getId()+" "+SelectedRole.getNom());
 		
+
 		ArrayList<Role> items = new ArrayList<>();
 		items = roleD.selectRoles();
 //		System.err.println(items.size());
 		
 		//Pour recuperer le index de tableau pour afficher le nom de Role que appartient au user
+
+//		ArrayList<Role> items = new ArrayList<>();
+//		items = roleD.selectRoles();
+//		System.err.println(items.size());
+//		
+//		//Pour recuperer le index de tableau pour afficher le nom de Role que appartient au user
+
 //		int cont = 0;
 //		for (Role Itemrole : items) {
 //			if(Itemrole.getNom().equalsIgnoreCase(SelectedRole.getNom())) {
