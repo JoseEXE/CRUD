@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import connetion.ConnectionSql;
 import model.Cat_produit;
-import model.Role;
 
 public class Cat_produitDao implements IDao<Cat_produit>{
 	/*

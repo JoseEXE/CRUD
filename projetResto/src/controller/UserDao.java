@@ -268,13 +268,13 @@ public class UserDao implements IDao<User>{
 			
 			while (rs.next()) {
 				Role role = new Role(rs.getInt("id"), rs.getString("nom"));
-				user.userLogin.setId(rs.getInt("IDUSER"));
-				user.userLogin.setNom(rs.getString("NOMUSER"));
-				user.userLogin.setPrenom(rs.getString("PRENOMUSER"));
-				user.userLogin.setEmail(rs.getString("USEREMAIL"));
-				user.userLogin.setUrl(rs.getString("URL"));
-				user.userLogin.setId_role(role);
-				user.nomEtablissement = rs.getString("NOMET");
+				User.userLogin.setId(rs.getInt("IDUSER"));
+				User.userLogin.setNom(rs.getString("NOMUSER"));
+				User.userLogin.setPrenom(rs.getString("PRENOMUSER"));
+				User.userLogin.setEmail(rs.getString("USEREMAIL"));
+				User.userLogin.setUrl(rs.getString("URL"));
+				User.userLogin.setId_role(role);
+				User.nomEtablissement = rs.getString("NOMET");
 				
 				return true;
 			}

@@ -148,27 +148,10 @@ public class VueClient extends JPanel {
 							 || textPrenom.getText().length()>100 || textTel.getText().length()>12){
 						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Modification", JOptionPane.ERROR_MESSAGE);
 					 }else {
-<<<<<<< HEAD
-						 if(ancienNom.equalsIgnoreCase(textNom.getText())) {
-							 Client newClient =new Client(Integer.parseInt(textId.getText()),textNom.getText(),textPrenom.getText(),textTel.getText());
-							 if(clientD.update(newClient)) {
-								 JOptionPane.showMessageDialog(null,"Le rôle "+newClient.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
-								 
-								 tabbedPane.setEnabledAt(1, false);
-					             tabbedPane.setEnabledAt(0, true);
-					             tabbedPane.setSelectedIndex(0);
-					             table.setModel(clientM.lister(textField.getText()));
-							 }else {
-								 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
-							 }
-						 }else {
-						 
-							 if(!clientD.isExist(textTel.getText())) {
-=======
+
 						 if(ancienNom.equalsIgnoreCase(textNom.getText().trim())) {
 							 String tel = textTel.getText();
 							 if(clientM.checkRegexTel(tel)) {
->>>>>>> ad5102a9c47ea2f174149149a88644f0c89326ad
 								 Client newClient =new Client(Integer.parseInt(textId.getText()),textNom.getText(),textPrenom.getText(),textTel.getText());
 								 if(clientD.update(newClient)) {
 									 JOptionPane.showMessageDialog(null,"Le rôle "+newClient.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
@@ -209,20 +192,7 @@ public class VueClient extends JPanel {
 					 if(textNom.getText().equalsIgnoreCase("")	|| textNom.getText().length() >40  || textPrenom.getText().length()>100) {
 						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Création", JOptionPane.ERROR_MESSAGE);
 					 }else {
-<<<<<<< HEAD
-						 if(!clientD.isExist(textTel.getText())) {
-							 Client newClient =new Client(textNom.getText(),textPrenom.getText(),textTel.getText());
-							 if(clientD.create(newClient)) {
-								 JOptionPane.showMessageDialog(null,"Le client "+newClient.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
-								
-								 tabbedPane.setEnabledAt(1, false);
-					             tabbedPane.setEnabledAt(0, true);
-					             tabbedPane.setSelectedIndex(0);
-					             table.setModel(clientM.lister(textField.getText()));
-							 }else {
-								 JOptionPane.showMessageDialog(null,"Impossible de créer le "+nomModel, "Création", JOptionPane.ERROR_MESSAGE);
-							 }
-=======
+
 						 String tel = textTel.getText().trim();
 						 if(clientM.checkRegexTel(tel)) {
 							 
@@ -236,7 +206,6 @@ public class VueClient extends JPanel {
 								 }else {
 									 JOptionPane.showMessageDialog(null,"Impossible de créer le "+nomModel, "Création", JOptionPane.ERROR_MESSAGE);
 								 }
->>>>>>> ad5102a9c47ea2f174149149a88644f0c89326ad
 						 }else {
 						 		JOptionPane.showMessageDialog(null,"Ce numéro n'est pas au bon format", "Modification", JOptionPane.ERROR_MESSAGE);
 						 	}//fin if regex
@@ -443,13 +412,10 @@ public class VueClient extends JPanel {
 		lblNewLabel_1.setBounds(76, 155, 119, 18);
 		panelGestion.add(lblNewLabel_1);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("10 chiffres maximum(12 si +33)");
+		JLabel lblNewLabel_1_1 = new JLabel("10 chiffres maximum");
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
-<<<<<<< HEAD
 		lblNewLabel_1_1.setBounds(76, 214, 119, 18);
-=======
-		lblNewLabel_1_1.setBounds(115, 217, 142, 18);
->>>>>>> ad5102a9c47ea2f174149149a88644f0c89326ad
+
 		panelGestion.add(lblNewLabel_1_1);
 		
 		JPanel panelAdresse = new JPanel();

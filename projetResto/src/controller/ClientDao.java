@@ -34,10 +34,6 @@ public class ClientDao implements IDao<Client>{
 		ArrayList<Client> list=new ArrayList<>();
 		try {
 			sql = conn.prepareStatement("SELECT * FROM client Where nom Like ?");
-<<<<<<< HEAD
-			sql.setString(1, "%"+txt+"%");
-			System.out.println("SQL client: "+sql);
-=======
 			sql.setString(1,"%"+txt+"%");
 			rs=sql.executeQuery();
 			while (rs.next()) {
@@ -57,7 +53,6 @@ public class ClientDao implements IDao<Client>{
 		try {
 			sql = conn.prepareStatement("SELECT * FROM client Where numtel = ?");
 			sql.setString(1, tel.trim());
->>>>>>> ad5102a9c47ea2f174149149a88644f0c89326ad
 			rs=sql.executeQuery();
 			while (rs.next()) {
 				list.add(new Client(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom"),rs.getString("numtel"),rs.getString("statut")));

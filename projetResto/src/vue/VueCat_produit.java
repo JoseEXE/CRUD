@@ -23,6 +23,7 @@ import javax.swing.border.EtchedBorder;
 import java.awt.Color;
 
 
+@SuppressWarnings("serial")
 public class VueCat_produit extends JPanel {
 	private JTextField textField;
 	private JTable table;
