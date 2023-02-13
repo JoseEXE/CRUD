@@ -20,6 +20,7 @@ import javax.swing.table.TableRowSorter;
 
 import controller.Cat_produitDao;
 import controller.ProduitDao;
+import metier.Cat_produitMetier;
 import metier.ProduitMetier;
 import model.Cat_produit;
 import model.Produit;
@@ -52,7 +53,7 @@ public class VueProduit extends JPanel {
 	 */
 	String ancienNom="";
 	Cat_produitDao cat_produitDao = new Cat_produitDao();
-	User currentUser =new User(1,"Moris","Ambroise");
+
 	private JTextField textNom;
 	private JTextField textId;
 	private JTextField textCode;
@@ -63,6 +64,7 @@ public class VueProduit extends JPanel {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes"})
 	public VueProduit() {
+		
 		setBounds(0, 0, 1136, 565);
 		setLayout(null);
 		
@@ -109,15 +111,23 @@ public class VueProduit extends JPanel {
 		/*
 		 * Les  3 combobox 
 		 */
+		DefaultComboBoxModel itemCmb = prodM.selectCmb();
         JComboBox comboBoxCat = new JComboBox();
-		comboBoxCat.setModel(new DefaultComboBoxModel(new String[] {"Plat", "Menu", "Boisson ", "Dessert"}));
+		
 		comboBoxCat.setBounds(472, 213, 82, 20);
 		JComboBox comboBoxType = new JComboBox();
 		comboBoxType.setModel(new DefaultComboBoxModel(new String[] {"Chaud", "Froid"}));
 		comboBoxType.setBounds(470, 137, 82, 20);
+		
+		
 		JComboBox comboBoxTri = new JComboBox();
-		comboBoxTri.setBounds(639, 35, 80, 19);
+		comboBoxTri.setModel(itemCmb);
+		comboBoxTri.setBounds(624, 35, 106, 19);
 		panelListe.add(comboBoxTri);
+		Cat_produit cat = new Cat_produit(0, "Tous");
+		
+		comboBoxTri.addItem(cat);
+		comboBoxTri.setSelectedItem(cat);
         
 		JLabel lblAffichage = new JLabel("Affichage de "+prodM.totalM +" registres sur un total de "+ prodD.total()+" registres");
 		JButton btnChercher = new JButton("Chercher");
@@ -125,6 +135,9 @@ public class VueProduit extends JPanel {
 		btnChercher.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String tri = String.valueOf(comboBoxTri.getSelectedItem());
+				if (tri.equalsIgnoreCase("Tous")) {
+					tri="";
+				}	
 				table.setModel(prodM.lister(textField.getText(),tri));
 				TableRowSorter order = new TableRowSorter(table.getModel());
 				table.setRowSorter(order);
@@ -151,7 +164,7 @@ public class VueProduit extends JPanel {
 						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Modification", JOptionPane.ERROR_MESSAGE);
 					 }else {
 						 if(ancienNom.equalsIgnoreCase(textNom.getText())) {
-							 Produit newProd =new Produit(Integer.parseInt(textId.getText()),Cat_produit,currentUser,textCode.getText(),textNom.getText(),
+							 Produit newProd =new Produit(Integer.parseInt(textId.getText()),Cat_produit,User.userLogin,textCode.getText(),textNom.getText(),
 									 typePlatcat,textDescription.getText(),(Double.parseDouble(textPrix.getText())));
 							 if(prodD.update(newProd)) {
 								 JOptionPane.showMessageDialog(null,"Le rôle "+newProd.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
@@ -166,7 +179,7 @@ public class VueProduit extends JPanel {
 						 }else {
 						 
 							 if(!prodD.isExist(textNom.getText())) {
-								 Produit newProd =new Produit(Integer.parseInt(textId.getText()),Cat_produit,currentUser,textCode.getText(),textNom.getText(),
+								 Produit newProd =new Produit(Integer.parseInt(textId.getText()),Cat_produit,User.userLogin,textCode.getText(),textNom.getText(),
 										 typePlatcat,textDescription.getText(),(Double.parseDouble(textPrix.getText())));
 								 if(prodD.update(newProd)) {
 									 JOptionPane.showMessageDialog(null,"Le produit "+newProd.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
@@ -189,7 +202,7 @@ public class VueProduit extends JPanel {
 						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Création", JOptionPane.ERROR_MESSAGE);
 					 }else {
 						 if(!prodD.isExist(textNom.getText())) {
-							 Produit newProd =new Produit(Cat_produit,currentUser,textCode.getText(),textNom.getText(),
+							 Produit newProd =new Produit(Cat_produit,User.userLogin,textCode.getText(),textNom.getText(),
 									 typePlatcat,textDescription.getText(),(Double.parseDouble(textPrix.getText())));
 							 if(prodD.create(newProd)) {
 								 JOptionPane.showMessageDialog(null,"Le produit "+newProd.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
@@ -223,7 +236,7 @@ public class VueProduit extends JPanel {
                 System.out.println(comboBoxCat.getSelectedItem());
 			}
 		});
-		btnNouveau.setBounds(729, 33, 106, 23);
+		btnNouveau.setBounds(740, 33, 106, 23);
 		panelListe.add(btnNouveau);
 		/*
 		 * passage vers la page modification de role 
@@ -234,13 +247,13 @@ public class VueProduit extends JPanel {
 				if(table.getSelectedColumnCount()==0) {
 					JOptionPane.showMessageDialog(null,"Merci de selectionner un "+nomModel+" dans le tableau","Statut",JOptionPane.WARNING_MESSAGE);
 				}else {
-					
+					comboBoxCat.setModel(prodM.selectCmb());
 					textId.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
 					textNom.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
-					textPrix.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 7)));
+					textPrix.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 6)));
 					textCode.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 3)));
 					ancienNom= String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
-					comboBoxCat.setSelectedItem(table.getValueAt(table.getSelectedRow(), 4));
+					comboBoxCat.getModel().setSelectedItem((Object)table.getValueAt(table.getSelectedRow(), 4));
 					comboBoxType.setSelectedItem(table.getValueAt(table.getSelectedRow(), 5));
 					textDescription.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 2)));
 					tabbedPane.setEnabledAt(1, true);
@@ -251,7 +264,7 @@ public class VueProduit extends JPanel {
 				}
 			}
 		});
-		btnModifier.setBounds(845, 33, 106, 23);
+		btnModifier.setBounds(856, 33, 106, 23);
 		panelListe.add(btnModifier);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -281,7 +294,7 @@ public class VueProduit extends JPanel {
 						if(stat.equalsIgnoreCase("active")) {
 							JOptionPane.showMessageDialog(null,"Le "+nomModel+" est déjà actif","Statut",JOptionPane.WARNING_MESSAGE);
 						}else {
-							Produit newProd =new Produit(Integer.parseInt(id), currentUser);
+							Produit newProd =new Produit(Integer.parseInt(id),User.userLogin);
 								if(prodD.activer(newProd)) {
 									JOptionPane.showMessageDialog(null,"Le "+nomModel+" est maintenant actif","Statut",JOptionPane.INFORMATION_MESSAGE);
 									String tri = String.valueOf(comboBoxTri.getSelectedItem());
@@ -311,7 +324,7 @@ public class VueProduit extends JPanel {
 							JOptionPane.showMessageDialog(null,"Le "+nomModel+" est déjà inactif","Statut",JOptionPane.WARNING_MESSAGE);
 							
 						}else {
-							Produit newProd =new Produit(Integer.parseInt(id), currentUser);
+							Produit newProd =new Produit(Integer.parseInt(id),User.userLogin);
 								if(prodD.desactiver(newProd)) {
 									JOptionPane.showMessageDialog(null,"Le "+nomModel+" est maintenant inactif","Statut",JOptionPane.INFORMATION_MESSAGE);
 									String tri = String.valueOf(comboBoxTri.getSelectedItem());
@@ -376,6 +389,9 @@ public class VueProduit extends JPanel {
                 tabbedPane.setEnabledAt(0, true);
                 tabbedPane.setSelectedIndex(0);
                 String tri = String.valueOf(comboBoxTri.getSelectedItem());
+                if (tri.equalsIgnoreCase("Tous")) {
+					tri="";
+				}	
                 table.setModel(prodM.lister(textField.getText(),tri));
 			}
 		});

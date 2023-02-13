@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import connetion.ConnectionSql;
 import model.Cat_produit;
+import model.Role;
 
 public class Cat_produitDao implements IDao<Cat_produit>{
 	/*
@@ -148,6 +149,24 @@ public class Cat_produitDao implements IDao<Cat_produit>{
 			}
 		return total;
 		
+	}
+	public ArrayList<Cat_produit> selectRoles() {
+		ArrayList<Cat_produit> list = new ArrayList<>();
+		try {
+		sql = conn.prepareStatement("SELECT id, nom FROM Cat_produit");
+		rs=sql.executeQuery();
+		
+		while (rs.next()) {
+			list.add(new Cat_produit(rs.getInt("id"),rs.getString("nom")));
+		}
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		System.out.println(list);
+		return list;
 	}
 
 }

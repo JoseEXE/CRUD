@@ -1,12 +1,19 @@
 package metier;
 
+import java.util.ArrayList;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
+import controller.Cat_produitDao;
 import controller.ProduitDao;
+import model.Cat_produit;
 import model.Produit;
+import model.Role;
 
 public class ProduitMetier {
 	ProduitDao prodD=new ProduitDao();
+	Cat_produitDao catprodD=new Cat_produitDao();
 	/*
 	 * instanciation variable qui compte le nbr total de registres dans la bdd
 	 */
@@ -36,5 +43,18 @@ public class ProduitMetier {
 		}
 		
 		return tableau;
+	}
+	@SuppressWarnings("rawtypes")
+	public DefaultComboBoxModel selectCmb(){
+		DefaultComboBoxModel itemCmb = new DefaultComboBoxModel();
+		ArrayList<Cat_produit> listRoles = new ArrayList<>();
+		listRoles = catprodD.selectRoles();
+		//itemCmb.addElement(new Cat_produit(0, "Tous"));
+		for(Cat_produit item: listRoles){
+			itemCmb.addElement(new Cat_produit(item.getId(), item.getNom()));
+		}
+
+		
+		return itemCmb;
 	}
 }

@@ -51,7 +51,7 @@ public class Cat_produit {
 	}
 	@Override
 	public String toString() {
-		return "Cat_produit [nom=" + nom + "]";
+		return  nom;
 	}
 	
 

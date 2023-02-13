@@ -45,7 +45,6 @@ public class VueUser extends JPanel {
 	UserDao userD = new UserDao();
 	RoleDao roleD = new RoleDao();
 	Role roledeTest = new Role("","");
-	User userLog = new User();
 	/*
 	 * creation variable string role pour les differents messages d'affichage fenetre role
 	 */
@@ -111,9 +110,9 @@ public class VueUser extends JPanel {
 
 		JButton btnAnnuler = new JButton("Annuler");
 		JButton btnSauvegarder = new JButton("Sauvegarder");
-		JLabel lblPassword1 = new JLabel("Password : (*)");
-		JLabel lblPassword2 = new JLabel("Réécrivez votre Password : (*)");
-		JLabel lblPassword3 = new JLabel("Réécrivez votre nouvelle Password : (*)");
+		JLabel lblPassword1 = new JLabel("Mot de passe: (*)");
+		JLabel lblPassword2 = new JLabel("Réécrivez votre Mot de passe : (*)");
+		JLabel lblPassword3 = new JLabel("Réécrivez votre nouveau mot de passe : (*)");
 		
 		JComboBox cmbRoles = new JComboBox();
 		DefaultComboBoxModel itemCmb = userM.selectCmb();
@@ -262,13 +261,13 @@ public class VueUser extends JPanel {
 			
 				
 				if(!userD.isExistPass(Integer.parseInt(textId.getText()) , String.valueOf(textPassword1.getText()))) {
-					JOptionPane.showMessageDialog(null,"Password invalid","Password",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,"mot de passe invalide","Mot de passe",JOptionPane.WARNING_MESSAGE);
 					lblPassword1.setForeground(new Color(255, 0, 0));
 					textPassword1.requestFocus();
 					return;
 				}else {
 					if(String.valueOf(textPassword2.getText()).equals("") || String.valueOf(textPassword3.getText()).equals("")) {
-						JOptionPane.showMessageDialog(null,"Le champ (*) sont obligatoires","Password",JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null,"Le champ (*) sont obligatoires","Mot de passe",JOptionPane.WARNING_MESSAGE);
 						lblPassword1.setForeground(new Color(0, 0, 0));
 						textPassword2.requestFocus();
 						lblPassword2.setForeground(new Color(255, 0, 0));
@@ -277,7 +276,7 @@ public class VueUser extends JPanel {
 						
 					}
 					if(!String.valueOf(textPassword2.getText()).equals(String.valueOf(textPassword3.getText()))) {
-						JOptionPane.showMessageDialog(null,"Les password doivent coïncider","Password",JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null,"Les mots de passe doivent coïncider","Mot de passe",JOptionPane.WARNING_MESSAGE);
 						lblPassword1.setForeground(new Color(0, 0, 0));
 						textPassword2.requestFocus();
 						lblPassword2.setForeground(new Color(255, 0, 0));
@@ -289,7 +288,7 @@ public class VueUser extends JPanel {
 						lblPassword3.setForeground(new Color(0, 0, 0));
 						
 						if(userD.changePass(Integer.parseInt(textId.getText()), String.valueOf(textPassword2.getText()))) {
-							JOptionPane.showMessageDialog(null,"Votre password vient d'avoir été modifiée correctement...","Password",JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null,"Votre mot de passe a bien été modifié...","Password",JOptionPane.INFORMATION_MESSAGE);
 							textId.setEditable(true);
 							textNom.setEditable(true);
 							textPrenom.setEditable(true);
@@ -300,13 +299,13 @@ public class VueUser extends JPanel {
 			                panel_2.setVisible(false);
 			            	textPassword3.setVisible(false);
 			            	lblPassword3.setVisible(false);
-							lblPassword1.setText("Password : (*)");
-							lblPassword2.setText("Réécrivez votre Password : (*)");
+							lblPassword1.setText("Mot de passe: (*)");
+							lblPassword2.setText("Réécrivez votre Mot de passe : (*)");
 					        textPassword1.setText("");
 				            textPassword2.setText("");
 				            textPassword3.setText("");
 				            
-				            if(userLog.userLogin != null) {       		
+				            if(User.userLogin != null) {       		
 				            	tabbedPane.removeAll();
 				            	tabbedPane.repaint();
 				            	tabbedPane.revalidate();
@@ -321,7 +320,7 @@ public class VueUser extends JPanel {
 				            }
 			     
 						}else {
-							JOptionPane.showMessageDialog(null,"Error votre password n'est pas été modifiée correctement...","Password",JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null,"Erreur, votre mot de passe n'a pas pu être modifié...","Mot de passe",JOptionPane.ERROR_MESSAGE);
 						}
 				
 						
@@ -353,8 +352,8 @@ public class VueUser extends JPanel {
                 panel_2.setVisible(false);
             	textPassword3.setVisible(false);
             	lblPassword3.setVisible(false);
-				lblPassword1.setText("Password : (*)");
-				lblPassword2.setText("Réécrivez votre Password : (*)");
+				lblPassword1.setText("Mot de passe : (*)");
+				lblPassword2.setText("Réécrivez votre mot de passe : (*)");
 		        textPassword1.setText("");
 	            textPassword2.setText("");
 	            textPassword3.setText("");
@@ -523,7 +522,7 @@ public class VueUser extends JPanel {
 		lblAffichage.setBounds(476, 387, 367, 19);
 		panelListe.add(lblAffichage);
 		
-		JButton btnNewButton = new JButton("Changer Password");
+		JButton btnNewButton = new JButton("Changer le mot de passe");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				/*
@@ -576,8 +575,8 @@ public class VueUser extends JPanel {
 	                panel_2.setVisible(true);
 	            	textPassword3.setVisible(true);
 	            	lblPassword3.setVisible(true);
-	            	lblPassword1.setText("Entrez votre password : (*)");
-	                lblPassword2.setText("Entrez votre nouvelle password : (*)");
+	            	lblPassword1.setText("Entrez votre mot de passe : (*)");
+	                lblPassword2.setText("Entrez votre nouveau mot de passe : (*)");
 	                
 				}
 				
@@ -682,7 +681,7 @@ public class VueUser extends JPanel {
 		panelGestion.add(textUrl);
 		
 
-		panel_2.setBorder(new TitledBorder(null, "Password", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_2.setBorder(new TitledBorder(null, "Mot de passe", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_2.setBounds(392, 64, 524, 204);
 		panelGestion.add(panel_2);
 		panel_2.setLayout(null);
@@ -753,33 +752,33 @@ public class VueUser extends JPanel {
         panel_2.setVisible(true);
     	textPassword3.setVisible(true);
     	lblPassword3.setVisible(true);
-    	lblPassword1.setText("Entrez votre password : (*)");
-        lblPassword2.setText("Entrez votre nouvelle password : (*)");
+    	lblPassword1.setText("Entrez votre mot de passe : (*)");
+        lblPassword2.setText("Entrez votre nouveau mot de passe : (*)");
 	    
-        textId.setText(String.valueOf(userLog.userLogin.getId()));
-		textNom.setText(String.valueOf(userLog.userLogin.getNom()));
-		textPrenom.setText(String.valueOf(userLog.userLogin.getPrenom()));
-		textEmail.setText(String.valueOf(userLog.userLogin.getEmail()));
-		ancienMail= userLog.userLogin.getEmail();
-		textUrl.setText(String.valueOf(userLog.userLogin.getUrl()));
+        textId.setText(String.valueOf(User.userLogin.getId()));
+		textNom.setText(String.valueOf(User.userLogin.getNom()));
+		textPrenom.setText(String.valueOf(User.userLogin.getPrenom()));
+		textEmail.setText(String.valueOf(User.userLogin.getEmail()));
+		ancienMail= User.userLogin.getEmail();
+		textUrl.setText(String.valueOf(User.userLogin.getUrl()));
 		//Chargement de Role 
-		Role SelectedRole = new Role(userLog.userLogin.getId_role().getId(), userLog.userLogin.getId_role().getNom());
+		Role SelectedRole = new Role(User.userLogin.getId_role().getId(), User.userLogin.getId_role().getNom());
 	    System.out.println(SelectedRole.getId()+" "+SelectedRole.getNom());
 		
-		ArrayList<Role> items = new ArrayList<>();
-		items = roleD.selectRoles();
-		System.err.println(items.size());
-		
-		//Pour recuperer le index de tableau pour afficher le nom de Role que appartient au user
-		int cont = 0;
-		for (Role Itemrole : items) {
-			if(Itemrole.getNom().equalsIgnoreCase(SelectedRole.getNom())) {
-				break;
-			}
-			cont++;
-		}
-	    //cmbRoles.setSelectedItem(SelectedRole);
-	    cmbRoles.setSelectedIndex(cont);
+//		ArrayList<Role> items = new ArrayList<>();
+//		items = roleD.selectRoles();
+//		System.err.println(items.size());
+//		
+//		//Pour recuperer le index de tableau pour afficher le nom de Role que appartient au user
+//		int cont = 0;
+//		for (Role Itemrole : items) {
+//			if(Itemrole.getNom().equalsIgnoreCase(SelectedRole.getNom())) {
+//				break;
+//			}
+//			cont++;
+//		}
+	    cmbRoles.setSelectedItem(SelectedRole);
+	    //cmbRoles.setSelectedIndex(cont);
 	    //=================================================================================
 	    
 
