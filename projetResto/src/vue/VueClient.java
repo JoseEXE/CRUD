@@ -15,11 +15,14 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableRowSorter;
 
+import controller.AdresseDao;
 import controller.ClientDao;
+import metier.AdresseMetier;
 import metier.ClientMetier;
 import model.Client;
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
+import javax.swing.JTextArea;
 
 
 
@@ -31,10 +34,12 @@ public class VueClient extends JPanel {
 	 * instanciation Class roleMetier
 	 */
 	ClientMetier clientM =new ClientMetier();
+	AdresseMetier adresseM = new AdresseMetier();
 	/*
 	 * instanciation Class roleDao
 	 */
 	ClientDao clientD=new ClientDao();
+	AdresseDao adresseDao = new AdresseDao();
 	/*
 	 * creation variable string role pour les differents messages d'affichage fenetre role
 	 */
@@ -43,6 +48,7 @@ public class VueClient extends JPanel {
 	 * creation variable pour les 2 actions create et update
 	 */
 	String action = "";
+	String actionAdresse = "";
 	/*
 	 * creation variable pour recupere ancien nom lors de la modification de registre
 	 */
@@ -52,6 +58,10 @@ public class VueClient extends JPanel {
 	private JTextField textId;
 	private JTextField textPrenom;
 	private JTextField textTel;
+	private JTextField textCodPostal;
+	private JTextField textVille;
+	private JTable tableAdresse;
+	private JTextField textIdAdresse;
 	
 	
 	/**
@@ -75,7 +85,15 @@ public class VueClient extends JPanel {
 		/*
 		 * creation double intercalaires
 		 */
-		
+		JTextArea textRue = new JTextArea();
+		textCodPostal = new JTextField();
+		JPanel panelAdresseClient = new JPanel();
+		JPanel panelListeAdresse = new JPanel();
+		textVille = new JTextField();
+		JTextArea textComplement = new JTextArea();
+		JButton btnSauvegarderAdresse = new JButton("Sauvegarder Adresse");
+		JButton btnAdresseMod = new JButton("Modifie Adresse");
+		JButton btnAdresseEffacer = new JButton("Effacer Adresse");
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(10, 31, 1116, 514);
 		panelMain.add(tabbedPane);
@@ -84,12 +102,16 @@ public class VueClient extends JPanel {
 		tabbedPane.addTab("Liste", null, panelListe, null);
 		panelListe.setLayout(null);
 		
+
+		
+		JPanel panelGestion = new JPanel();
+		tabbedPane.addTab("Gestion Client", null, panelGestion, null);
+		panelGestion.setLayout(null);
+		
 		JLabel lblRecherche = new JLabel("Rechercher par nom :");
 		lblRecherche.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblRecherche.setBounds(20, 30, 124, 27);
 		panelListe.add(lblRecherche);
-		
-		
 		textField = new JTextField();
 		textField.setBounds(194, 35, 237, 19);
 		panelListe.add(textField);
@@ -128,6 +150,7 @@ public class VueClient extends JPanel {
 							 Client newClient =new Client(Integer.parseInt(textId.getText()),textNom.getText(),textPrenom.getText(),textTel.getText());
 							 if(clientD.update(newClient)) {
 								 JOptionPane.showMessageDialog(null,"Le rôle "+newClient.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
+								 
 								 tabbedPane.setEnabledAt(1, false);
 					             tabbedPane.setEnabledAt(0, true);
 					             tabbedPane.setSelectedIndex(0);
@@ -142,6 +165,7 @@ public class VueClient extends JPanel {
 								
 								 if(clientD.update(newClient)) {
 									 JOptionPane.showMessageDialog(null,"Le rôle "+newClient.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
+									
 									 tabbedPane.setEnabledAt(1, false);
 					                 tabbedPane.setEnabledAt(0, true);
 					                 tabbedPane.setSelectedIndex(0);
@@ -162,6 +186,7 @@ public class VueClient extends JPanel {
 							 Client newClient =new Client(textNom.getText(),textPrenom.getText(),textTel.getText());
 							 if(clientD.create(newClient)) {
 								 JOptionPane.showMessageDialog(null,"Le client "+newClient.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
+								
 								 tabbedPane.setEnabledAt(1, false);
 					             tabbedPane.setEnabledAt(0, true);
 					             tabbedPane.setSelectedIndex(0);
@@ -183,11 +208,23 @@ public class VueClient extends JPanel {
 		JButton btnNouveau = new JButton("Nouveau");
 		btnNouveau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				tabbedPane.setEnabledAt(1, true);
                 tabbedPane.setEnabledAt(0, false);
                 tabbedPane.setSelectedIndex(1);
                 action="Sauvegarder";
                 btnSauvegarder.setText("Sauvegarder");
+                panelAdresseClient.setEnabled(false);
+                textRue.setEditable(false);
+                textCodPostal.setEditable(false);
+                textVille.setEditable(false);
+                textComplement.setEditable(false);
+                btnSauvegarderAdresse.setEnabled(false);
+                
+                panelListeAdresse.setEnabled(false);
+                btnAdresseMod.setEnabled(false);
+                btnAdresseEffacer.setEnabled(false);
+                
 			}
 		});
 		btnNouveau.setBounds(653, 34, 106, 23);
@@ -206,6 +243,9 @@ public class VueClient extends JPanel {
 					textNom.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
 					ancienNom= String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
 					textPrenom.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 2)));
+					textTel.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 3)));
+					tableAdresse.setModel(adresseM.lister(textId.getText()));
+				
 					tabbedPane.setEnabledAt(1, true);
 	                tabbedPane.setEnabledAt(0, false);
 	                tabbedPane.setSelectedIndex(1);
@@ -294,9 +334,8 @@ public class VueClient extends JPanel {
 		lblAffichage.setBounds(476, 387, 367, 19);
 		panelListe.add(lblAffichage);
 		
-		JPanel panelGestion = new JPanel();
-		tabbedPane.addTab("Gestion", null, panelGestion, null);
-		panelGestion.setLayout(null);
+
+		
 		
 		tabbedPane.setEnabledAt(1, false);
         tabbedPane.setEnabledAt(0, true);
@@ -311,18 +350,12 @@ public class VueClient extends JPanel {
 		panelGestion.add(lblDescription);
 		
 		textNom = new JTextField();
-		textNom.setBounds(115, 77, 210, 20);
+		textNom.setBounds(76, 76, 188, 20);
 		panelGestion.add(textNom);
 		textNom.setColumns(10);
 		
-		textId = new JTextField();
-		textId.setColumns(10);
-		textId.setBounds(368, 76, 142, 20);
-		panelGestion.add(textId);
-		textId.setVisible(false);
-		
 		JLabel lblNewLabel_2 = new JLabel("(*) Champs obligatoires");
-		lblNewLabel_2.setBounds(10, 304, 142, 21);
+		lblNewLabel_2.setBounds(23, 262, 142, 21);
 		panelGestion.add(lblNewLabel_2);
 		/*
 		 * Annulation et retour a la page accueil role
@@ -330,26 +363,27 @@ public class VueClient extends JPanel {
 		JButton btnAnnuler = new JButton("Annuler");
 		btnAnnuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				tabbedPane.setEnabledAt(1, false);
                 tabbedPane.setEnabledAt(0, true);
                 tabbedPane.setSelectedIndex(0);
                 table.setModel(clientM.lister(textField.getText()));
 			}
 		});
-		btnAnnuler.setBounds(92, 388, 106, 23);	
+		btnAnnuler.setBounds(34, 361, 106, 23);	
 		panelGestion.add(btnAnnuler);
 		
-		btnSauvegarder.setBounds(270, 389, 108, 23);
+		btnSauvegarder.setBounds(150, 361, 108, 23);
 		panelGestion.add(btnSauvegarder);
 		
 		JLabel lblNewLabel = new JLabel("40 caractères maximum");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblNewLabel.setBounds(115, 96, 119, 18);
+		lblNewLabel.setBounds(76, 93, 119, 18);
 		panelGestion.add(lblNewLabel);
 		
 		textPrenom = new JTextField();
 		textPrenom.setColumns(10);
-		textPrenom.setBounds(115, 138, 210, 20);
+		textPrenom.setBounds(76, 137, 188, 20);
 		panelGestion.add(textPrenom);
 		
 		JLabel lblTlphone = new JLabel("Téléphone:");
@@ -358,18 +392,144 @@ public class VueClient extends JPanel {
 		
 		textTel = new JTextField();
 		textTel.setColumns(10);
-		textTel.setBounds(115, 199, 210, 20);
+		textTel.setBounds(76, 198, 188, 20);
 		panelGestion.add(textTel);
 		
 		JLabel lblNewLabel_1 = new JLabel("40 caractères maximum");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblNewLabel_1.setBounds(115, 158, 119, 18);
+		lblNewLabel_1.setBounds(76, 155, 119, 18);
 		panelGestion.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("10 chiffres maximum");
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblNewLabel_1_1.setBounds(115, 217, 119, 18);
+		lblNewLabel_1_1.setBounds(76, 214, 119, 18);
 		panelGestion.add(lblNewLabel_1_1);
+		
+		JPanel panelAdresse = new JPanel();
+		panelAdresse.setBorder(new TitledBorder(null, "Adresse client", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelAdresse.setBounds(274, 21, 837, 454);
+		panelGestion.add(panelAdresse);
+		panelAdresse.setLayout(null);
+		/*
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * Nouvell Adresse
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * */
+		
+		
+		panelAdresseClient.setBorder(new TitledBorder(null, "Nouvelle Adresse", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelAdresseClient.setBounds(10, 22, 289, 421);
+		panelAdresse.add(panelAdresseClient);
+		panelAdresseClient.setLayout(null);
+		
+		
+		btnSauvegarderAdresse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+			}
+		});
+		btnSauvegarderAdresse.setBounds(54, 369, 186, 23);
+		panelAdresseClient.add(btnSauvegarderAdresse);
+		
+		
+		textComplement.setBounds(10, 272, 256, 73);
+		panelAdresseClient.add(textComplement);
+		
+		JLabel lblNewLabel_3_1_1_1 = new JLabel("Complement: (*)");
+		lblNewLabel_3_1_1_1.setBounds(10, 247, 123, 14);
+		panelAdresseClient.add(lblNewLabel_3_1_1_1);
+		
+		JLabel lblNewLabel_3_1_1 = new JLabel("Ville: (*)");
+		lblNewLabel_3_1_1.setBounds(10, 201, 85, 14);
+		panelAdresseClient.add(lblNewLabel_3_1_1);
+		
+		
+		textVille.setBounds(120, 198, 146, 20);
+		panelAdresseClient.add(textVille);
+		textVille.setColumns(10);
+		
+		
+		textCodPostal.setBounds(120, 167, 146, 20);
+		panelAdresseClient.add(textCodPostal);
+		textCodPostal.setColumns(10);
+		
+		JLabel lblNewLabel_3_1 = new JLabel("Cod Postal: (*)");
+		lblNewLabel_3_1.setBounds(10, 167, 85, 14);
+		panelAdresseClient.add(lblNewLabel_3_1);
+		
+		
+		textRue.setBounds(10, 65, 256, 73);
+		panelAdresseClient.add(textRue);
+		
+		JLabel lblNewLabel_3 = new JLabel("Rue: (*)");
+		lblNewLabel_3.setBounds(10, 40, 64, 14);
+		panelAdresseClient.add(lblNewLabel_3);
+		
+		textIdAdresse = new JTextField();
+		textIdAdresse.setBounds(160, 22, 106, 20);
+		panelAdresseClient.add(textIdAdresse);
+		textIdAdresse.setColumns(10);
+		textIdAdresse.setVisible(false);
+		
+	
+		panelListeAdresse.setBorder(new TitledBorder(null, "Liste Adresse", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelListeAdresse.setBounds(303, 22, 524, 421);
+		panelAdresse.add(panelListeAdresse);
+		panelListeAdresse.setLayout(null);
+		
+		
+		btnAdresseMod.setBounds(212, 275, 146, 23);
+		panelListeAdresse.add(btnAdresseMod);
+		
+
+		btnAdresseEffacer.setBounds(368, 275, 146, 23);
+		panelListeAdresse.add(btnAdresseEffacer);
+		
+		JScrollPane scrollPaneAdresse = new JScrollPane();
+		scrollPaneAdresse.setBounds(10, 39, 504, 210);
+		panelListeAdresse.add(scrollPaneAdresse);
+		
+		tableAdresse = new JTable();
+		scrollPaneAdresse.setViewportView(tableAdresse);
+		
+		JPanel panel_4 = new JPanel();
+		panel_4.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Client", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_4.setBounds(0, 21, 276, 454);
+		panelGestion.add(panel_4);
+		panel_4.setLayout(null);
+		
+		textId = new JTextField();
+		textId.setBounds(10, 392, 142, 20);
+		panel_4.add(textId);
+		textId.setColumns(10);
+		textId.setVisible(false);
+		btnAdresseMod.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+	
+		        actionAdresse = "Nouvelle";
+				//btnSauvegarderAdresse.setText("Modifier");
+				
+			}
+		});
+		
+		
 		/*
 		 * Tri asc desc pour le tabeau produit
 		 */
@@ -377,6 +537,4 @@ public class VueClient extends JPanel {
 		TableRowSorter order = new TableRowSorter(table.getModel());
 		table.setRowSorter(order);
 	}
-	
-
 }

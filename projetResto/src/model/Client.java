@@ -36,6 +36,12 @@ public class Client {
 		this.prenom = prenom;
 		this.numtel = numtel;
 	}
+	/*
+	 * Constructeur vide
+	 */
+	public Client() {
+
+	}
 
 	/*
 	 * Getters setters

@@ -768,18 +768,18 @@ public class VueUser extends JPanel {
 		
 		ArrayList<Role> items = new ArrayList<>();
 		items = roleD.selectRoles();
-		System.err.println(items.size());
+//		System.err.println(items.size());
 		
 		//Pour recuperer le index de tableau pour afficher le nom de Role que appartient au user
-		int cont = 0;
-		for (Role Itemrole : items) {
-			if(Itemrole.getNom().equalsIgnoreCase(SelectedRole.getNom())) {
-				break;
-			}
-			cont++;
-		}
-	    //cmbRoles.setSelectedItem(SelectedRole);
-	    cmbRoles.setSelectedIndex(cont);
+//		int cont = 0;
+//		for (Role Itemrole : items) {
+//			if(Itemrole.getNom().equalsIgnoreCase(SelectedRole.getNom())) {
+//				break;
+//			}
+//			cont++;
+//		}
+	    cmbRoles.setSelectedItem(SelectedRole);
+	    //cmbRoles.setSelectedIndex(cont);
 	    //=================================================================================
 	    
 

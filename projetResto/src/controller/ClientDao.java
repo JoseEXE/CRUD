@@ -9,7 +9,7 @@ import connetion.ConnectionSql;
 import model.Client;
 
 public class ClientDao implements IDao<Client>{
-Connection conn= ConnectionSql.myConnection();
+	Connection conn= ConnectionSql.myConnection();
 	PreparedStatement sql = null;
 	ResultSet rs = null;
 	@Override
@@ -20,6 +20,7 @@ Connection conn= ConnectionSql.myConnection();
 			sql.setString(2, client.getPrenom());
 			sql.setString(3, client.getNumtel());
 			sql.execute();
+
 			return true;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -34,6 +35,7 @@ Connection conn= ConnectionSql.myConnection();
 		try {
 			sql = conn.prepareStatement("SELECT * FROM client Where nom Like ?");
 			sql.setString(1, "%"+txt+"%");
+			System.out.println("SQL client: "+sql);
 			rs=sql.executeQuery();
 			while (rs.next()) {
 				list.add(new Client(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom"),rs.getString("numtel"),rs.getString("statut")));
