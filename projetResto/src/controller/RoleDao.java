@@ -136,7 +136,7 @@ public class RoleDao implements IDao<Role>{
 	public Boolean isExist(String txt) {
 		try {
 			sql = conn.prepareStatement("SELECT nom FROM role WHERE nom=?");
-			sql.setString(1, txt);
+			sql.setString(1, txt.trim());
 			rs=sql.executeQuery();
 			while (rs.next()) {
 				if(rs.getString("nom").equalsIgnoreCase(txt)) {

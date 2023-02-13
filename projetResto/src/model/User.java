@@ -15,7 +15,7 @@ public class User {
 	private String password;
 	private String statut;
 	
-	public static User userLogin = new User();
+	public static User userLogin = new User(1,"Ambroise","Moris");
 	public static String nomEtablissement;
 	
 	/**

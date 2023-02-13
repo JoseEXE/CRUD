@@ -34,8 +34,30 @@ public class ClientDao implements IDao<Client>{
 		ArrayList<Client> list=new ArrayList<>();
 		try {
 			sql = conn.prepareStatement("SELECT * FROM client Where nom Like ?");
+<<<<<<< HEAD
 			sql.setString(1, "%"+txt+"%");
 			System.out.println("SQL client: "+sql);
+=======
+			sql.setString(1,"%"+txt+"%");
+			rs=sql.executeQuery();
+			while (rs.next()) {
+				list.add(new Client(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom"),rs.getString("numtel"),rs.getString("statut")));
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
+	/*
+	 * methode pour trouver les client ayant le numero de tel du parametre tel
+	 */
+	public ArrayList<Client> findByNum(String tel) {
+		ArrayList<Client> list=new ArrayList<>();
+		try {
+			sql = conn.prepareStatement("SELECT * FROM client Where numtel = ?");
+			sql.setString(1, tel.trim());
+>>>>>>> ad5102a9c47ea2f174149149a88644f0c89326ad
 			rs=sql.executeQuery();
 			while (rs.next()) {
 				list.add(new Client(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom"),rs.getString("numtel"),rs.getString("statut")));
@@ -56,11 +78,11 @@ public class ClientDao implements IDao<Client>{
 	@Override
 	public Boolean update(Client client) {
 		try {
-			sql = conn.prepareStatement("UPDATE client SET nom = ?,prenom = ?, WHERE id=?");
+			sql = conn.prepareStatement("UPDATE client SET nom = ?,prenom = ?,numtel=? WHERE id=?");
 			sql.setString(1, client.getNom());
 			sql.setString(2, client.getPrenom());
 			sql.setString(3, client.getNumtel());
-			sql.setInt(3,client.getId() );
+			sql.setInt(4,client.getId() );
 			if(sql.executeUpdate()>0) {
 				return true;
 			}
@@ -114,21 +136,8 @@ public class ClientDao implements IDao<Client>{
 
 	@Override
 	public Boolean isExist(String txt) {
-		try {
-			sql = conn.prepareStatement("SELECT nom FROM client WHERE numtel=?");
-			sql.setString(1, txt);
-			rs=sql.executeQuery();
-			while (rs.next()) {
-				if(rs.getString("nom").equalsIgnoreCase(txt)) {
-					return true;
-				}
-			}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				System.out.println(e.getMessage());
-			}
-		return false;
+		return null;
+	
 	}
 
 	@Override

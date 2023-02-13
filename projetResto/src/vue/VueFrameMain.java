@@ -32,7 +32,6 @@ import java.awt.event.MouseEvent;
 public class VueFrameMain extends JFrame {
 
 	private JPanel contentPane;
-	private User userLog = new User();
 	/**
 	 * Launch the application.
 	 */
@@ -122,6 +121,14 @@ public class VueFrameMain extends JFrame {
 		 *Gestion sous-menu commandes
 		 */
 		JMenuItem mntmCreerCom = new JMenuItem("Créer Commandes");
+		mntmCreerCom.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				desktopPane.removeAll();
+				desktopPane.add(new VueCommande());
+				desktopPane.repaint();
+				desktopPane.revalidate();
+			}
+		});
 		mntmCreerCom.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
 		mnCommandes.add(mntmCreerCom);
 		/*
@@ -223,9 +230,9 @@ public class VueFrameMain extends JFrame {
 		lblNewLabel_1.setBounds(6, 19, 1122, 535);
 		desktopPane.add(lblNewLabel_1);
 		
-		if(userLog.userLogin != null) {
-			lblNomResto.setText(userLog.userLogin.nomEtablissement);
-			lblNomUtilisateur.setText("Bienvenue "+userLog.userLogin);
+		if(User.userLogin != null) {
+			lblNomResto.setText(User.userLogin.nomEtablissement);
+			lblNomUtilisateur.setText("Bienvenue "+User.userLogin);
 		}
 		//VISIBILITE DE MENU PAR ROLES
 //		if(userLog.userLogin.getId_role().getNom().equalsIgnoreCase("Administrateur")) {

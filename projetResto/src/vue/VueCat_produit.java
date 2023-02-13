@@ -100,7 +100,7 @@ public class VueCat_produit extends JPanel {
 		JTextArea textDescription = new JTextArea();
 		btnChercher.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				table.setModel(CatProdM.lister(textField.getText()));
+				table.setModel(CatProdM.lister(textField.getText().trim()));
 				lblAffichage.setText("Affichage de "+CatProdM.totalM +" registres sur un total de "+ CatProdD.total()+" registres");
 			}
 		});
@@ -117,14 +117,14 @@ public class VueCat_produit extends JPanel {
 					 if(textNom.getText().equalsIgnoreCase("") 	|| textNom.getText().length() >40  || textDescription.getText().length()>100) {
 						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Modification", JOptionPane.ERROR_MESSAGE);
 					 }else {
-						 if(ancienNom.equalsIgnoreCase(textNom.getText())) {
+						 if(ancienNom.equalsIgnoreCase(textNom.getText().trim())) {
 							 Cat_produit newCat =new Cat_produit(Integer.parseInt(textId.getText()),textNom.getText(),textDescription.getText());
 							 if(CatProdD.update(newCat)) {
 								 JOptionPane.showMessageDialog(null,"Le rôle "+newCat.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
 								 tabbedPane.setEnabledAt(1, false);
 					             tabbedPane.setEnabledAt(0, true);
 					             tabbedPane.setSelectedIndex(0);
-					             table.setModel(CatProdM.lister(textField.getText()));
+					             table.setModel(CatProdM.lister(textField.getText().trim()));
 							 }else {
 								 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
 							 }
@@ -138,7 +138,7 @@ public class VueCat_produit extends JPanel {
 									 tabbedPane.setEnabledAt(1, false);
 						             tabbedPane.setEnabledAt(0, true);
 						             tabbedPane.setSelectedIndex(0);
-						             table.setModel(CatProdM.lister(textField.getText()));
+						             table.setModel(CatProdM.lister(textField.getText().trim()));
 								 }else {
 									 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
 								 }//fin du update
@@ -151,14 +151,14 @@ public class VueCat_produit extends JPanel {
 					 if(textNom.getText().equalsIgnoreCase("")	|| textNom.getText().length() >40  || textDescription.getText().length()>100) {
 						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Création", JOptionPane.ERROR_MESSAGE);
 					 }else {
-						 if(!CatProdD.isExist(textNom.getText())) {
-							 Cat_produit newRole =new Cat_produit(textNom.getText(),textDescription.getText());
+						 if(!CatProdD.isExist(textNom.getText().trim())) {
+							 Cat_produit newRole =new Cat_produit(textNom.getText().trim(),textDescription.getText());
 							 if(CatProdD.create(newRole)) {
 								 JOptionPane.showMessageDialog(null,"Le rôle "+newRole.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
 								 tabbedPane.setEnabledAt(1, false);
 					             tabbedPane.setEnabledAt(0, true);
 					             tabbedPane.setSelectedIndex(0);
-					             table.setModel(CatProdM.lister(textField.getText()));
+					             table.setModel(CatProdM.lister(textField.getText().trim()));
 							 }else {
 								 JOptionPane.showMessageDialog(null,"Impossible de créer le "+nomModel, "Création", JOptionPane.ERROR_MESSAGE);
 							 }
@@ -260,7 +260,7 @@ public class VueCat_produit extends JPanel {
 				tabbedPane.setEnabledAt(1, false);
                 tabbedPane.setEnabledAt(0, true);
                 tabbedPane.setSelectedIndex(0);
-                table.setModel(CatProdM.lister(textField.getText()));
+                table.setModel(CatProdM.lister(textField.getText().trim()));
 			}
 		});
 		btnAnnuler.setBounds(92, 388, 106, 23);	

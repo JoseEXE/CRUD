@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : sam. 11 fév. 2023 à 15:23
+-- Généré le : lun. 13 fév. 2023 à 11:29
 -- Version du serveur : 10.4.27-MariaDB
 -- Version de PHP : 8.0.25
 
@@ -120,8 +120,15 @@ CREATE TABLE `etablissement` (
   `siret` varchar(60) DEFAULT NULL,
   `rue` varchar(100) DEFAULT NULL,
   `cod_postal` varchar(45) DEFAULT NULL,
-  `ville` varbinary(45) DEFAULT NULL
+  `ville` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Déchargement des données de la table `etablissement`
+--
+
+INSERT INTO `etablissement` (`id`, `nom`, `siret`, `rue`, `cod_postal`, `ville`) VALUES
+(1, 'ETE EDO - Paris 11E', '123456789087654', '14 RUE DE NICE', '75011', 'Paris');
 
 -- --------------------------------------------------------
 
@@ -171,7 +178,7 @@ CREATE TABLE `role` (
 
 INSERT INTO `role` (`id`, `nom`, `description`, `statut`) VALUES
 (1, 'Administrateur', 'description administration', 'Actif'),
-(2, 'vendeur', 'equipier polyvalent', 'Actif'),
+(2, 'Vendeur', 'equipier polyvalent', 'Actif'),
 (3, 'Cuisinier(e)', 'confection des plats chuds et froids', 'Actif');
 
 -- --------------------------------------------------------
@@ -196,7 +203,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `id_role`, `nom`, `prenom`, `email`, `url`, `password`, `statut`) VALUES
-(1, 1, 'Ambroise', 'Moris', '', NULL, '', 'Actif');
+(1, 1, 'Ambroise', 'Moris', 'test@test.com', 'null', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', 'Actif'),
+(2, 1, 'ADMIN', 'Manajer', 'email@email.com', '', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', 'Actif'),
+(3, 2, 'AQUINO M', 'José', 'mail@mail.com', '', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', 'Actif');
 
 -- --------------------------------------------------------
 
@@ -209,6 +218,15 @@ CREATE TABLE `user_etablis` (
   `id_etablissment` int(11) DEFAULT NULL,
   `id_user` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Déchargement des données de la table `user_etablis`
+--
+
+INSERT INTO `user_etablis` (`id`, `id_etablissment`, `id_user`) VALUES
+(3, 1, 1),
+(4, 1, 2),
+(5, 1, 3);
 
 --
 -- Index pour les tables déchargées
@@ -333,7 +351,7 @@ ALTER TABLE `detaille_commande`
 -- AUTO_INCREMENT pour la table `etablissement`
 --
 ALTER TABLE `etablissement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `produit`
@@ -351,13 +369,13 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `user_etablis`
 --
 ALTER TABLE `user_etablis`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Contraintes pour les tables déchargées
