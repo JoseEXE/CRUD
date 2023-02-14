@@ -79,6 +79,7 @@ public class VueClient extends JPanel {
 		//optionGestion = 1 -> Menu option Gestion de clients.
 		//optionGestion = 2 -> Menu option Commandes nouvelle Cliente.
 		//optionGestion = 3 -> Menu option Commandes nouvelle Adresse.
+		//optionGestion = 4 -> Menu option Commandes Modification Adresse.
 		
 		setBounds(0, 0, 1136, 565);
 		setLayout(null);
@@ -110,6 +111,10 @@ public class VueClient extends JPanel {
 		JPanel panelClient = new JPanel();
 		JButton btnAnnuler = new JButton("Annuler");
 		JButton btnSauvegarder = new JButton("Sauvegarder");
+		JButton btnContinuer = new JButton("Continuer->");
+		JButton btnReturner = new JButton("<- Returner");
+		JButton btnAnnulerAdresse = new JButton("Annuler");
+		
 		btnClientNoVisible.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 //panelClient.setEnabled(true);
@@ -202,6 +207,7 @@ public class VueClient extends JPanel {
 									 textVille.setEditable(true);
 									 textComplement.setEditable(true);
 									 btnSauvegarderAdresse.setEnabled(true);
+									 btnAnnulerAdresse.setEnabled(true);
 						             table.setModel(clientM.lister(textField.getText()));
 						             actionAdresse= "Sauvegarder";
 								}else {
@@ -245,14 +251,13 @@ public class VueClient extends JPanel {
 									 btnSauvegarder.setEnabled(false);
 									 ////
 									 //panelAdresseClient.setEnabled(false);
-									 
-
 									 textRue.setEditable(true);
 									 textRue.requestFocus();
 									 textCodPostal.setEditable(true);
 									 textVille.setEditable(true);
 									 textComplement.setEditable(true);
 									 btnSauvegarderAdresse.setEnabled(true);
+									 btnAnnulerAdresse.setEnabled(true);
 									 
 						             table.setModel(clientM.lister(textField.getText()));
 						             actionAdresse= "Sauvegarder";
@@ -289,10 +294,11 @@ public class VueClient extends JPanel {
                 textVille.setEditable(false);
                 textComplement.setEditable(false);
                 btnSauvegarderAdresse.setEnabled(false);
-                
+                textNom.requestFocus();
                 //panelListeAdresse.setEnabled(false);
                 btnAdresseMod.setEnabled(false);
                 btnAdresseEffacer.setEnabled(false);
+                btnAnnulerAdresse.setEnabled(false);
                 
 			}
 		});
@@ -409,10 +415,102 @@ public class VueClient extends JPanel {
 			tabbedPane.setEnabledAt(1, false);
 	        tabbedPane.setEnabledAt(0, true);
 	        tabbedPane.setSelectedIndex(0);
-		}else {
+	        
+	        btnReturner.setVisible(true);
+
+	        btnContinuer.setVisible(false);
+	        btnContinuer.setEnabled(false);
+	        
+		}else if(optionGestion == 2) {
 			tabbedPane.setEnabledAt(1, true);
 	        tabbedPane.setEnabledAt(0, false);
 	        tabbedPane.setSelectedIndex(1);
+	        action ="Sauvegarder";
+	        textNom.setEditable(true);
+	        textPrenom.setEditable(true);
+	        textTel.setEditable(true);
+	        
+	        textNom.requestFocus();
+            btnSauvegarder.setText("Sauvegarder");
+            //panel1
+            //panelAdresseClient.setEnabled(false);
+            textRue.setEditable(false);
+            textCodPostal.setEditable(false);
+            textVille.setEditable(false);
+            textComplement.setEditable(false);
+            btnSauvegarderAdresse.setEnabled(false);
+            //panelListeAdresse.setEnabled(false);
+            btnAdresseMod.setEnabled(false);
+            btnAdresseEffacer.setEnabled(false);
+	        btnContinuer.setVisible(true);
+	        btnContinuer.setEnabled(false);
+	        btnReturner.setVisible(false);
+		}else if(optionGestion == 3){
+			tabbedPane.setEnabledAt(1, true);
+	        tabbedPane.setEnabledAt(0, false);
+	        tabbedPane.setSelectedIndex(1);
+	        actionAdresse ="Sauvegarder";
+	        textId.setText(String.valueOf(Client.clientLast.getId()));
+	        textNom.setText(Client.clientLast.getNom());
+	        textPrenom.setText(Client.clientLast.getPrenom());
+	        textTel.setText(Client.clientLast.getNumtel());
+	        
+	        textNom.setEditable(false);
+	        textPrenom.setEditable(false);
+	        textTel.setEditable(false);
+	        
+	        textRue.setEditable(true);
+	        textRue.requestFocus();
+            textCodPostal.setEditable(true);
+            textVille.setEditable(true);
+            textComplement.setEditable(true);
+            btnSauvegarderAdresse.setEnabled(true);
+            //panelListeAdresse.setEnabled(false);
+            btnAdresseMod.setEnabled(false);
+            btnAdresseEffacer.setEnabled(false);
+	        
+	        btnContinuer.setVisible(true);
+	        btnContinuer.setEnabled(false);
+	        btnReturner.setVisible(false);
+	        tableAdresse.setModel(adresseM.lister(textId.getText()));
+	        
+		}else {
+			tabbedPane.setEnabledAt(1, true);
+	        tabbedPane.setEnabledAt(0, false);
+	        tabbedPane.setSelectedIndex(1);	
+	        actionAdresse = "Modifier";
+	        textId.setText(String.valueOf(Client.clientLast.getId()));
+	        textNom.setText(Client.clientLast.getNom());
+	        textPrenom.setText(Client.clientLast.getPrenom());
+	        textTel.setText(Client.clientLast.getNumtel());
+	        
+	        textNom.setEditable(false);
+	        textPrenom.setEditable(false);
+	        textTel.setEditable(false);
+	        
+	        textRue.setEditable(true);
+	        textRue.requestFocus();
+            textCodPostal.setEditable(true);
+            textVille.setEditable(true);
+            textComplement.setEditable(true);
+            btnSauvegarderAdresse.setEnabled(true);
+            
+            textIdAdresse.setText(String.valueOf(Adresse.adresseLast.getId()));
+            textRue.setText(Adresse.adresseLast.getRue());
+	        textRue.requestFocus();
+            textCodPostal.setText(Adresse.adresseLast.getCod_postal());
+            textVille.setText(Adresse.adresseLast.getVille());
+            textComplement.setText(Adresse.adresseLast.getComplement());
+            btnSauvegarderAdresse.setEnabled(true);
+	        
+            btnAdresseMod.setEnabled(false);
+            btnAdresseEffacer.setEnabled(false);
+            
+	        btnContinuer.setVisible(true);
+	        btnContinuer.setEnabled(false);
+	        btnReturner.setVisible(false);
+	        tableAdresse.setModel(adresseM.lister(textId.getText()));
+	        
 		}
 
 		
@@ -439,13 +537,23 @@ public class VueClient extends JPanel {
 		btnAnnuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(optionGestion == 1) {
-					tabbedPane.setEnabledAt(1, false);
-	                tabbedPane.setEnabledAt(0, true);
-	                tabbedPane.setSelectedIndex(0);
-	                table.setModel(clientM.lister(textField.getText()));
+					
+	                
+	                int dialogButton = JOptionPane.YES_NO_OPTION;
+		            JOptionPane.showConfirmDialog (null, "Voudre vous retourner a la list de clients et perdre tout ?","WARNING", dialogButton);
+		            if(dialogButton == JOptionPane.YES_OPTION) {
+		            	tabbedPane.setEnabledAt(1, false);
+		                tabbedPane.setEnabledAt(0, true);
+		                tabbedPane.setSelectedIndex(0);
+		                table.setModel(clientM.lister(textField.getText()));
+		            }
+		            if(dialogButton == JOptionPane.NO_OPTION) {
+		                  return;
+		                }
+		            
 				}else if(optionGestion == 2) {
 					panel.removeAll();
-					panel.add(new VueCommande());
+					panel.add(new VueCommande(2));
 					panel.repaint();
 					panel.revalidate();
 				}
@@ -525,28 +633,46 @@ public class VueClient extends JPanel {
 					return;
 				}
 				
-				Adresse adresse = new Adresse(Integer.parseInt(textId.getText()), textRue.getText(), textCodPostal.getText(), textVille.getText(), textComplement.getText());
-/*
- * 
- * 
- * ==============================================================================
- * 
- * */				
-				if(actionAdresse.equalsIgnoreCase("Modifier")) {
-					
+				if(actionAdresse.equalsIgnoreCase("Modifier")) {	
+					Adresse adresse = new Adresse(Integer.parseInt(textIdAdresse.getText()),Integer.parseInt(textId.getText()), textRue.getText(), textCodPostal.getText(), textVille.getText(), textComplement.getText());				
+					if(adresseD.update(adresse)) {
+						 JOptionPane.showMessageDialog(null,"L'adresse de client "+textNom.getText()+" a bien été modifié","Adresse",JOptionPane.INFORMATION_MESSAGE);
+							textRue.setText("");
+							textCodPostal.setText("");
+							textVille.setText("");
+							textComplement.setText("");
+							textIdAdresse.setText("");
+							textRue.setEditable(false);
+							textCodPostal.setEditable(false);
+							textVille.setEditable(false);
+							textComplement.setEditable(false);
+							btnSauvegarderAdresse.setEnabled(false);
+							btnAnnulerAdresse.setEnabled(false);
+							btnAdresseMod.setEnabled(true);
+				            btnAdresseEffacer.setEnabled(true);
+						    tableAdresse.setModel(adresseM.lister(textId.getText()));
+						 
+					}else {
+						 JOptionPane.showMessageDialog(null,"Impossible de modifié l'adresse de client "+textNom.getText(), "Adresse", JOptionPane.ERROR_MESSAGE);
+					}
 					
 				}else {
+					Adresse adresse = new Adresse(Integer.parseInt(textId.getText()), textRue.getText(), textCodPostal.getText(), textVille.getText(), textComplement.getText());				
 					if(adresseD.create(adresse)) {
 						 JOptionPane.showMessageDialog(null,"L'adresse de client "+textNom.getText()+" a bien été enregistré","Adresse",JOptionPane.INFORMATION_MESSAGE);
 							textRue.setText("");
 							textCodPostal.setText("");
 							textVille.setText("");
 							textComplement.setText("");
+							textIdAdresse.setText("");
 							textRue.setEditable(false);
 							textCodPostal.setEditable(false);
 							textVille.setEditable(false);
 							textComplement.setEditable(false);
 							btnSauvegarderAdresse.setEnabled(false);
+				           
+							btnAdresseMod.setEnabled(true);
+				            btnAdresseEffacer.setEnabled(true);
 						    tableAdresse.setModel(adresseM.lister(textId.getText()));
 						 
 					}else {
@@ -555,29 +681,9 @@ public class VueClient extends JPanel {
 					
 				}
 				
-					
-				//textIdAdresse.setEditable(false);
-				textRue.setEditable(false);
-				textCodPostal.setEditable(false);
-				textVille.setEditable(false);
-				textComplement.setEditable(false);
-				btnSauvegarderAdresse.setEnabled(false);
-				//panelAdresseClient.setEnabled(false);
-				textIdAdresse.setText("");
-				textRue.setText("");
-				textCodPostal.setText("");
-				textVille.setText("");
-				textComplement.setText("");
-				
-				//panelListeAdresse.setEnabled(true);
-				btnAdresseMod.setEnabled(true);
-				btnAdresseEffacer.setEnabled(true);
-				tableAdresse.setModel(adresseM.lister(textId.getText()));
-				
-				
 			}
 		});
-		btnSauvegarderAdresse.setBounds(52, 375, 186, 23);
+		btnSauvegarderAdresse.setBounds(133, 375, 146, 23);
 		panelAdresseClient.add(btnSauvegarderAdresse);
 		
 		
@@ -638,6 +744,10 @@ public class VueClient extends JPanel {
 		lblNewLabel_1_1_1_2.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblNewLabel_1_1_1_2.setBounds(147, 346, 119, 18);
 		panelAdresseClient.add(lblNewLabel_1_1_1_2);
+		
+		
+		btnAnnulerAdresse.setBounds(23, 375, 106, 23);
+		panelAdresseClient.add(btnAnnulerAdresse);
 		textIdAdresse.setVisible(false);
 		
 	
@@ -661,15 +771,19 @@ public class VueClient extends JPanel {
 		tableAdresse = new JTable();
 		scrollPaneAdresse.setViewportView(tableAdresse);
 		
-		JButton btnContinuer = new JButton("Continuer->");
+
 		btnContinuer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panel.setVisible(false);
+				//panel.setVisible(false);
 				
 			}
 		});
 		btnContinuer.setBounds(401, 387, 113, 23);
 		panelListeAdresse.add(btnContinuer);
+		
+
+		btnReturner.setBounds(401, 360, 113, 23);
+		panelListeAdresse.add(btnReturner);
 		
 		
 		panelClient.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Client", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));

@@ -232,7 +232,7 @@ public class VueFrameMain extends JFrame {
 		
 		if(User.userLogin != null) {
 			lblNomResto.setText(User.userLogin.nomEtablissement);
-			lblNomUtilisateur.setText("Bienvenue "+User.userLogin);
+			lblNomUtilisateur.setText("Bienvenue "+ User.userLogin);
 		}
 		//VISIBILITE DE MENU PAR ROLES
 //		if(userLog.userLogin.getId_role().getNom().equalsIgnoreCase("Administrateur")) {
