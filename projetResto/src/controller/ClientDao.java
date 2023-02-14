@@ -28,6 +28,20 @@ public class ClientDao implements IDao<Client>{
 		}
 		return false;
 	}
+	public int dernierIdClient() {
+		 int id = 0;
+		try {
+			sql = conn.prepareStatement("SELECT LAST_INSERT_ID() as 'ID' FROM client");
+			rs=sql.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("ID");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
+	}
 
 	@Override
 	public ArrayList<Client> read(String txt) {
@@ -79,7 +93,8 @@ public class ClientDao implements IDao<Client>{
 			sql.setString(1, client.getNom());
 			sql.setString(2, client.getPrenom());
 			sql.setString(3, client.getNumtel());
-			sql.setInt(4,client.getId() );
+			sql.setInt(4, client.getId() );
+			System.out.println("SQL client: "+ sql);
 			if(sql.executeUpdate()>0) {
 				return true;
 			}
