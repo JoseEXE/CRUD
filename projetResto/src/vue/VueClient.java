@@ -187,110 +187,82 @@ public class VueClient extends JPanel {
 		btnSauvegarder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 if(action.equalsIgnoreCase("modifier")){
-					 
+					 actionAdresse= "Modifier";
 					 if(textNom.getText().equalsIgnoreCase("") 	|| textNom.getText().length() >40  || textPrenom.getText().length()>100) {
 						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Modification", JOptionPane.ERROR_MESSAGE);
 					 }else {
-						 if(ancienNom.equalsIgnoreCase(textNom.getText())) {
 							 Client newClient =new Client(Integer.parseInt(textId.getText()),textNom.getText(),textPrenom.getText(),textTel.getText());
 							 if(clientD.update(newClient)) {
-								 JOptionPane.showMessageDialog(null,"Le client "+newClient.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
-								 
-								 //tabbedPane.setEnabledAt(1, false);
-					             //tabbedPane.setEnabledAt(0, true);
-					             //tabbedPane.setSelectedIndex(0);
-					             //table.setModel(clientM.lister(textField.getText()));
-								 btnClientNoVisible.setVisible(true);
-								 textId.setText(String.valueOf(clientD.dernierIdClient()));
-								 System.out.println("Id cree pour le client!!: "+textId.getText());
-								 textNom.setEditable(false);
-								 textPrenom.setEditable(false);
-								 textTel.setEditable(false);
-								 btnAnnuler.setEnabled(false);
-								 btnSauvegarder.setEnabled(false);
-								 
-								 
-							 }else {
-								 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
-							 }
-						 }else {
-						 
-							 if(!clientD.isExist(textTel.getText())) {
-								 Client newClient =new Client(Integer.parseInt(textId.getText()),textNom.getText(),textPrenom.getText(),textTel.getText());
-								
-								 if(clientD.update(newClient)) {
-									 JOptionPane.showMessageDialog(null,"Le client "+newClient.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
-									
-									 tabbedPane.setEnabledAt(1, false);
-					                 tabbedPane.setEnabledAt(0, true);
-					                 tabbedPane.setSelectedIndex(0);
-					                 table.setModel(clientM.lister(textField.getText()));
-								 }else {
-									 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
-								 }//fin du update
-							 }else {	 
-								 JOptionPane.showMessageDialog(null,"Ce "+nomModel+" existe déjà", "Modification", JOptionPane.ERROR_MESSAGE);
-							 }//fin if isExiste
-						 }//fin if ancienNom egual new nom
-					 }
-				 }else if(action.equalsIgnoreCase("Sauvegarder")){
-					 if(textNom.getText().equalsIgnoreCase("")	|| textNom.getText().length() >40  || textPrenom.getText().length()>100) {
-						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Création", JOptionPane.ERROR_MESSAGE);
-					 }else {
-
-
-						 String tel = textTel.getText().trim();
-						 if(clientM.checkRegexTel(tel)) {
-							 
-								 Client newClient =new Client(textNom.getText().trim(),textPrenom.getText().trim(),tel);
-								 if(clientD.create(newClient)) {
-									 JOptionPane.showMessageDialog(null,"Le client "+newClient.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
-									 tabbedPane.setEnabledAt(1, false);
-						             tabbedPane.setEnabledAt(0, true);
-						             tabbedPane.setSelectedIndex(0);
-						             table.setModel(clientM.lister(textField.getText()));
-								 }else {
-									 JOptionPane.showMessageDialog(null,"Impossible de créer le "+nomModel, "Création", JOptionPane.ERROR_MESSAGE);
-								 }
-						 }else {
-							 JOptionPane.showMessageDialog(null,"Ce "+nomModel+" existe déjà", "Création", JOptionPane.ERROR_MESSAGE);
-						 }
-
-//Le isExiste n'est pas necessaire						
-						 //if(!clientD.isExist(textTel.getText())) {
-							 Client newClient =new Client(textNom.getText(),textPrenom.getText(),textTel.getText());
-							 if(clientD.create(newClient)) {
 								 JOptionPane.showMessageDialog(null,"Le client "+newClient.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
 								
-								 //tabbedPane.setEnabledAt(1, false);
-					             //tabbedPane.setEnabledAt(0, true);
-					             //tabbedPane.setSelectedIndex(0);
-								 //panelClient.setEnabled(false);
-								 btnClientNoVisible.setVisible(true);
-								 textId.setText(String.valueOf(clientD.dernierIdClient()));
-								 System.out.println("Id cree pour le client!!: "+textId.getText());
-								 textNom.setEditable(false);
-								 textPrenom.setEditable(false);
-								 textTel.setEditable(false);
-								 btnAnnuler.setEnabled(false);
-								 btnSauvegarder.setEnabled(false);
-								 ////
-								 //panelAdresseClient.setEnabled(false);
-								 textIdAdresse.requestFocus();
-								 textIdAdresse.setEditable(true);
-								 textRue.setEditable(true);
-								 textCodPostal.setEditable(true);
-								 textVille.setEditable(true);
-								 textComplement.setEditable(true);
-								 btnSauvegarderAdresse.setEnabled(true);
-								 
-					             table.setModel(clientM.lister(textField.getText()));
+								if(textIdAdresse.getText().equals("")) {
+									 textRue.setEditable(true);
+									 textRue.requestFocus();
+									 textCodPostal.setEditable(true);
+									 textVille.setEditable(true);
+									 textComplement.setEditable(true);
+									 btnSauvegarderAdresse.setEnabled(true);
+						             table.setModel(clientM.lister(textField.getText()));
+						             actionAdresse= "Sauvegarder";
+								}else {
+									 textRue.setEditable(false);
+									 textCodPostal.setEditable(false);
+									 textVille.setEditable(false);
+									 textComplement.setEditable(false);
+									 btnSauvegarderAdresse.setEnabled(false);
+								}
+								
 							 }else {
 								 JOptionPane.showMessageDialog(null,"Impossible de créer le "+nomModel, "Création", JOptionPane.ERROR_MESSAGE);
 							 }
-						 //}else {
-						 //	 JOptionPane.showMessageDialog(null,"Ce "+nomModel+" existe déjà", "Création", JOptionPane.ERROR_MESSAGE);
-						 //}
+							 }
+					 }
+					 //Nouvelle client 
+				 else if(action.equalsIgnoreCase("Sauvegarder")){
+					 actionAdresse= "Sauvegarder";
+					 if(textNom.getText().equalsIgnoreCase("")	|| textNom.getText().length() >40  || textPrenom.getText().length()>100) {
+						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Création", JOptionPane.ERROR_MESSAGE);
+					 }else {
+						 
+						 String tel = textTel.getText().trim();
+						 if(clientM.checkRegexTel(tel)) {
+								 Client newClient =new Client(textNom.getText().trim(),textPrenom.getText().trim(),tel);
+								 if(clientD.create(newClient)) {
+									 JOptionPane.showMessageDialog(null,"Le client "+newClient.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
+									 
+									 //tabbedPane.setEnabledAt(1, false);
+						             //tabbedPane.setEnabledAt(0, true);
+						             //tabbedPane.setSelectedIndex(0);
+						             //table.setModel(clientM.lister(textField.getText()));
+						             
+									 btnClientNoVisible.setVisible(true);
+									 textId.setText(String.valueOf(clientD.dernierIdClient()));
+									 System.out.println("Id cree pour le client!!: "+textId.getText());
+									 textNom.setEditable(false);
+									 textPrenom.setEditable(false);
+									 textTel.setEditable(false);
+									 btnAnnuler.setEnabled(false);
+									 btnSauvegarder.setEnabled(false);
+									 ////
+									 //panelAdresseClient.setEnabled(false);
+									 
+
+									 textRue.setEditable(true);
+									 textRue.requestFocus();
+									 textCodPostal.setEditable(true);
+									 textVille.setEditable(true);
+									 textComplement.setEditable(true);
+									 btnSauvegarderAdresse.setEnabled(true);
+									 
+						             table.setModel(clientM.lister(textField.getText()));
+						             actionAdresse= "Sauvegarder";
+						             
+								 }else {
+									 JOptionPane.showMessageDialog(null,"Impossible de créer le "+nomModel, "Création", JOptionPane.ERROR_MESSAGE);
+								 }
+						 }
+
+
 //================================
 
 					 } //fin if name ==""
@@ -466,15 +438,18 @@ public class VueClient extends JPanel {
 		
 		btnAnnuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				if(optionGestion == 1) {
-//					tabbedPane.setEnabledAt(1, false);
-//	                tabbedPane.setEnabledAt(0, true);
-//	                tabbedPane.setSelectedIndex(0);
-//	                table.setModel(clientM.lister(textField.getText()));
-//				}else {
-//					
-//				}
-//	
+				if(optionGestion == 1) {
+					tabbedPane.setEnabledAt(1, false);
+	                tabbedPane.setEnabledAt(0, true);
+	                tabbedPane.setSelectedIndex(0);
+	                table.setModel(clientM.lister(textField.getText()));
+				}else if(optionGestion == 2) {
+					panel.removeAll();
+					panel.add(new VueCommande());
+					panel.repaint();
+					panel.revalidate();
+				}
+	
 	
 
 			
@@ -511,7 +486,7 @@ public class VueClient extends JPanel {
 		panelGestion.add(lblNewLabel_1);
 		
 		JPanel panelAdresse = new JPanel();
-		panelAdresse.setBorder(new TitledBorder(null, "Adresse client", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelAdresse.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Adresse Client", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelAdresse.setBounds(274, 21, 837, 454);
 		panelGestion.add(panelAdresse);
 		panelAdresse.setLayout(null);
