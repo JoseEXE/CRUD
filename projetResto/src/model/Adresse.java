@@ -9,6 +9,8 @@ public class Adresse {
 	private String ville;
 	private String complement;
 	
+	public static String idNewAdresse="";
+	
 	public Adresse() {
 
 	}

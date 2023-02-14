@@ -25,7 +25,7 @@ public class AdresseMetier {
 	 */
 	
 	public DefaultTableModel lister(String txt) {
-		String col[]= {"N°","Id","rue","CodPostal","Ville","Complement"};
+		String col[]= {"N°","Id","Rue","CodePostal","Ville","Complement"};
 		DefaultTableModel list = new DefaultTableModel(null,col);
 		totalM=0;
 		/*

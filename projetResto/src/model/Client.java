@@ -6,6 +6,10 @@ public class Client {
 	private String prenom;
 	private String numtel;
 	private String statut;
+	/*
+	 * variable id pour enregistrer un nouveau client
+	 */
+	public static String idNewClient="";
 	
 	/*
 	 * Constructeur complet
