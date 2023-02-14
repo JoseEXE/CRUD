@@ -28,7 +28,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JEditorPane;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
+
 
 @SuppressWarnings("serial")
 public class VueCommande extends JPanel {
@@ -101,11 +101,20 @@ public class VueCommande extends JPanel {
 		scrollPane_1.setBounds(22, 100, 393, 182);
 		panel_2.add(scrollPane_1);
 		
+		/*
+		 * bouton pour ajouter une adresse, envoi vers creer adresse (appel de la page VueClient() avec option 3, creation adresse
+		 */
 		JButton btnAddAdresse = new JButton("Ajouter");
 		btnAddAdresse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String id=String.valueOf(tableClient.getValueAt(tableClient.getSelectedRow(), 0));
+				String nom=String.valueOf(tableClient.getValueAt(tableClient.getSelectedRow(), 1));
+				String prenom=String.valueOf(tableClient.getValueAt(tableClient.getSelectedRow(), 2));
+				Client.clientLast =new Client (id,nom,prenom);
+				panel.removeAll();
 				panel.add(new VueClient(3));
-				Client.clientLast =new Client ();
+				panel.repaint();
+				panel.revalidate();
 			}
 		});
 		btnAddAdresse.setBounds(22, 367, 106, 23);
@@ -121,15 +130,56 @@ public class VueCommande extends JPanel {
 		JButton btnContinue = new JButton("Continuer ->");
 		btnContinue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tabbedPane.setEnabled(getFocusTraversalKeysEnabled());
+				tabbedPane.setEnabledAt(1, true);
+		        tabbedPane.setEnabledAt(0, false);
+		        tabbedPane.setSelectedIndex(1);
+		        tableProduit();
 			}
 		});
 		btnContinue.setBounds(309, 406, 106, 23);
 		panel_2.add(btnContinue);
+		
+		/*
+		 * bouton pour modifier une adresse, envoi vers creer/modifier adresse (appel de la page VueClient() avec option 4, modification adresse
+		 */
+		JButton btnModifAdresse = new JButton("Modifier");
+		btnModifAdresse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/*
+				 * récupération des données client pour instancicier clientLast et l'envoyer vers VueClient() option 4
+				 */
+				String idClient=String.valueOf(tableClient.getValueAt(tableClient.getSelectedRow(), 0));
+				String nom=String.valueOf(tableClient.getValueAt(tableClient.getSelectedRow(), 1));
+				String prenom=String.valueOf(tableClient.getValueAt(tableClient.getSelectedRow(), 2));
+				Client.clientLast =new Client (idClient,nom,prenom);
+				/*
+				 * récupération des données adresse du client pour instancicier adresselLast et l'envoyer vers VueClient() option 4
+				 */
+				int idAd=(int) (tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 0));
+				String rue=String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 1));
+				String codePost=String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 2));
+				String ville=String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 2));
+				String complet=String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 2));
+				Adresse.adresseLast =new Adresse (idAd,rue,codePost,ville,complet);
+				/*
+				 * appel de VueClient() option4
+				 */
+				panel.removeAll();
+				panel.add(new VueClient(4));
+				panel.repaint();
+				panel.revalidate();	
+			}
+		});
+		btnModifAdresse.setBounds(185, 406, 106, 23);
+		panel_2.add(btnModifAdresse);
+		btnModifAdresse.setVisible(false);
 		btnContinue.setVisible(false);
+	
 		
 		tableAdresse = new JTable();
 		//scrollPane_1.setViewportView(tableAdresse);
+		
+		scrollPane_1.setViewportView(tableAdresse);
 		
 		
 		tableClient = new JTable();
@@ -145,9 +195,9 @@ public class VueCommande extends JPanel {
 					public void mouseClicked(MouseEvent e) {
 						Adresse.idNewAdresse=String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(),1));
 						btnContinue.setVisible(true);
+						btnModifAdresse.setVisible(true);
 					}
 				});
-				scrollPane_1.setViewportView(tableAdresse);
 				
 				if(tableAdresse.getRowCount()==0) {
 					btnAddAdresse.setVisible(true);
@@ -169,16 +219,20 @@ public class VueCommande extends JPanel {
 		lblNoClient.setForeground(Color.red);
 		panel_1.add(lblNoClient);
 		
+		/*
+		 * bouton pour ajouter un client, envoi vers creer client (appel de la page VueClient() avec option 2, creation client et adresse
+		 */
+		
 		JButton btnAddClient = new JButton("Ajouter");
 		btnAddClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panelMain.setVisible(false);
+				panel.removeAll();
 				panel.add(new VueClient(2));
 				panel.repaint();
 				panel.revalidate();
 			}
 		});
-		btnAddClient.setBounds(20, 373, 106, 23);
+		btnAddClient.setBounds(20, 366, 106, 23);
 		panel_1.add(btnAddClient);
 		btnAddClient.setVisible(false);
 		
@@ -217,6 +271,13 @@ public class VueCommande extends JPanel {
 		panelProduits.setLayout(null);
 		
 		textCode = new JTextField();
+		textCode.setHorizontalAlignment(SwingConstants.CENTER);
+		textCode.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				tableProduit();
+			}
+		});
 		textCode.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		textCode.setBounds(145, 10, 80, 44);
 		panelProduits.add(textCode);
@@ -227,11 +288,12 @@ public class VueCommande extends JPanel {
 		panelProduits.add(scrollPane_2);
 		
 		TableProduits = new JTable();
-		TableProduits.addKeyListener(new KeyAdapter() {
+		TableProduits.addMouseListener(new MouseAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
-				TableProduits.setModel(prodM.listeProdCommande(textCode.getText().trim(),textNom.getText().trim()));
-				
+			public void mouseClicked(MouseEvent e) {
+			/*
+			 * ici selection de la ligne de détail de commandes
+			 */
 			}
 		});
 		scrollPane_2.setViewportView(TableProduits);
@@ -277,12 +339,25 @@ public class VueCommande extends JPanel {
 		panelProduits.add(lblNewLabel_3_1);
 		
 		textNom = new JTextField();
+		textNom.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				tableProduit();
+			}
+		});
 		textNom.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textNom.setColumns(10);
 		textNom.setBounds(145, 64, 170, 26);
 		panelProduits.add(textNom);
 		
 		JButton btnClear = new JButton("Vider les champs");
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textCode.setText("");
+				textNom.setText("");
+				tableProduit();
+			}
+		});
 		btnClear.setBounds(235, 28, 111, 21);
 		panelProduits.add(btnClear);
 		
@@ -309,5 +384,11 @@ public class VueCommande extends JPanel {
 	        tabbedPane.setSelectedIndex(0);
 		}
 
+	}
+	public void tableProduit() {
+		
+		  TableProduits.setModel(prodM.listeProdCommande(textCode.getText().trim(),textNom.getText().trim()));
+			TableProduits.getColumnModel().getColumn(0).setMaxWidth(20);
+			TableProduits.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(20);
 	}
 }

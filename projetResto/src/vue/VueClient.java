@@ -445,7 +445,7 @@ public class VueClient extends JPanel {
 	                table.setModel(clientM.lister(textField.getText()));
 				}else if(optionGestion == 2) {
 					panel.removeAll();
-					panel.add(new VueCommande());
+					panel.add(new VueCommande(2));
 					panel.repaint();
 					panel.revalidate();
 				}

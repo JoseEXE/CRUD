@@ -47,7 +47,7 @@ public class ProduitMetier {
 		String col[]= {"id","Nom","Description","Code","Categorie","Prix","statut"};
 		DefaultTableModel tableau=new DefaultTableModel(null,col);
 		
-		for (Produit item : prodD.filtrer(code,nom)) {
+		for (Produit item : prodD.findByCode(code,nom)) {
 			tableau.addRow(new Object[] {
 					item.getId(),
 					item.getNom(),
@@ -70,4 +70,6 @@ public class ProduitMetier {
 		}	
 		return itemCmb;
 	}
+	
+	
 }

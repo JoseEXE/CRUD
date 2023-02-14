@@ -69,13 +69,14 @@ public class ProduitDao implements IDao<Produit>{
 	 * @param code produit de la barre de recherche
 	 * @param nom produit de la barre de recherche
 	 */
-	public Object findByCode(String code,String nom) {
+	public ArrayList<Produit> findByCode(String code,String nom) {
 		ArrayList<Produit> list = new ArrayList<>();
 	try {
 		sql = conn.prepareStatement("SELECT *,p.id as idprod,ct.id as idcat,p.nom as nomprod,ct.nom as nomcat,p.description as descprod,p.statut as statprod"
-				+ " FROM produit p INNER JOIN cat_produit ct ON id_cat_produit=ct.id WHERE p.statut = 'Actif' AND code = ? AND p.nom LIKE ? ");
+				+ " FROM produit p INNER JOIN cat_produit ct ON id_cat_produit=ct.id WHERE p.statut = 'Actif' AND code LIKE ? AND p.nom LIKE ? ");
 		sql.setString(1, "%"+code+"%");
 		sql.setString(2, "%"+nom+"%");
+		System.out.println("sql dernier requete " +sql);
 		rs=sql.executeQuery();
 		while (rs.next()) {
 			
