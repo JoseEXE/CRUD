@@ -10,7 +10,7 @@ public class Adresse {
 	private String complement;
 	
 	public static String idNewAdresse="";
-	
+	public static Adresse adresseLast = new Adresse();
 	public Adresse() {
 
 	}

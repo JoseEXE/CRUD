@@ -10,6 +10,7 @@ public class Client {
 	 * variable id pour enregistrer un nouveau client
 	 */
 	public static String idNewClient="";
+	public static Client clientLast = new Client();
 	
 	
 	/*
