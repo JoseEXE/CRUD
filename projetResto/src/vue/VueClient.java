@@ -19,6 +19,7 @@ import controller.AdresseDao;
 import controller.ClientDao;
 import metier.AdresseMetier;
 import metier.ClientMetier;
+import model.Adresse;
 import model.Client;
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
@@ -26,7 +27,7 @@ import javax.swing.JTextArea;
 
 
 
-@SuppressWarnings("serial")
+
 public class VueClient extends JPanel {
 	private JTextField textField;
 	private JTable table;
@@ -62,13 +63,23 @@ public class VueClient extends JPanel {
 	private JTextField textVille;
 	private JTable tableAdresse;
 	private JTextField textIdAdresse;
+	AdresseDao adresseD = new AdresseDao();
+	/*
+	 * optionGestion = 1 -> Local de gestion Client
+	 * */
 	
+
 	
 	/**
 	 * Create the panel.
 	 */
-	@SuppressWarnings("unchecked")
-	public VueClient() {
+
+	public VueClient(int optionGestion) {
+		//
+		//optionGestion = 1 -> Menu option Gestion de clients.
+		//optionGestion = 2 -> Menu option Commandes nouvelle Cliente.
+		//optionGestion = 3 -> Menu option Commandes nouvelle Adresse.
+		
 		setBounds(0, 0, 1136, 565);
 		setLayout(null);
 		
@@ -95,6 +106,39 @@ public class VueClient extends JPanel {
 		JButton btnAdresseMod = new JButton("Modifie Adresse");
 		JButton btnAdresseEffacer = new JButton("Effacer Adresse");
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		JButton btnClientNoVisible = new JButton("Modifie");
+		JPanel panelClient = new JPanel();
+		JButton btnAnnuler = new JButton("Annuler");
+		JButton btnSauvegarder = new JButton("Sauvegarder");
+		btnClientNoVisible.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 //panelClient.setEnabled(true);
+				 btnClientNoVisible.setVisible(false);
+				 textNom.setEditable(true);
+				 textNom.requestFocus();
+				 textPrenom.setEditable(true);
+				 textTel.setEditable(true);
+				 btnAnnuler.setEnabled(true);
+				 btnSauvegarder.setEnabled(true);
+				 ////
+				 //panelAdresseClient.setEnabled(false);
+				 textIdAdresse.setEditable(false);
+				 textRue.setEditable(false);
+				 textCodPostal.setEditable(false);
+				 textVille.setEditable(false);
+				 textComplement.setEditable(false);
+				 btnSauvegarderAdresse.setEnabled(false);
+				 
+				 //panelListeAdresse.setEnabled(false);
+				 btnAdresseMod.setEnabled(false);
+				 btnAdresseEffacer.setEnabled(false);
+				 
+				 action ="modifier";
+			     btnSauvegarder.setText("Modifier");
+			}
+		});
+		
+
 		tabbedPane.setBounds(10, 31, 1116, 514);
 		panelMain.add(tabbedPane);
 		
@@ -139,7 +183,7 @@ public class VueClient extends JPanel {
 		/*
 		 * conditions pour les create et update, en fonction de la variable Action initialisée plus haut
 		 */
-		JButton btnSauvegarder = new JButton("Sauvegarder");
+
 		btnSauvegarder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 if(action.equalsIgnoreCase("modifier")){
@@ -147,16 +191,35 @@ public class VueClient extends JPanel {
 					 if(textNom.getText().equalsIgnoreCase("") 	|| textNom.getText().length() >40  || textPrenom.getText().length()>100) {
 						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Modification", JOptionPane.ERROR_MESSAGE);
 					 }else {
-
-						 if(ancienNom.equalsIgnoreCase(textNom.getText().trim())) {
-							 String tel = textTel.getText();
-							 if(clientM.checkRegexTel(tel)) {
-
-
+						 if(ancienNom.equalsIgnoreCase(textNom.getText())) {
+							 Client newClient =new Client(Integer.parseInt(textId.getText()),textNom.getText(),textPrenom.getText(),textTel.getText());
+							 if(clientD.update(newClient)) {
+								 JOptionPane.showMessageDialog(null,"Le client "+newClient.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
+								 
+								 //tabbedPane.setEnabledAt(1, false);
+					             //tabbedPane.setEnabledAt(0, true);
+					             //tabbedPane.setSelectedIndex(0);
+					             //table.setModel(clientM.lister(textField.getText()));
+								 btnClientNoVisible.setVisible(true);
+								 textId.setText(String.valueOf(clientD.dernierIdClient()));
+								 System.out.println("Id cree pour le client!!: "+textId.getText());
+								 textNom.setEditable(false);
+								 textPrenom.setEditable(false);
+								 textTel.setEditable(false);
+								 btnAnnuler.setEnabled(false);
+								 btnSauvegarder.setEnabled(false);
+								 
+								 
+							 }else {
+								 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
+							 }
+						 }else {
+						 
+							 if(!clientD.isExist(textTel.getText())) {
 								 Client newClient =new Client(Integer.parseInt(textId.getText()),textNom.getText(),textPrenom.getText(),textTel.getText());
 								
 								 if(clientD.update(newClient)) {
-									 JOptionPane.showMessageDialog(null,"Le rôle "+newClient.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
+									 JOptionPane.showMessageDialog(null,"Le client "+newClient.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
 									
 									 tabbedPane.setEnabledAt(1, false);
 					                 tabbedPane.setEnabledAt(0, true);
@@ -175,6 +238,7 @@ public class VueClient extends JPanel {
 						 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Création", JOptionPane.ERROR_MESSAGE);
 					 }else {
 
+
 						 String tel = textTel.getText().trim();
 						 if(clientM.checkRegexTel(tel)) {
 							 
@@ -191,6 +255,44 @@ public class VueClient extends JPanel {
 						 }else {
 							 JOptionPane.showMessageDialog(null,"Ce "+nomModel+" existe déjà", "Création", JOptionPane.ERROR_MESSAGE);
 						 }
+
+//Le isExiste n'est pas necessaire						
+						 //if(!clientD.isExist(textTel.getText())) {
+							 Client newClient =new Client(textNom.getText(),textPrenom.getText(),textTel.getText());
+							 if(clientD.create(newClient)) {
+								 JOptionPane.showMessageDialog(null,"Le client "+newClient.getNom()+" a bien été enregistré","Création",JOptionPane.INFORMATION_MESSAGE);
+								
+								 //tabbedPane.setEnabledAt(1, false);
+					             //tabbedPane.setEnabledAt(0, true);
+					             //tabbedPane.setSelectedIndex(0);
+								 //panelClient.setEnabled(false);
+								 btnClientNoVisible.setVisible(true);
+								 textId.setText(String.valueOf(clientD.dernierIdClient()));
+								 System.out.println("Id cree pour le client!!: "+textId.getText());
+								 textNom.setEditable(false);
+								 textPrenom.setEditable(false);
+								 textTel.setEditable(false);
+								 btnAnnuler.setEnabled(false);
+								 btnSauvegarder.setEnabled(false);
+								 ////
+								 //panelAdresseClient.setEnabled(false);
+								 textIdAdresse.requestFocus();
+								 textIdAdresse.setEditable(true);
+								 textRue.setEditable(true);
+								 textCodPostal.setEditable(true);
+								 textVille.setEditable(true);
+								 textComplement.setEditable(true);
+								 btnSauvegarderAdresse.setEnabled(true);
+								 
+					             table.setModel(clientM.lister(textField.getText()));
+							 }else {
+								 JOptionPane.showMessageDialog(null,"Impossible de créer le "+nomModel, "Création", JOptionPane.ERROR_MESSAGE);
+							 }
+						 //}else {
+						 //	 JOptionPane.showMessageDialog(null,"Ce "+nomModel+" existe déjà", "Création", JOptionPane.ERROR_MESSAGE);
+						 //}
+//================================
+
 					 } //fin if name ==""
 				 }//fin if modifier or save
 			}//fin ActionPerformed
@@ -208,14 +310,15 @@ public class VueClient extends JPanel {
                 tabbedPane.setSelectedIndex(1);
                 action="Sauvegarder";
                 btnSauvegarder.setText("Sauvegarder");
-                panelAdresseClient.setEnabled(false);
+                //panel1
+                //panelAdresseClient.setEnabled(false);
                 textRue.setEditable(false);
                 textCodPostal.setEditable(false);
                 textVille.setEditable(false);
                 textComplement.setEditable(false);
                 btnSauvegarderAdresse.setEnabled(false);
                 
-                panelListeAdresse.setEnabled(false);
+                //panelListeAdresse.setEnabled(false);
                 btnAdresseMod.setEnabled(false);
                 btnAdresseEffacer.setEnabled(false);
                 
@@ -233,12 +336,12 @@ public class VueClient extends JPanel {
 					JOptionPane.showMessageDialog(null,"Merci de selectionner un "+nomModel+" dans le tableau","Statut",JOptionPane.WARNING_MESSAGE);
 				}else {
 					
+					tableAdresse.setModel(adresseM.lister(textId.getText()));
 					textId.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
 					textNom.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
 					ancienNom= String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
 					textPrenom.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 2)));
 					textTel.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 3)));
-					tableAdresse.setModel(adresseM.lister(textId.getText()));
 				
 					tabbedPane.setEnabledAt(1, true);
 	                tabbedPane.setEnabledAt(0, false);
@@ -330,10 +433,16 @@ public class VueClient extends JPanel {
 		
 
 		
-		
-		tabbedPane.setEnabledAt(1, false);
-        tabbedPane.setEnabledAt(0, true);
-        tabbedPane.setSelectedIndex(0);
+		if(optionGestion == 1) {
+			tabbedPane.setEnabledAt(1, false);
+	        tabbedPane.setEnabledAt(0, true);
+	        tabbedPane.setSelectedIndex(0);
+		}else {
+			tabbedPane.setEnabledAt(1, true);
+	        tabbedPane.setEnabledAt(0, false);
+	        tabbedPane.setSelectedIndex(1);
+		}
+
 		
 		JLabel lblNom = new JLabel("Nom : (*)");
 		lblNom.setBounds(10, 76, 70, 21);
@@ -354,14 +463,21 @@ public class VueClient extends JPanel {
 		/*
 		 * Annulation et retour a la page accueil role
 		 */
-		JButton btnAnnuler = new JButton("Annuler");
+		
 		btnAnnuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				tabbedPane.setEnabledAt(1, false);
-                tabbedPane.setEnabledAt(0, true);
-                tabbedPane.setSelectedIndex(0);
-                table.setModel(clientM.lister(textField.getText()));
+//				if(optionGestion == 1) {
+//					tabbedPane.setEnabledAt(1, false);
+//	                tabbedPane.setEnabledAt(0, true);
+//	                tabbedPane.setSelectedIndex(0);
+//	                table.setModel(clientM.lister(textField.getText()));
+//				}else {
+//					
+//				}
+//	
+	
+
+			
 			}
 		});
 		btnAnnuler.setBounds(34, 361, 106, 23);	
@@ -380,24 +496,19 @@ public class VueClient extends JPanel {
 		textPrenom.setBounds(76, 137, 188, 20);
 		panelGestion.add(textPrenom);
 		
-		JLabel lblTlphone = new JLabel("Téléphone:");
-		lblTlphone.setBounds(10, 198, 70, 21);
+		JLabel lblTlphone = new JLabel("Téléphone: (*)");
+		lblTlphone.setBounds(10, 198, 95, 21);
 		panelGestion.add(lblTlphone);
 		
 		textTel = new JTextField();
 		textTel.setColumns(10);
-		textTel.setBounds(76, 198, 188, 20);
+		textTel.setBounds(115, 198, 149, 20);
 		panelGestion.add(textTel);
 		
 		JLabel lblNewLabel_1 = new JLabel("40 caractères maximum");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblNewLabel_1.setBounds(76, 155, 119, 18);
 		panelGestion.add(lblNewLabel_1);
-		
-		JLabel lblNewLabel_1_1 = new JLabel("10 chiffres maximum");
-		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblNewLabel_1_1.setBounds(76, 214, 119, 18);
-		panelGestion.add(lblNewLabel_1_1);
 		
 		JPanel panelAdresse = new JPanel();
 		panelAdresse.setBorder(new TitledBorder(null, "Adresse client", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -434,26 +545,80 @@ public class VueClient extends JPanel {
 		btnSauvegarderAdresse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				if(textRue.getText().equals("") || textCodPostal.getText().equals("") || textVille.getText().equals("") || textRue.getText().length() > 60 || textCodPostal.getText().length() > 5 || textVille.getText().length() > 40 || textComplement.getText().length()>60) {
+					JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) et de respecter le nombre de caractères", "Adresse Client", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+				Adresse adresse = new Adresse(Integer.parseInt(textId.getText()), textRue.getText(), textCodPostal.getText(), textVille.getText(), textComplement.getText());
+/*
+ * 
+ * 
+ * ==============================================================================
+ * 
+ * */				
+				if(actionAdresse.equalsIgnoreCase("Modifier")) {
+					
+					
+				}else {
+					if(adresseD.create(adresse)) {
+						 JOptionPane.showMessageDialog(null,"L'adresse de client "+textNom.getText()+" a bien été enregistré","Adresse",JOptionPane.INFORMATION_MESSAGE);
+							textRue.setText("");
+							textCodPostal.setText("");
+							textVille.setText("");
+							textComplement.setText("");
+							textRue.setEditable(false);
+							textCodPostal.setEditable(false);
+							textVille.setEditable(false);
+							textComplement.setEditable(false);
+							btnSauvegarderAdresse.setEnabled(false);
+						    tableAdresse.setModel(adresseM.lister(textId.getText()));
+						 
+					}else {
+						 JOptionPane.showMessageDialog(null,"Impossible de créer l'adresse de client "+textNom.getText(), "Adresse", JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}
+				
+					
+				//textIdAdresse.setEditable(false);
+				textRue.setEditable(false);
+				textCodPostal.setEditable(false);
+				textVille.setEditable(false);
+				textComplement.setEditable(false);
+				btnSauvegarderAdresse.setEnabled(false);
+				//panelAdresseClient.setEnabled(false);
+				textIdAdresse.setText("");
+				textRue.setText("");
+				textCodPostal.setText("");
+				textVille.setText("");
+				textComplement.setText("");
+				
+				//panelListeAdresse.setEnabled(true);
+				btnAdresseMod.setEnabled(true);
+				btnAdresseEffacer.setEnabled(true);
+				tableAdresse.setModel(adresseM.lister(textId.getText()));
+				
 				
 			}
 		});
-		btnSauvegarderAdresse.setBounds(54, 369, 186, 23);
+		btnSauvegarderAdresse.setBounds(52, 375, 186, 23);
 		panelAdresseClient.add(btnSauvegarderAdresse);
 		
 		
 		textComplement.setBounds(10, 272, 256, 73);
 		panelAdresseClient.add(textComplement);
 		
-		JLabel lblNewLabel_3_1_1_1 = new JLabel("Complement: (*)");
-		lblNewLabel_3_1_1_1.setBounds(10, 247, 123, 14);
-		panelAdresseClient.add(lblNewLabel_3_1_1_1);
+		JLabel lblComplement = new JLabel("Complement:");
+		lblComplement.setBounds(10, 247, 123, 14);
+		panelAdresseClient.add(lblComplement);
 		
-		JLabel lblNewLabel_3_1_1 = new JLabel("Ville: (*)");
-		lblNewLabel_3_1_1.setBounds(10, 201, 85, 14);
-		panelAdresseClient.add(lblNewLabel_3_1_1);
+		JLabel lblVille = new JLabel("Ville: (*)");
+		lblVille.setBounds(10, 219, 85, 14);
+		panelAdresseClient.add(lblVille);
 		
 		
-		textVille.setBounds(120, 198, 146, 20);
+		textVille.setBounds(120, 216, 146, 20);
 		panelAdresseClient.add(textVille);
 		textVille.setColumns(10);
 		
@@ -462,22 +627,42 @@ public class VueClient extends JPanel {
 		panelAdresseClient.add(textCodPostal);
 		textCodPostal.setColumns(10);
 		
-		JLabel lblNewLabel_3_1 = new JLabel("Cod Postal: (*)");
-		lblNewLabel_3_1.setBounds(10, 167, 85, 14);
-		panelAdresseClient.add(lblNewLabel_3_1);
+		JLabel lblCodPostal = new JLabel("Cod Postal: (*)");
+		lblCodPostal.setBounds(10, 170, 85, 14);
+		panelAdresseClient.add(lblCodPostal);
 		
 		
 		textRue.setBounds(10, 65, 256, 73);
 		panelAdresseClient.add(textRue);
 		
-		JLabel lblNewLabel_3 = new JLabel("Rue: (*)");
-		lblNewLabel_3.setBounds(10, 40, 64, 14);
-		panelAdresseClient.add(lblNewLabel_3);
+		JLabel lblRue = new JLabel("Rue: (*)");
+		lblRue.setBounds(10, 40, 64, 14);
+		panelAdresseClient.add(lblRue);
 		
 		textIdAdresse = new JTextField();
 		textIdAdresse.setBounds(160, 22, 106, 20);
 		panelAdresseClient.add(textIdAdresse);
 		textIdAdresse.setColumns(10);
+		
+		JLabel lblNewLabel_1_1_1 = new JLabel("60 chiffres maximum");
+		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblNewLabel_1_1_1.setBounds(147, 138, 119, 18);
+		panelAdresseClient.add(lblNewLabel_1_1_1);
+		
+		JLabel lblNewLabel_1_1_1_1 = new JLabel("5 chiffres maximum");
+		lblNewLabel_1_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblNewLabel_1_1_1_1.setBounds(147, 187, 119, 18);
+		panelAdresseClient.add(lblNewLabel_1_1_1_1);
+		
+		JLabel lblNewLabel_1_1_1_1_1 = new JLabel("40 chiffres maximum");
+		lblNewLabel_1_1_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblNewLabel_1_1_1_1_1.setBounds(147, 232, 119, 18);
+		panelAdresseClient.add(lblNewLabel_1_1_1_1_1);
+		
+		JLabel lblNewLabel_1_1_1_2 = new JLabel("60 chiffres maximum");
+		lblNewLabel_1_1_1_2.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblNewLabel_1_1_1_2.setBounds(147, 346, 119, 18);
+		panelAdresseClient.add(lblNewLabel_1_1_1_2);
 		textIdAdresse.setVisible(false);
 		
 	
@@ -501,23 +686,62 @@ public class VueClient extends JPanel {
 		tableAdresse = new JTable();
 		scrollPaneAdresse.setViewportView(tableAdresse);
 		
-		JPanel panel_4 = new JPanel();
-		panel_4.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Client", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_4.setBounds(0, 21, 276, 454);
-		panelGestion.add(panel_4);
-		panel_4.setLayout(null);
+		JButton btnContinuer = new JButton("Continuer->");
+		btnContinuer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panel.setVisible(false);
+				
+			}
+		});
+		btnContinuer.setBounds(401, 387, 113, 23);
+		panelListeAdresse.add(btnContinuer);
+		
+		
+		panelClient.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Client", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelClient.setBounds(0, 21, 276, 454);
+		panelGestion.add(panelClient);
+		panelClient.setLayout(null);
 		
 		textId = new JTextField();
-		textId.setBounds(10, 392, 142, 20);
-		panel_4.add(textId);
+		textId.setBounds(10, 423, 106, 20);
+		panelClient.add(textId);
 		textId.setColumns(10);
+		
+		JLabel lblNewLabel_1_1 = new JLabel("10 chiffres maximum");
+		lblNewLabel_1_1.setBounds(114, 195, 119, 18);
+		panelClient.add(lblNewLabel_1_1);
+		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		
+		
+		btnClientNoVisible.setBounds(92, 371, 106, 23);
+		panelClient.add(btnClientNoVisible);
+		btnClientNoVisible.setVisible(false);
 		textId.setVisible(false);
 		btnAdresseMod.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				if(tableAdresse.getSelectedColumnCount()==0) {
+					JOptionPane.showMessageDialog(null,"Merci de selectionner une adresse dans le tableau","Adresse",JOptionPane.WARNING_MESSAGE);
+				}else {
+				    actionAdresse = "Modifier";
+				    textIdAdresse.setEditable(true);
+					textRue.setEditable(true);
+					textCodPostal.setEditable(true);
+					textVille.setEditable(true);
+					textComplement.setEditable(true);
+					btnSauvegarderAdresse.setEnabled(true);
+					panelAdresseClient.setEnabled(true);
+
+					
+					textIdAdresse.setText(String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 0)));
+					textRue.setText(String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 1)));
+					textCodPostal.setText(String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 2)));;
+					textVille.setText(String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 3)));
+					textComplement.setText(String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 4)));
+					
+				}
 				
 	
-		        actionAdresse = "Nouvelle";
+		    
 				//btnSauvegarderAdresse.setText("Modifier");
 				
 			}
@@ -527,7 +751,7 @@ public class VueClient extends JPanel {
 		/*
 		 * Tri asc desc pour le tabeau produit
 		 */
-		@SuppressWarnings("rawtypes")
+
 		TableRowSorter order = new TableRowSorter(table.getModel());
 		table.setRowSorter(order);
 	}

@@ -99,7 +99,7 @@ public class VueCommande extends JPanel {
 		JButton btnAddAdresse = new JButton("Ajouter");
 		btnAddAdresse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panel.add(new VueClient());
+				panel.add(new VueClient(3));
 			}
 		});
 		btnAddAdresse.setBounds(22, 367, 106, 23);

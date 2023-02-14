@@ -16,9 +16,24 @@ public class AdresseDao implements IDao<Adresse>{
 	PreparedStatement sql = null;
 	ResultSet rs = null;
 	@Override
-	public Boolean create(Adresse object) {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean create(Adresse adresse) {
+		try {
+			sql=conn.prepareStatement("INSERT INTO adresse (id_client, rue, cod_postal, ville, complement) VALUES (?,?,?,?,?)");
+			sql.setInt(1, adresse.getId_client());
+			sql.setString(2, adresse.getRue());
+			sql.setString(3, adresse.getCod_postal());
+			sql.setString(4, adresse.getVille());
+			sql.setString(5, adresse.getComplement());	
+			
+			sql.execute();
+
+			return true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+
 	}
 
 	@Override
@@ -37,6 +52,22 @@ public class AdresseDao implements IDao<Adresse>{
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	public int dernierIdAdress() {
+		 int id = 0;
+		try {
+			sql = conn.prepareStatement("SELECT LAST_INSERT_ID() as 'ID' FROM adresse");
+			System.out.println("SQL Adresse R: "+sql);
+			rs=sql.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("ID");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
 	}
 
 	@Override

@@ -25,7 +25,9 @@ public class AdresseMetier {
 	 */
 	
 	public DefaultTableModel lister(String txt) {
-		String col[]= {"N°","Id","Rue","CodePostal","Ville","Complement"};
+
+		String col[]= {"Id","rue","CodPostal","Ville","Complement"};
+
 		DefaultTableModel list = new DefaultTableModel(null,col);
 		totalM=0;
 		/*
@@ -33,9 +35,9 @@ public class AdresseMetier {
 		 */
 		int cont = 0;
 		for (Adresse item : adresseD.read(txt)) {
-			++cont;
+
 			list.addRow(new Object[] {
-					cont,
+
 					item.getId(),
 					item.getRue(),
 					item.getCod_postal(),
