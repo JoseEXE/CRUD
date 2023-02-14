@@ -11,6 +11,7 @@ public class Client {
 	 */
 	public static String idNewClient="";
 	
+	
 	/*
 	 * Constructeur complet
 	 */

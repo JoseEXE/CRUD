@@ -65,6 +65,20 @@ public Produit(int id, Cat_produit id_cat_produit, User id_user, String code, St
 	this.id = id;
 	this.id_user = id_user;
 	}
+	/*
+	 * constructeur pour la methode qui liste les produits par code et nom 
+	 */
+	public Produit(int id, Cat_produit id_cat_produit, String code, String nom, String description, Double prix,
+			String statut) {
+		
+		this.id = id;
+		this.id_cat_produit = id_cat_produit;
+		this.code = code;
+		this.nom = nom;
+		this.description = description;
+		this.prix = prix;
+		this.statut = statut;
+	}
 	
 	public int getId() {
 		return id;

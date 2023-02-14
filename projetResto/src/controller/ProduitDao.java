@@ -64,6 +64,33 @@ public class ProduitDao implements IDao<Produit>{
 		// TODO Auto-generated method stub
 		return false;
 	}
+	/*
+	 * methode pour lister les produits triés par code et nom lors de la commande
+	 * @param code produit de la barre de recherche
+	 * @param nom produit de la barre de recherche
+	 */
+	public Object findByCode(String code,String nom) {
+		ArrayList<Produit> list = new ArrayList<>();
+	try {
+		sql = conn.prepareStatement("SELECT *,p.id as idprod,ct.id as idcat,p.nom as nomprod,ct.nom as nomcat,p.description as descprod,p.statut as statprod"
+				+ " FROM produit p INNER JOIN cat_produit ct ON id_cat_produit=ct.id WHERE p.statut = 'Actif' AND code = ? AND p.nom LIKE ? ");
+		sql.setString(1, "%"+code+"%");
+		sql.setString(2, "%"+nom+"%");
+		rs=sql.executeQuery();
+		while (rs.next()) {
+			
+			Cat_produit cat=new Cat_produit(rs.getInt("idcat"),rs.getString("nomcat"));
+			list.add(new Produit(rs.getInt("idprod"),cat,rs.getString("code"),rs.getString("nomprod")
+					,rs.getString("descprod"),rs.getDouble("prix"),rs.getString("statprod")));
+		}
+		
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+		return list;
+	}
+	
 
 	@Override
 	public Boolean update(Produit prod) {

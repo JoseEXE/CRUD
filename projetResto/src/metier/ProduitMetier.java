@@ -41,7 +41,23 @@ public class ProduitMetier {
 			});
 			totalM++;
 		}
+		return tableau;
+	}
+	public DefaultTableModel listeProdCommande(String code,String nom) {
+		String col[]= {"id","Nom","Description","Code","Categorie","Prix","statut"};
+		DefaultTableModel tableau=new DefaultTableModel(null,col);
 		
+		for (Produit item : prodD.filtrer(code,nom)) {
+			tableau.addRow(new Object[] {
+					item.getId(),
+					item.getNom(),
+					item.getDescription(),
+					item.getCode(),
+					item.getId_cat_produit().getNom(),
+					item.getPrix(),
+					item.getStatut()
+			});
+		}
 		return tableau;
 	}
 	@SuppressWarnings("rawtypes")
@@ -49,12 +65,9 @@ public class ProduitMetier {
 		DefaultComboBoxModel itemCmb = new DefaultComboBoxModel();
 		ArrayList<Cat_produit> listRoles = new ArrayList<>();
 		listRoles = catprodD.selectRoles();
-		//itemCmb.addElement(new Cat_produit(0, "Tous"));
 		for(Cat_produit item: listRoles){
 			itemCmb.addElement(new Cat_produit(item.getId(), item.getNom()));
-		}
-
-		
+		}	
 		return itemCmb;
 	}
 }

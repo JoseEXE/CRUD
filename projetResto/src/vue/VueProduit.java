@@ -122,7 +122,7 @@ public class VueProduit extends JPanel {
 		
 		JComboBox comboBoxTri = new JComboBox();
 		comboBoxTri.setModel(itemCmb);
-		comboBoxTri.setBounds(624, 35, 106, 19);
+		comboBoxTri.setBounds(658, 35, 106, 19);
 		panelListe.add(comboBoxTri);
 		Cat_produit cat = new Cat_produit(0, "Tous");
 		
@@ -236,7 +236,7 @@ public class VueProduit extends JPanel {
                 System.out.println(comboBoxCat.getSelectedItem());
 			}
 		});
-		btnNouveau.setBounds(740, 33, 106, 23);
+		btnNouveau.setBounds(774, 33, 106, 23);
 		panelListe.add(btnNouveau);
 		/*
 		 * passage vers la page modification de role 
@@ -264,7 +264,7 @@ public class VueProduit extends JPanel {
 				}
 			}
 		});
-		btnModifier.setBounds(856, 33, 106, 23);
+		btnModifier.setBounds(890, 33, 106, 23);
 		panelListe.add(btnModifier);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -341,7 +341,7 @@ public class VueProduit extends JPanel {
 		panelListe.add(lblAffichage);
 		
 		JLabel lblNewLabel_1 = new JLabel("Filtrer la recherche");
-		lblNewLabel_1.setBounds(521, 38, 108, 13);
+		lblNewLabel_1.setBounds(521, 38, 127, 13);
 		panelListe.add(lblNewLabel_1);
 		
 		
