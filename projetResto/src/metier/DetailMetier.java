@@ -1,5 +1,7 @@
 package metier;
 
+import java.util.regex.Pattern;
+
 import javax.swing.table.DefaultTableModel;
 
 import controller.DetailDao;
@@ -23,5 +25,12 @@ public class DetailMetier {
 			});
 		}
 		return tableau;
+	}
+	public Boolean checkRegexQte(String txt) {
+
+		Boolean test =Pattern.matches("[1-9]", txt);
+		System.out.println(test);
+		return test;
+		
 	}
 }

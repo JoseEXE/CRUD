@@ -8,6 +8,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -56,8 +57,6 @@ public class VueCommande extends JPanel {
 	private JTable tableProduits;
 	private JTable tableDetail;
 	
-
-
 	/**
 	 * Create the panel.
 	 */
@@ -119,6 +118,7 @@ public class VueCommande extends JPanel {
 		JButton btnAddAdresse = new JButton("Ajouter");
 		btnAddAdresse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println(Client.clientLast);
 				panel.removeAll();
 				panel.add(new VueClient(3));
 				panel.repaint();
@@ -255,18 +255,21 @@ public class VueCommande extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String tel = textTel.getText();
-				tableClient.setModel(clientM.clientExist(tel));
-				tableClient.getColumnModel().getColumn(0).setMaxWidth(20);
-				tableClient.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(20);
-				if(tableClient.getRowCount()==0) {
-					btnAddClient.setVisible(true);
-					lblNoClient.setText("Ce client n'existe pas");
+				if(clientM.checkRegexTel(tel)) {
+					tableClient.setModel(clientM.clientExist(tel));
+					tableClient.getColumnModel().getColumn(0).setMaxWidth(20);
+					tableClient.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(20);
+					if(tableClient.getRowCount()==0) {
+						btnAddClient.setVisible(true);
+						lblNoClient.setText("Ce client n'existe pas");
+					}else {
+						btnAddAdresse.setVisible(true);
+						btnAddClient.setVisible(false);
+						lblNoClient.setText("");
+					}
 				}else {
-					btnAddAdresse.setVisible(true);
-					btnAddClient.setVisible(false);
-					lblNoClient.setText("");
+					JOptionPane.showMessageDialog(null, "le numéro de téléphone doit être valide et composé de 10 chiffres maximum ", "Clients", JOptionPane.ERROR_MESSAGE);
 				}
-			
 			}
 		});
 		btnNewButton.setBounds(156, 39, 106, 23);
@@ -276,8 +279,8 @@ public class VueCommande extends JPanel {
 		lblNewLabel.setBounds(20, 17, 162, 24);
 		panel_1.add(lblNewLabel);
 		
-		JLabel lblNewLabel_4 = new JLabel("Photo New client");
-		lblNewLabel_4.setBounds(860, 10, 163, 439);
+		JLabel lblNewLabel_4 = new JLabel("");
+		lblNewLabel_4.setBounds(849, 0, 182, 449);
 		panelClient.add(lblNewLabel_4);
 		
 		
@@ -306,18 +309,18 @@ public class VueCommande extends JPanel {
 		JLabel lblTotal = new JLabel("0");
 		lblTotal.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTotal.setFont(new Font("Tahoma", Font.BOLD, 30));
-		lblTotal.setBounds(861, 293, 73, 59);
+		lblTotal.setBounds(842, 293, 92, 59);
 		panelProduits.add(lblTotal);
 		
 		JScrollPane scrollPane_3 = new JScrollPane();
 		scrollPane_3.setBounds(50, 210, 658, 220);
 		panelProduits.add(scrollPane_3);
 		
-		JLabel lblQteChange = new JLabel("");
-		lblQteChange.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblQteChange.setBounds(442, 444, 257, 19);
-		lblQteChange.setForeground(new Color(40, 210, 45));
-		panelProduits.add(lblQteChange);
+		JLabel lblInfo = new JLabel("");
+		lblInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblInfo.setBounds(50, 183, 257, 19);
+		lblInfo.setForeground(new Color(40, 210, 45));
+		panelProduits.add(lblInfo);
 		
 		
 		tableDetail = new JTable();
@@ -328,7 +331,7 @@ public class VueCommande extends JPanel {
 				 * 
 				 */
 				idDetail =(int)(tableDetail.getValueAt(tableDetail.getSelectedRow(), 0));
-				lblQteChange.setText("");
+				lblInfo.setText("");
 			}
 		});
 		tableProduits = new JTable();
@@ -344,9 +347,9 @@ public class VueCommande extends JPanel {
 				Detail_commande newDetail = new Detail_commande(newCommande,newProduit);
 				detailD.create(newDetail);
 				lblTotal.setText(String.valueOf(commandeD.totalCommande(idNewCommande)));
-				lblQteChange.setText("");
+				lblInfo.setText("");
 				tableDetail(idNewCommande);
-				
+		
 			}
 		});
 		
@@ -355,34 +358,38 @@ public class VueCommande extends JPanel {
 		
 		
 		
-		JLabel lblNewLabel_1 = new JLabel("Selectionnez une ligne pour changer la quantite ici : ");
-		lblNewLabel_1.setBounds(50, 440, 274, 26);
+		JLabel lblNewLabel_1 = new JLabel("Changer la quantite ici : ");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblNewLabel_1.setBounds(148, 440, 126, 26);
 		panelProduits.add(lblNewLabel_1);
 		
 		textQte = new JTextField("");
 		textQte.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				int newQte =Integer.parseInt(textQte.getText())  ;
-				if (newQte>0 && newQte<=10) {
-					if(detailD.updateQuantité(newQte, idDetail)) {
-						lblQteChange.setText("La quantité a bien été modifiée");
-					}else {
-						JOptionPane.showMessageDialog(null,"La quantité n'a pas pu être modifiée.","Quantité", JOptionPane.ERROR_MESSAGE);
-					}
-					tableDetail(idNewCommande);
-					lblTotal.setText(String.valueOf(commandeD.totalCommande(idNewCommande)));
+				if(tableDetail.getSelectedColumnCount()==0) {
+					JOptionPane.showMessageDialog(null,"Merci de selectionner une ligne de détail dans le tableau","Quantités",JOptionPane.WARNING_MESSAGE);
 					textQte.setText("");
-				}else if(newQte==0) {
-					JOptionPane.showMessageDialog(null,"La quantité ne peut être égale à 0. Effacez la ligne svp.","Quantité", JOptionPane.ERROR_MESSAGE);
 				}else {
-					JOptionPane.showMessageDialog(null,"La quantité doit être un chiffre en 1 et 10.","Quantité", JOptionPane.ERROR_MESSAGE);
+						String newQte=textQte.getText();
+						if(detailM.checkRegexQte(newQte)) {
+							int newQte1 =Integer.parseInt(newQte)  ;
+							if(detailD.updateQuantité(newQte1, idDetail)) {
+								lblInfo.setText("La quantité a bien été modifiée");
+							}else {
+								JOptionPane.showMessageDialog(null,"La quantité n'a pas pu être modifiée.","Quantité", JOptionPane.ERROR_MESSAGE);
+							}
+								tableDetail(idNewCommande);
+								lblTotal.setText(String.valueOf(commandeD.totalCommande(idNewCommande)));
+								textQte.setText("");
+						}else {
+							JOptionPane.showMessageDialog(null,"La quantité doit être un chiffre en 1 et 9.","Quantité", JOptionPane.ERROR_MESSAGE);
+							textQte.setText("");
+						}
 				}
-				
-				
 			}
 		});
-		textQte.setBounds(356, 444, 36, 19);
+		textQte.setBounds(284, 444, 36, 19);
 		panelProduits.add(textQte);
 		textQte.setColumns(10);
 		
@@ -424,18 +431,47 @@ public class VueCommande extends JPanel {
 				tableProduit();
 			}
 		});
-		btnClear.setBounds(235, 28, 111, 21);
+		btnClear.setBounds(235, 28, 138, 21);
 		panelProduits.add(btnClear);
 		
 		JLabel lblTotal_1 = new JLabel("€");
 		lblTotal_1.setFont(new Font("Tahoma", Font.BOLD, 25));
-		lblTotal_1.setBounds(944, 295, 58, 59);
+		lblTotal_1.setBounds(963, 295, 58, 59);
 		panelProduits.add(lblTotal_1);
 		
 		JButton btnFinaliser = new JButton("Finaliser");
 		btnFinaliser.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnFinaliser.setBounds(777, 391, 183, 39);
 		panelProduits.add(btnFinaliser);
+		
+		JButton btnDelete = new JButton("Effacer");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(tableDetail.getSelectedColumnCount()==0) {
+					JOptionPane.showMessageDialog(null,"Merci de selectionner une ligne de détail dans le tableau","Effacement",JOptionPane.WARNING_MESSAGE);
+				}else {
+				int reponse=JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir effacer la ligne sélectionnée?","Effacement", JOptionPane.YES_NO_CANCEL_OPTION);
+					if(reponse==0) {
+						int idDetail=(int)tableDetail.getValueAt(tableDetail.getSelectedRow(), 0);
+						if(detailD.Delete(idDetail)) {
+							lblInfo.setText("La quantité a bien été modifiée");
+							tableDetail(idNewCommande);
+							lblTotal.setText(String.valueOf(commandeD.totalCommande(idNewCommande)));
+						}else {
+							JOptionPane.showMessageDialog(null,"La ligne n'a pas pu être effacée","Effacement",JOptionPane.ERROR_MESSAGE);
+						}
+					}
+				}
+			}
+		});
+		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnDelete.setBounds(602, 442, 106, 23);
+		panelProduits.add(btnDelete);
+		
+		JLabel lblNewLabel_1_1 = new JLabel("Effacer la ligne de commande ici : ");
+		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblNewLabel_1_1.setBounds(435, 440, 157, 26);
+		panelProduits.add(lblNewLabel_1_1);
 		
 	
 		if(optionC == 2) {

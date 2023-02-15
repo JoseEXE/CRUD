@@ -90,9 +90,17 @@ public class DetailDao implements IDao<Detail_commande>{
 	}
 
 	@Override
-	public Boolean Delete(Detail_commande object) {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean Delete(int id) {
+		try {
+			sql = conn.prepareStatement("DELETE FROM detail_commande WHERE id=?");
+			sql.setInt(1,id );
+			sql.execute();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
