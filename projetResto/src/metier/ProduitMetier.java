@@ -44,7 +44,7 @@ public class ProduitMetier {
 		return tableau;
 	}
 	public DefaultTableModel listeProdCommande(String code,String nom) {
-		String col[]= {"id","Nom","Description","Code","Categorie","Prix","statut"};
+		String col[]= {"id","Nom","Description","Code","Categorie","Prix"};
 		DefaultTableModel tableau=new DefaultTableModel(null,col);
 		
 		for (Produit item : prodD.findByCode(code,nom)) {
@@ -54,8 +54,7 @@ public class ProduitMetier {
 					item.getDescription(),
 					item.getCode(),
 					item.getId_cat_produit().getNom(),
-					item.getPrix(),
-					item.getStatut()
+					item.getPrix()
 			});
 		}
 		return tableau;

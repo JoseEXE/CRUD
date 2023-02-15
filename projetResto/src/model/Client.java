@@ -9,7 +9,7 @@ public class Client {
 	/*
 	 * variable id pour enregistrer un nouveau client
 	 */
-	public static String idNewClient="";
+	public static int idNewClient=0;
 	public static Client clientLast = new Client();
 	
 	
@@ -42,6 +42,17 @@ public class Client {
 		this.prenom = prenom;
 		this.numtel = numtel;
 	}
+	
+	/*
+	 * contructeur pour client Last lors de la création de commande
+	 */
+	public Client(int id, String nom, String prenom) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.prenom = prenom;
+	}
+
 	/*
 	 * Constructeur vide
 	 */
@@ -90,6 +101,11 @@ public class Client {
 
 	public void setStatut(String statut) {
 		this.statut = statut;
+	}
+
+	@Override
+	public String toString() {
+		return "Client [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", numtel=" + numtel + "]";
 	}
 	
 }

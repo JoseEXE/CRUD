@@ -42,7 +42,6 @@ public class AdresseDao implements IDao<Adresse>{
 		try {
 			sql = conn.prepareStatement("SELECT ad.id, ad.id_client, ad.rue, ad.cod_postal, ad.ville, ad.complement  FROM adresse as ad INNER JOIN user ON ad.id_client = user.id WHERE user.id=?");
 			sql.setInt(1, Integer.parseInt(txt));
-			System.out.println("SQL Adresse R: "+sql);
 			rs=sql.executeQuery();
 			while (rs.next()) {
 				list.add(new Adresse(rs.getInt("id"), rs.getInt("id_client"), rs.getString("rue"), rs.getString("cod_postal"), rs.getString("ville"), rs.getString("complement")));
@@ -58,7 +57,6 @@ public class AdresseDao implements IDao<Adresse>{
 		 int id = 0;
 		try {
 			sql = conn.prepareStatement("SELECT LAST_INSERT_ID() as 'ID' FROM adresse");
-			System.out.println("SQL Adresse R: "+sql);
 			rs=sql.executeQuery();
 			while (rs.next()) {
 				id = rs.getInt("ID");

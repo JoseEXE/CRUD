@@ -39,10 +39,8 @@ ClientDao clientD=new ClientDao();
 					item.getNumtel(),
 					item.getStatut()
 			});
-			System.out.println(item);
 			totalM++;
 		}
-		System.out.println(list);
 		return list;
 	}
 	/*
@@ -66,7 +64,6 @@ ClientDao clientD=new ClientDao();
 			System.out.println(item);
 			totalM++;
 		}
-		System.out.println(list);
 		return list;
 	}
 	/*

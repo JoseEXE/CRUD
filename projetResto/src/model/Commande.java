@@ -27,13 +27,28 @@ public class Commande {
 	}
 	
 /*
- * constructeur commande pour debuter la commande apres avoir identifié/creer un client, et dans le but de cere des lignes 
+ * constructeur commande pour debuter la commande apres avoir identifié/creer un client, et dans le but de creer des lignes 
  * de details de commande
  */
-	public Commande(Client id_client, User id_user) {
-		this.id_client = id_client;
-		this.id_user = id_user;
+	
+	public Commande() {
+		
 	}
+/*
+ * constructeur pour instancier une commande lors du findById de détail_Commande
+ */
+	public Commande(int id) {
+		this.id = id;
+	}
+	
+
+	public Commande(int id, Client id_client, User id_user, Timestamp date_comm, String etat) {
+	this.id = id;
+	this.id_client = id_client;
+	this.id_user = id_user;
+	this.date_comm = date_comm;
+	this.etat = etat;
+}
 
 
 	/*
@@ -42,6 +57,7 @@ public class Commande {
 	public int getId() {
 		return id;
 	}
+
 
 	public void setId(int id) {
 		this.id = id;
@@ -101,6 +117,12 @@ public class Commande {
 
 	public void setEtat(String etat) {
 		this.etat = etat;
+	}
+
+	@Override
+	public String toString() {
+		return "Commande [id=" + id + ", id_client=" + id_client + ", id_user=" + id_user + ", date_comm=" + date_comm
+				+ ", etat=" + etat + "]";
 	}
 
 	

@@ -92,7 +92,6 @@ public class ClientDao implements IDao<Client>{
 			sql.setString(2, client.getPrenom());
 			sql.setString(3, client.getNumtel());
 			sql.setInt(4, client.getId() );
-			System.out.println("SQL client: "+ sql);
 			if(sql.executeUpdate()>0) {
 				return true;
 			}
