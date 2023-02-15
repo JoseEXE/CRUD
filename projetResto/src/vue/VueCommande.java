@@ -306,7 +306,7 @@ public class VueCommande extends JPanel {
 		JLabel lblTotal = new JLabel("0");
 		lblTotal.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTotal.setFont(new Font("Tahoma", Font.BOLD, 30));
-		lblTotal.setBounds(861, 293, 58, 59);
+		lblTotal.setBounds(861, 293, 73, 59);
 		panelProduits.add(lblTotal);
 		
 		JScrollPane scrollPane_3 = new JScrollPane();
@@ -429,7 +429,7 @@ public class VueCommande extends JPanel {
 		
 		JLabel lblTotal_1 = new JLabel("€");
 		lblTotal_1.setFont(new Font("Tahoma", Font.BOLD, 25));
-		lblTotal_1.setBounds(929, 293, 58, 59);
+		lblTotal_1.setBounds(944, 295, 58, 59);
 		panelProduits.add(lblTotal_1);
 		
 		JButton btnFinaliser = new JButton("Finaliser");

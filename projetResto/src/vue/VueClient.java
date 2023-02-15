@@ -57,14 +57,14 @@ public class VueClient extends JPanel {
 	 */
 	String ancienNom="";
 	
-	private JTextField textNom;
-	private JTextField textId;
-	private JTextField textPrenom;
-	private JTextField textTel;
-	private JTextField textCodPostal;
-	private JTextField textVille;
+	private JTextField textNom = new JTextField();
+	private JTextField textId = new JTextField();
+	private JTextField textPrenom = new JTextField();
+	private JTextField textTel = new JTextField();
+	private JTextField textCodPostal = new JTextField();
+	private JTextField textVille = new JTextField();
 	private JTable tableAdresse;
-	private JTextField textIdAdresse;
+	private JTextField textIdAdresse = new JTextField();
 	AdresseDao adresseD = new AdresseDao();
 	private JTable tableAdresseListe;
 	/*
@@ -531,6 +531,8 @@ public class VueClient extends JPanel {
 	        btnContinuer.setVisible(true);
 	        btnContinuer.setEnabled(false);
 	        btnReturner.setVisible(false);
+	        textNom.requestFocus();
+	        btnAnnulerAdresse.setEnabled(false);
 		}else if(optionGestion == 3){
 			tabbedPane.setEnabledAt(1, true);
 	        tabbedPane.setEnabledAt(0, false);
@@ -754,7 +756,9 @@ public class VueClient extends JPanel {
 						    if(optionGestion == 1) {
 						    	btnReturner.setEnabled(true);
 							}else if(optionGestion == 2 || optionGestion == 3 || optionGestion == 4) {
+								btnContinuer.setVisible(true);
 								btnContinuer.setEnabled(true);
+								btnReturner.setVisible(false);
 							}
 						 
 					}else {
@@ -787,8 +791,11 @@ public class VueClient extends JPanel {
 						    
 						    if(optionGestion == 1) {
 						    	btnReturner.setEnabled(true);
+						    	
 							}else if(optionGestion == 2 || optionGestion == 3 || optionGestion == 4) {
+								btnContinuer.setVisible(true);
 								btnContinuer.setEnabled(true);
+								btnReturner.setVisible(false);
 							}
 						 
 					}else {
@@ -885,6 +892,12 @@ public class VueClient extends JPanel {
 		panelListeAdresse.add(scrollPaneAdresse);
 		
 		tableAdresse = new JTable();
+		tableAdresse.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
 		
 		scrollPaneAdresse.setViewportView(tableAdresse);
 		
@@ -895,6 +908,16 @@ public class VueClient extends JPanel {
 				if(tableAdresse.getSelectedColumnCount()==0) {
 					JOptionPane.showMessageDialog(null,"Merci de selectionner une adresse dans le tableau","Adresse",JOptionPane.WARNING_MESSAGE);
 				}else {
+					
+					Adresse.adresseLast = new Adresse(Integer.parseInt(String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 0)), Integer.parseInt(textId.getText()), String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 1)), String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 2)), String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 3)), String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 4))));
+	
+		
+					
+					
+					panel.removeAll();
+					panel.add(new VueCommande(2));
+					panel.repaint();
+					panel.revalidate();
 					
 				}
 				
