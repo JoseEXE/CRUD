@@ -443,7 +443,10 @@ public class VueCommande extends JPanel {
 	        tabbedPane.setEnabledAt(0, false);
 	        tabbedPane.setSelectedIndex(1);
 	        
-	        
+	    	commandeD.create(newCommande);
+			idNewCommande =commandeD.dernierIdCommande();
+			newCommande = (Commande) commandeD.findById(idNewCommande);
+	        tableProduit();
 	        
 		}else {
 			tabbedPane.setEnabledAt(1, false);

@@ -63,10 +63,10 @@ public class VueClient extends JPanel {
 	private JTextField textTel = new JTextField();
 	private JTextField textCodPostal = new JTextField();
 	private JTextField textVille = new JTextField();
-	private JTable tableAdresse;
+	private JTable tableAdresse = new JTable();
 	private JTextField textIdAdresse = new JTextField();
 	AdresseDao adresseD = new AdresseDao();
-	private JTable tableAdresseListe;
+	private JTable tableAdresseListe = new JTable();
 	/*
 	 * optionGestion = 1 -> Local de gestion Client
 	 * */
@@ -909,9 +909,9 @@ public class VueClient extends JPanel {
 					JOptionPane.showMessageDialog(null,"Merci de selectionner une adresse dans le tableau","Adresse",JOptionPane.WARNING_MESSAGE);
 				}else {
 					
-					Adresse.adresseLast = new Adresse(Integer.parseInt(String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 0)), Integer.parseInt(textId.getText()), String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 1)), String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 2)), String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 3)), String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 4))));
+					Adresse.adresseLast = new Adresse((int)(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 0)), Integer.parseInt(textId.getText()), String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 1)), String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 2)), String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 3)), String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 4)));
 	
-		
+					Client.clientLast = new Client(Integer.parseInt(textId.getText()), textNom.getText(), textPrenom.getText(), textTel.getText());
 					
 					
 					panel.removeAll();
