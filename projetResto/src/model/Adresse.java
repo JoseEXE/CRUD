@@ -25,25 +25,25 @@ public class Adresse {
 	}
 
 
-//	public Adresse(int id_client, String rue, String cod_postal, String ville, String complement) {
-//		this.id_client = id_client;
-//		this.rue = rue;
-//		this.cod_postal = cod_postal;
-//		this.ville = ville;
-//		this.complement = complement;
-//	}
-	
-/*
- * contructeur pur modifier l'adresse lors de la prise commande
- */
-	public Adresse(int id, String rue, String cod_postal, String ville, String complement) {
-	
-		this.id = id;
+	public Adresse(int id_client, String rue, String cod_postal, String ville, String complement) {
+		this.id_client = id_client;
 		this.rue = rue;
 		this.cod_postal = cod_postal;
 		this.ville = ville;
 		this.complement = complement;
 	}
+	
+/*
+ * contructeur pur modifier l'adresse lors de la prise commande
+ */
+//	public Adresse(int id, String rue, String cod_postal, String ville, String complement) {
+//	
+//		this.id = id;
+//		this.rue = rue;
+//		this.cod_postal = cod_postal;
+//		this.ville = ville;
+//		this.complement = complement;
+//	}
 
 	public int getId() {
 		return id;
