@@ -24,7 +24,7 @@ public class AdresseDao implements IDao<Adresse>{
 			sql.setString(3, adresse.getCod_postal());
 			sql.setString(4, adresse.getVille());
 			sql.setString(5, adresse.getComplement());	
-			
+			System.out.println("SQL Adresse Create: "+ sql);
 			sql.execute();
 
 			return true;
@@ -40,7 +40,7 @@ public class AdresseDao implements IDao<Adresse>{
 	public ArrayList<Adresse> read(String txt) {
 		ArrayList<Adresse> list=new ArrayList<>();
 		try {
-			sql = conn.prepareStatement("SELECT ad.id, ad.id_client, ad.rue, ad.cod_postal, ad.ville, ad.complement  FROM adresse as ad INNER JOIN user ON ad.id_client = user.id WHERE user.id=?");
+			sql = conn.prepareStatement("SELECT ad.id, ad.id_client, ad.rue, ad.cod_postal, ad.ville, ad.complement  FROM adresse as ad WHERE ad.id_client=?");
 			sql.setInt(1, Integer.parseInt(txt));
 			rs=sql.executeQuery();
 			while (rs.next()) {
@@ -75,9 +75,24 @@ public class AdresseDao implements IDao<Adresse>{
 	}
 
 	@Override
-	public Boolean update(Adresse object) {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean update(Adresse adresse) {
+		try {
+			sql = conn.prepareStatement("UPDATE adresse SET rue = ?, cod_postal = ?, ville=?, complement=? WHERE id=?");
+			sql.setString(1, adresse.getRue());
+			sql.setString(2, adresse.getCod_postal());
+			sql.setString(3, adresse.getVille());
+			sql.setString(4, adresse.getComplement());
+			sql.setInt(5, adresse.getId() );
+			System.out.println("SQL Adresse update: "+ sql);
+			if(sql.executeUpdate()>0) {
+				return true;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+				return false;
 	}
 
 	@Override
@@ -108,6 +123,23 @@ public class AdresseDao implements IDao<Adresse>{
 	public int total() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	public int totalA(int id) {
+		int total =0;
+		try {
+			sql = conn.prepareStatement("SELECT COUNT(*) as total FROM adresse WHERE id_client=?");
+			sql.setInt(1, id);
+			rs=sql.executeQuery();
+			while (rs.next()) {
+			total =	rs.getInt("total");
+			}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+			}
+		return total;
 	}
 
 }
