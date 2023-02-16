@@ -457,9 +457,9 @@ public class VueCommande extends JPanel {
 	}
 	public void tableProduit() {
 		
-		  tableProduits.setModel(prodM.listeProdCommande(textCode.getText().trim(),textNom.getText().trim()));
-			tableProduits.getColumnModel().getColumn(0).setMaxWidth(20);
-			tableProduits.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(20);
+		tableProduits.setModel(prodM.listeProdCommande(textCode.getText().trim(),textNom.getText().trim()));
+		tableProduits.getColumnModel().getColumn(0).setMaxWidth(20);
+		tableProduits.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(20);
 	}
 	public void tableDetail(int id) {
 		

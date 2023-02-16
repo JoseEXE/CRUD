@@ -566,7 +566,7 @@ public class VueClient extends JPanel {
 	        btnContinuer.setEnabled(false);
 	        btnReturner.setVisible(false);
 	        tableAdresse.setModel(adresseM.lister(textId.getText()));
-	        textNom.requestFocus();
+	        textRue.requestFocus();
 	        
 		}else {
 			tabbedPane.setEnabledAt(1, true);
