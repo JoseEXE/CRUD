@@ -78,12 +78,15 @@ public class VueClient extends JPanel {
 	 */
 
 	public VueClient(int optionGestion) {
+		System.out.println("ini "+Client.clientLast);
 		//
 		//optionGestion = 1 -> Menu option Gestion de clients.
 		//optionGestion = 2 -> Menu option Commandes nouvelle Cliente.
 		//optionGestion = 3 -> Menu option Commandes nouvelle Adresse.
 		//optionGestion = 4 -> Menu option Commandes Modification Adresse.
-		
+		if(optionGestion==1 || optionGestion==2 || optionGestion==3 || optionGestion==4) {
+			
+		}
 		setBounds(0, 0, 1136, 565);
 		setLayout(null);
 		
@@ -101,10 +104,10 @@ public class VueClient extends JPanel {
 		 * creation double intercalaires
 		 */
 		JTextArea textRue = new JTextArea();
-		textCodPostal = new JTextField();
+		//textCodPostal = new JTextField();
 		JPanel panelAdresseClient = new JPanel();
 		JPanel panelListeAdresse = new JPanel();
-		textVille = new JTextField();
+		//textVille = new JTextField();
 		JTextArea textComplement = new JTextArea();
 		JButton btnSauvegarderAdresse = new JButton("Sauvegarder Adresse");
 		JButton btnAdresseMod = new JButton("Modifie Adresse");
@@ -187,7 +190,7 @@ public class VueClient extends JPanel {
 		            JOptionPane.showConfirmDialog (null, "Voulez-vous retourner à la page de commandes, sans sauvegarder l'adresse ?","WARNING", dialogButton);
 					 if(dialogButton == JOptionPane.YES_OPTION) {
 							panel.removeAll();
-							panel.add(new VueCommande(2));
+							panel.add(new VueCommande(1));
 							panel.repaint();
 							panel.revalidate();
 			         }
@@ -417,7 +420,7 @@ public class VueClient extends JPanel {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Statuts Client", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_1.setBounds(20, 438, 346, 49);
+		panel_1.setBounds(20, 438, 348, 49);
 		panelListe.add(panel_1);
 		panel_1.setLayout(null);
 		/*
@@ -499,6 +502,7 @@ public class VueClient extends JPanel {
 	        
 	        btnContinuer.setVisible(false);
 	        btnContinuer.setEnabled(false);
+	        System.out.println("In option 1");
 	        
 		}else if(optionGestion == 2) {
 			tabbedPane.setEnabledAt(1, true);
@@ -533,13 +537,16 @@ public class VueClient extends JPanel {
 	        btnReturner.setVisible(false);
 	        textNom.requestFocus();
 	        btnAnnulerAdresse.setEnabled(false);
+	        System.out.println("In option 2");
 		}else if(optionGestion == 3){
+			System.out.println("Avant tabbed"+Client.clientLast);
 			tabbedPane.setEnabledAt(1, true);
 	        tabbedPane.setEnabledAt(0, false);
 	        tabbedPane.setSelectedIndex(1);
+	        System.out.println("Apres tabbed"+Client.clientLast);
 	        actionAdresse ="Sauvegarder";
 	        textId.setText(String.valueOf(Client.clientLast.getId()));
-	        textNom.setText(Client.clientLast.getNom());
+	        textNom.setText("dsd");
 	        textPrenom.setText(Client.clientLast.getPrenom());
 	        textTel.setText(Client.clientLast.getNumtel());
 	        
@@ -567,6 +574,7 @@ public class VueClient extends JPanel {
 	        btnReturner.setVisible(false);
 	        tableAdresse.setModel(adresseM.lister(textId.getText()));
 	        textRue.requestFocus();
+	        System.out.println("In option 3");
 	        
 		}else {
 			tabbedPane.setEnabledAt(1, true);
@@ -610,6 +618,7 @@ public class VueClient extends JPanel {
 	        btnReturner.setVisible(false);
 	        tableAdresse.setModel(adresseM.lister(textId.getText()));
 	        textRue.requestFocus();
+	        System.out.println("In option 4");
 		}
 
 		
@@ -621,7 +630,8 @@ public class VueClient extends JPanel {
 		lblDescription.setBounds(10, 137, 70, 21);
 		panelGestion.add(lblDescription);
 		
-		textNom = new JTextField();
+
+		//textNom = new JTextField();
 		textNom.setBounds(76, 76, 188, 20);
 		panelGestion.add(textNom);
 		textNom.setColumns(10);
@@ -650,7 +660,7 @@ public class VueClient extends JPanel {
 		            JOptionPane.showConfirmDialog (null, "Voulez-vous retourner à la page de commandes, sans Sauvegarder le client ?","WARNING", dialogButton);
 					 if(dialogButton == JOptionPane.YES_OPTION) {
 							panel.removeAll();
-							panel.add(new VueCommande(2));
+							panel.add(new VueCommande(1));
 							panel.repaint();
 							panel.revalidate();
 			         }
@@ -672,7 +682,7 @@ public class VueClient extends JPanel {
 		lblNewLabel.setBounds(76, 93, 119, 18);
 		panelGestion.add(lblNewLabel);
 		
-		textPrenom = new JTextField();
+		//textPrenom = new JTextField();
 		textPrenom.setColumns(10);
 		textPrenom.setBounds(76, 137, 188, 20);
 		panelGestion.add(textPrenom);
@@ -681,7 +691,7 @@ public class VueClient extends JPanel {
 		lblTlphone.setBounds(10, 198, 95, 21);
 		panelGestion.add(lblTlphone);
 		
-		textTel = new JTextField();
+		//textTel = new JTextField();
 		textTel.setColumns(10);
 		textTel.setBounds(115, 198, 149, 20);
 		panelGestion.add(textTel);
@@ -843,7 +853,7 @@ public class VueClient extends JPanel {
 		lblRue.setBounds(10, 40, 64, 14);
 		panelAdresseClient.add(lblRue);
 		
-		textIdAdresse = new JTextField();
+		//textIdAdresse = new JTextField();
 		textIdAdresse.setBounds(160, 22, 106, 20);
 		panelAdresseClient.add(textIdAdresse);
 		textIdAdresse.setColumns(10);
@@ -891,7 +901,7 @@ public class VueClient extends JPanel {
 		scrollPaneAdresse.setBounds(10, 39, 504, 210);
 		panelListeAdresse.add(scrollPaneAdresse);
 		
-		tableAdresse = new JTable();
+		//tableAdresse = new JTable();
 		tableAdresse.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -940,7 +950,7 @@ public class VueClient extends JPanel {
 		panelGestion.add(panelClient);
 		panelClient.setLayout(null);
 		
-		textId = new JTextField();
+		//textId = new JTextField();
 		textId.setBounds(10, 423, 106, 20);
 		panelClient.add(textId);
 		textId.setColumns(10);
