@@ -20,11 +20,14 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.border.CompoundBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
+import javax.swing.JProgressBar;
 
 public class VueLogin extends JFrame {
 
@@ -108,6 +111,8 @@ public class VueLogin extends JFrame {
 				
 				if(userD.loginPass(textEmailLogin.getText(), String.valueOf(textPasswordLogin.getText()))) {
 					JOptionPane.showMessageDialog(null, "Bienvenue "+user.userLogin, "Login", JOptionPane.INFORMATION_MESSAGE);
+
+				
 					dispose();
 					VueFrameMain frm = new VueFrameMain();
 					frm.toFront();
@@ -136,4 +141,6 @@ public class VueLogin extends JFrame {
 		btnLoginSortir.setBounds(304, 149, 139, 37);
 		panel.add(btnLoginSortir);
 	}
+	
+	
 }
