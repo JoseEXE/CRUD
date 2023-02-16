@@ -102,6 +102,18 @@ public class DetailDao implements IDao<Detail_commande>{
 		}
 		return false;
 	}
+	public Boolean DeleteAll(int id) {
+		try {
+			sql = conn.prepareStatement("DELETE FROM detail_commande WHERE id_commande=?");
+			sql.setInt(1,id );
+			sql.execute();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	@Override
 	public Boolean activer(Detail_commande object) {

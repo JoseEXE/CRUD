@@ -62,15 +62,35 @@ public class CommandeDao implements IDao<Commande>{
 	}
 
 	@Override
-	public Boolean update(Commande object) {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean update(Commande commande) {
+		try {
+			sql=conn.prepareStatement("UPDATE commande SET total=?,type_paiement=?,etat=? WHERE id=?");
+			sql.setDouble(1, commande.getTotal());
+			sql.setString(2, commande.getType_paiement());
+			sql.setString(3, commande.getEtat());
+			sql.setInt(4, commande.getId());
+			if(sql.executeUpdate()>0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public Boolean Delete(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			sql = conn.prepareStatement("DELETE FROM commande WHERE id=?");
+			sql.setInt(1,id );
+			sql.execute();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override

@@ -438,7 +438,7 @@ public class VueProduit extends JPanel {
 		panelGestion.add(textPrix);
 		panelGestion.add(comboBoxCat);
 		panelGestion.add(comboBoxType);
-		
+		textField.requestFocus();
 		/*
 		 * Tri asc desc pour le tabeau produit
 		 */

@@ -12,6 +12,7 @@ public class Commande {
 	private String Type_paiement;
 	private String etat;
 	
+	public static int ready =0;
 	/*
 	 * constructeur pour la methode create() qui sert a hydrater la base de donnée commande
 	 */

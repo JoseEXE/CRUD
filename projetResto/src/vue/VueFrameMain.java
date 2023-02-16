@@ -127,6 +127,7 @@ public class VueFrameMain extends JFrame {
 				desktopPane.add(new VueCommande(1));
 				desktopPane.repaint();
 				desktopPane.revalidate();
+				
 			}
 		});
 		mntmCreerCom.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
