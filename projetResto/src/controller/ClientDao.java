@@ -104,7 +104,7 @@ public class ClientDao implements IDao<Client>{
 	}
 
 	@Override
-	public Boolean Delete(Client object) {
+	public Boolean Delete(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

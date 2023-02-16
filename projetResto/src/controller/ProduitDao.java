@@ -118,7 +118,7 @@ public class ProduitDao implements IDao<Produit>{
 	}
 
 	@Override
-	public Boolean Delete(Produit object) {
+	public Boolean Delete(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

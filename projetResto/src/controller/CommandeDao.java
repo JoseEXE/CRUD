@@ -68,7 +68,7 @@ public class CommandeDao implements IDao<Commande>{
 	}
 
 	@Override
-	public Boolean Delete(Commande object) {
+	public Boolean Delete(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

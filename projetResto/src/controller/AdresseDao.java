@@ -96,7 +96,7 @@ public class AdresseDao implements IDao<Adresse>{
 	}
 
 	@Override
-	public Boolean Delete(Adresse object) {
+	public Boolean Delete(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

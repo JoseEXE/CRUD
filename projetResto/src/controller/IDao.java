@@ -8,7 +8,7 @@ public interface IDao<T> {
 	//public ArrayList<T> readPagination();
 	public Object findById(int id);
 	public Boolean update(T object);
-	public Boolean Delete(T object);
+	public Boolean Delete(int id);
 	public Boolean activer(T object);
 	public Boolean desactiver(T object);
 	public Boolean isExist(String txt);

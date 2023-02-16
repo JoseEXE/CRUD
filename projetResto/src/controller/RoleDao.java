@@ -86,7 +86,7 @@ public class RoleDao implements IDao<Role>{
 	 * méthode delete du CRUD
 	 */
 	@Override
-	public Boolean Delete(Role role) {
+	public Boolean Delete(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

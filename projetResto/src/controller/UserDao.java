@@ -105,7 +105,7 @@ public class UserDao implements IDao<User>{
 	 * méthode delete du CRUD
 	 */
 	@Override
-	public Boolean Delete(User user) {
+	public Boolean Delete(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
