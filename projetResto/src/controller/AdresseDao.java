@@ -41,6 +41,10 @@ public class AdresseDao implements IDao<Adresse>{
 		ArrayList<Adresse> list=new ArrayList<>();
 		try {
 			sql = conn.prepareStatement("SELECT ad.id, ad.id_client, ad.rue, ad.cod_postal, ad.ville, ad.complement  FROM adresse as ad WHERE ad.id_client=?");
+			txt.trim();
+			if(txt.equalsIgnoreCase("") || txt.equals(null)) {
+				txt = "0";
+			}
 			sql.setInt(1, Integer.parseInt(txt));
 			rs=sql.executeQuery();
 			while (rs.next()) {
@@ -97,8 +101,20 @@ public class AdresseDao implements IDao<Adresse>{
 
 	@Override
 	public Boolean Delete(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			sql = conn.prepareStatement("DELETE FROM adresse WHERE id=?");
+			sql.setInt(1, id);
+
+			System.out.println("SQL Adresse delete: "+ sql);
+			if(sql.executeUpdate()>0) {
+				return true;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+				return false;
 	}
 
 	@Override

@@ -14,6 +14,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.SwingConstants;
 import javax.swing.JDesktopPane;
 import java.awt.SystemColor;
@@ -68,8 +70,15 @@ public class VueFrameMain extends JFrame {
 		/*
 		 *Gestion menu carte
 		 */
+		ImageIcon imageIcon = new ImageIcon(VueFrameMain.class.getResource("/ressources/carte.png")); // load the image to a imageIcon
+		Image image = imageIcon.getImage(); // transform it 
+		Image newimg = image.getScaledInstance(35, 35,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		imageIcon = new ImageIcon(newimg);  // transform it back
+
 		JMenu mnCarte = new JMenu("Carte");
+		mnCarte.setIcon(new ImageIcon(newimg));
 		menuBar.add(mnCarte);
+		repaint();
 		/*
 		 *Gestion sous-menu produit
 		 */
@@ -101,7 +110,12 @@ public class VueFrameMain extends JFrame {
 		/*
 		 *Gestion menu commandes
 		 */
+		imageIcon = new ImageIcon(VueFrameMain.class.getResource("/ressources/commandes.png")); // load the image to a imageIcon
+		image = imageIcon.getImage(); // transform it 
+		newimg = image.getScaledInstance(40, 40,  java.awt.Image.SCALE_REPLICATE); // scale it the smooth way  
+		imageIcon = new ImageIcon(newimg);
 		JMenu mnCommandes = new JMenu("Commandes");
+		mnCommandes.setIcon(imageIcon);
 		menuBar.add(mnCommandes);
 		/*
 		 *Gestion sous-menu clients
@@ -136,6 +150,11 @@ public class VueFrameMain extends JFrame {
 		 *Gestion menu Accès
 		 */
 		JMenu mnAcces = new JMenu("Accès");
+		imageIcon = new ImageIcon(VueFrameMain.class.getResource("/ressources/acces.png")); // load the image to a imageIcon
+		image = imageIcon.getImage(); // transform it 
+		newimg = image.getScaledInstance(30, 30,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		imageIcon = new ImageIcon(newimg);
+		mnAcces.setIcon(imageIcon);
 		menuBar.add(mnAcces);
 		/*
 		 *Gestion sous-menu users
@@ -186,6 +205,11 @@ public class VueFrameMain extends JFrame {
 		 *Gestion menu sortir
 		 */
 		JMenu mnExit = new JMenu("Sortir");
+		imageIcon = new ImageIcon(VueFrameMain.class.getResource("/ressources/sortir.png")); // load the image to a imageIcon
+		image = imageIcon.getImage(); // transform it 
+		newimg = image.getScaledInstance(25, 25,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		imageIcon = new ImageIcon(newimg);
+		mnExit.setIcon(imageIcon);
 		mnExit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
