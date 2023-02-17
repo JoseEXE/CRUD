@@ -19,7 +19,7 @@ public class ProduitMetier {
 	 */
 	public int totalM;
 	/*
-	 * méthode qui affiche la iste la bdd role et l'affiche dans vue role
+	 * méthode qui affiche la iste la bdd produit et l'affiche dans vue Produit gestion
 	 * @param txt: contenu de la barre recherche si on faire un findByName
 	 */
 	public DefaultTableModel lister(String txt,String tri) {
@@ -43,6 +43,9 @@ public class ProduitMetier {
 		}
 		return tableau;
 	}
+	/*
+	 * methode qui affiche les produits lors de la commande
+	 */
 	public DefaultTableModel listeProdCommande(String code,String nom) {
 		String col[]= {"id","Nom","Description","Code","Categorie","Prix"};
 		DefaultTableModel tableau=new DefaultTableModel(null,col);
@@ -56,6 +59,7 @@ public class ProduitMetier {
 					item.getId_cat_produit().getNom(),
 					item.getPrix()
 			});
+			totalM++;
 		}
 		return tableau;
 	}

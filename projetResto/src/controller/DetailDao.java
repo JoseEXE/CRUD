@@ -43,19 +43,16 @@ public class DetailDao implements IDao<Detail_commande>{
 	public ArrayList<Detail_commande> findById(int id) {
 		ArrayList<Detail_commande> list = new ArrayList<>();
 		try {
-			sql=conn.prepareStatement("SELECT *,dc.id as idDetail,c.id as idCom, p.id as idProd,ct.id as idCat, p.nom as nomProd,ct.nom as nomCat  FROM detail_commande dc INNER JOIN commande c ON id_commande=c.id INNER JOIN produit p "
+			sql=conn.prepareStatement("SELECT *,dc.id as idDetail,c.id as idCom, p.id as idProd,ct.id as idCat, p.nom as nomProd,ct.nom as nomCat,p.description as desProd  FROM detail_commande dc INNER JOIN commande c ON id_commande=c.id INNER JOIN produit p "
 					+ "ON id_produit=p.id INNER JOIN cat_produit ct ON ct.id = id_cat_produit  WHERE c.id =?");
 			sql.setInt(1, id);
 			System.out.println("detail"+sql);
 			rs=sql.executeQuery();
 			while (rs.next()) {
-				System.out.println("coucou");
 				Cat_produit catProd = new Cat_produit(rs.getInt("idCat"),rs.getString("nomCat"));
-				System.out.println(catProd);
-				Produit newProd = new Produit(rs.getInt("idProd"),catProd,rs.getString("nomProd"));
+				Produit newProd = new Produit(rs.getInt("idProd"),catProd,rs.getString("nomProd"),rs.getString("type_statut"),rs.getString("desProd"));
 				Commande commande = new Commande(id);
 				Detail_commande detail = new Detail_commande(rs.getInt("id"),commande,newProd,rs.getInt("quantite"),rs.getDouble("prix_unitaire"));
-				System.out.println("coucou"+detail);
 				list.add(detail);
 			}
 		} catch (Exception e) {
@@ -135,8 +132,19 @@ public class DetailDao implements IDao<Detail_commande>{
 
 	@Override
 	public int total() {
-		// TODO Auto-generated method stub
-		return 0;
+			int total =0;
+			try {
+				sql = conn.prepareStatement("SELECT COUNT(*) as total FROM detail_commande");
+				rs=sql.executeQuery();
+				while (rs.next()) {
+				total =	rs.getInt("total");
+				}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println(e.getMessage());
+				}
+			return total;
 	}
 
 }

@@ -82,17 +82,19 @@ public Produit(int id, Cat_produit id_cat_produit, User id_user, String code, St
 	/*
 	 * constructeur pour la methode findById du detail de commande
 	 */
-	public Produit(int id, Cat_produit id_cat_produit, String nom) {
+	public Produit(int id, Cat_produit id_cat_produit, String nom, String type_statut, String description) {
 		this.id = id;
 		this.id_cat_produit = id_cat_produit;
 		this.nom = nom;
+		Type_statut = type_statut;
+		this.description = description;
 	}
+	
 	/*
 	 * constructeurlors de  l'instanciation d'un objet produit lors de la création d'une ligne de Détail_commande VueCommande ligne 322
 	 */
 	
 	public Produit(int id, User id_user, Double prix) {
-		super();
 		this.id = id;
 		this.id_user = id_user;
 		this.prix = prix;

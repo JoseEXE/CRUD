@@ -132,6 +132,18 @@ public class VueFrameMain extends JFrame {
 		});
 		mntmCreerCom.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
 		mnCommandes.add(mntmCreerCom);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Commandes en cours");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				desktopPane.removeAll();
+				desktopPane.add(new VueLivraison());
+				desktopPane.repaint();
+				desktopPane.revalidate();
+			}
+		});
+		mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_DOWN_MASK));
+		mnCommandes.add(mntmNewMenuItem);
 		/*
 		 *Gestion menu Accès
 		 */

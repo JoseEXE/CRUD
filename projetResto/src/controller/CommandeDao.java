@@ -10,7 +10,7 @@ import connetion.ConnectionSql;
 import model.Cat_produit;
 import model.Client;
 import model.Commande;
-import model.Detail_commande;
+import model.Produit;
 import model.User;
 
 public class CommandeDao implements IDao<Commande>{
@@ -36,8 +36,43 @@ public class CommandeDao implements IDao<Commande>{
 
 	@Override
 	public ArrayList<Commande> read(String txt) {
-		// TODO Auto-generated method stub
-		return null;
+			ArrayList<Commande> list = new ArrayList<>();
+		try {
+			sql = conn.prepareStatement("SELECT * ,C.id as idCom FROM Commande c INNER JOIN client cl ON id_client=cl.id  WHERE C.id LIKE? AND etat= 'validée' ORDER BY date_comm DESC ");
+			sql.setString(1, "%"+txt+"%");
+			rs=sql.executeQuery();
+			while (rs.next()) {
+				
+				Client client = new Client(rs.getString("nom"),rs.getString("prenom"),rs.getString("numTel"));
+				Commande commande =new Commande(rs.getInt("idCom"),client,rs.getDouble("total"),rs.getTimestamp("date_comm"),rs.getString("type_paiement"),rs.getString("etat"));
+				list.add(commande);
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			return list;
+	}
+	
+	public ArrayList<Commande> archive(String txt) {
+		ArrayList<Commande> list = new ArrayList<>();
+		try {
+			sql = conn.prepareStatement("SELECT * ,C.id as idCom FROM Commande c INNER JOIN client cl ON id_client=cl.id  WHERE C.id LIKE? ORDER BY date_comm DESC ");
+			sql.setString(1, "%"+txt+"%");
+			rs=sql.executeQuery();
+			while (rs.next()) {
+				
+				Client client = new Client(rs.getString("nom"),rs.getString("prenom"),rs.getString("numTel"));
+				Commande commande =new Commande(rs.getInt("idCom"),client,rs.getDouble("total"),rs.getTimestamp("date_comm"),rs.getString("type_paiement"),rs.getString("etat"));
+				list.add(commande);
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 	@Override
@@ -113,9 +148,21 @@ public class CommandeDao implements IDao<Commande>{
 
 	@Override
 	public int total() {
-		
-		return 0;
+		int total =0;
+		try {
+			sql = conn.prepareStatement("SELECT COUNT(*) as total FROM commande");
+			rs=sql.executeQuery();
+			while (rs.next()) {
+			total =	rs.getInt("total");
+			}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+			}
+		return total;
 	}
+	
 	public Double totalCommande(int id) {
 		Double total =(double) 0;
 		try {
@@ -132,6 +179,7 @@ public class CommandeDao implements IDao<Commande>{
 		System.out.println("total commande: "+total);
 		return total;
 	}
+	
 	public int dernierIdCommande() {
 		 int id = 0;
 		try {

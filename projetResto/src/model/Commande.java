@@ -42,15 +42,38 @@ public class Commande {
 		this.id = id;
 	}
 	
+	/*
+	 * Constructeur du Read de commande
+	 */
+	public Commande(int id, Client id_client, Double total, Timestamp date_comm, String type_paiement, String etat) {
+	this.id = id;
+	this.id_client = id_client;
+	this.total = total;
+	this.date_comm = date_comm;
+	Type_paiement = type_paiement;
+	this.etat = etat;
+}
 
+	/*
+	 * Constructeur du findById de Commande
+	 */
 	public Commande(int id, Client id_client, User id_user, Timestamp date_comm, String etat) {
 	this.id = id;
 	this.id_client = id_client;
 	this.id_user = id_user;
 	this.date_comm = date_comm;
 	this.etat = etat;
-}
+	}
 
+	/*
+	 * Constructeur du upDate, spécialement pour changer la colonne état
+	 */
+	public Commande(int id, Double total, String type_paiement, String etat) {
+		this.id = id;
+		this.total = total;
+		Type_paiement = type_paiement;
+		this.etat = etat;
+	}
 
 	/*
 	 * generation getters setters
