@@ -35,7 +35,7 @@ public class VueRole extends JPanel {
 	/*
 	 * creation variable string role pour les differents messages d'affichage fenetre role
 	 */
-	String nomModel = "rôle";
+	String nomModel = "rôle(s)";
 	/*
 	 * creation variable pour les 2 actions create et update
 	 */
@@ -94,7 +94,7 @@ public class VueRole extends JPanel {
 		
 		table = new JTable();
 		table.setModel(roleM.lister(""));
-		JLabel lblAffichage = new JLabel("Affichage de "+roleM.totalM +" registres sur un total de "+ roleD.total()+" registres");
+		JLabel lblAffichage = new JLabel("Affichage de "+roleM.totalM +" "+nomModel+" sur un total de "+ roleD.total()+" registres");
 		JButton btnChercher = new JButton("Chercher");
 		JTextArea textDescription = new JTextArea();
 		btnChercher.addActionListener(new ActionListener() {
@@ -102,7 +102,7 @@ public class VueRole extends JPanel {
 				table.setModel(roleM.lister(textField.getText()));
 				TableRowSorter order = new TableRowSorter(table.getModel());
 				table.setRowSorter(order);
-				lblAffichage.setText("Affichage de "+roleM.totalM +" registres sur un total de "+ roleD.total()+" registres");
+				lblAffichage.setText("Affichage de "+roleM.totalM +" "+nomModel+" sur un total de "+ roleD.total()+" registres");
 			}
 		});
 		btnChercher.setBounds(518, 34, 106, 23);

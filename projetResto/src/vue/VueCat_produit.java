@@ -28,7 +28,7 @@ public class VueCat_produit extends JPanel {
 	private JTextField textField;
 	private JTable table;
 	/*
-	 * instanciation Class roleMetier
+	 * instanciation Class Cat_produitMetier
 	 */
 	Cat_produitMetier CatProdM = new Cat_produitMetier();
 	/*
@@ -36,9 +36,9 @@ public class VueCat_produit extends JPanel {
 	 */
 	Cat_produitDao CatProdD = new Cat_produitDao();
 	/*
-	 * creation variable string role pour les differents messages d'affichage fenetre role
+	 * creation variable string catégoriepour les differents messages d'affichage fenetre cat_produit
 	 */
-	String nomModel = "catégorie";
+	String nomModel = "catégories";
 	/*
 	 * creation variable pour les 2 actions create et update
 	 */
@@ -96,13 +96,13 @@ public class VueCat_produit extends JPanel {
 		
 		table = new JTable();
 		table.setModel(CatProdM.lister(""));
-		JLabel lblAffichage = new JLabel("Affichage de "+CatProdM.totalM +" registres sur un total de "+ CatProdD.total()+" registres");
+		JLabel lblAffichage = new JLabel("Affichage de "+CatProdM.totalM +" "+nomModel+" sur un total de "+ CatProdD.total()+" registres");
 		JButton btnChercher = new JButton("Chercher");
 		JTextArea textDescription = new JTextArea();
 		btnChercher.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				table.setModel(CatProdM.lister(textField.getText().trim()));
-				lblAffichage.setText("Affichage de "+CatProdM.totalM +" registres sur un total de "+ CatProdD.total()+" registres");
+				lblAffichage.setText("Affichage de "+CatProdM.totalM +" "+nomModel+" sur un total de "+ CatProdD.total()+" registres");
 			}
 		});
 		btnChercher.setBounds(518, 34, 106, 23);

@@ -43,7 +43,7 @@ public class CommandeMetier {
 		DefaultTableModel list = new DefaultTableModel(null,col);
 		totalM=0;
 		/*
-		 * injection du param txt (recherche dans méthode read(), qui devient un findByName
+		 * injection du param txt (recherche dans méthode achive(), qui devient un findByID si besoin
 		 */
 		for (Commande item : commandeD.archive(txt)) {
 			list.addRow(new Object[] {

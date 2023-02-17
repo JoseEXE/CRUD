@@ -49,7 +49,7 @@ public class VueUser extends JPanel {
 	/*
 	 * creation variable string role pour les differents messages d'affichage fenetre role
 	 */
-	String nomModel = "utilisateur";
+	String nomModel = "utilisateur(s)";
 	/*
 	 * creation variable pour les 2 actions create et update
 	 */
@@ -149,12 +149,12 @@ public class VueUser extends JPanel {
 		
 		table = new JTable();
 		table.setModel(userM.lister(""));
-		JLabel lblAffichage = new JLabel("Affichage de "+userM.totalM +" registres sur un total de "+ userD.total()+" registres");
+		JLabel lblAffichage = new JLabel("Affichage de "+userM.totalM +" "+nomModel+" sur un total de "+ userD.total()+" registres");
 		JButton btnChercher = new JButton("Chercher");
 		btnChercher.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				table.setModel(userM.lister(textField.getText()));
-				lblAffichage.setText("Affichage de "+ userM.totalM +" registres sur un total de "+ userD.total()+" registres");
+				lblAffichage.setText("Affichage de "+userM.totalM +" "+nomModel+" sur un total de "+ userD.total()+" registres");
 				oculter();
 				// Pour faire le order by de tableau Asc Desc
 				TableRowSorter order = new TableRowSorter(table.getModel());

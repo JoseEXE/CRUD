@@ -58,7 +58,7 @@ public class CommandeDao implements IDao<Commande>{
 	public ArrayList<Commande> archive(String txt) {
 		ArrayList<Commande> list = new ArrayList<>();
 		try {
-			sql = conn.prepareStatement("SELECT * ,C.id as idCom FROM Commande c INNER JOIN client cl ON id_client=cl.id  WHERE C.id LIKE? ORDER BY date_comm DESC ");
+			sql = conn.prepareStatement("SELECT * ,C.id as idCom FROM Commande c INNER JOIN client cl ON id_client=cl.id  WHERE C.id LIKE ? ORDER BY date_comm DESC ");
 			sql.setString(1, "%"+txt+"%");
 			rs=sql.executeQuery();
 			while (rs.next()) {

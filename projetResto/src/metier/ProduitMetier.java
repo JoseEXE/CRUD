@@ -25,7 +25,7 @@ public class ProduitMetier {
 	public DefaultTableModel lister(String txt,String tri) {
 		String col[]= {"id","Nom","Description","Code","Categorie","Type","Prix","modifiant","Date-modif","statut"};
 		DefaultTableModel tableau=new DefaultTableModel(null,col);
-		
+		totalM=0;
 		for (Produit item : prodD.filtrer(txt,tri)) {
 			tableau.addRow(new Object[] {
 					item.getId(),
@@ -49,7 +49,7 @@ public class ProduitMetier {
 	public DefaultTableModel listeProdCommande(String code,String nom) {
 		String col[]= {"id","Nom","Description","Code","Categorie","Prix"};
 		DefaultTableModel tableau=new DefaultTableModel(null,col);
-		
+		totalM=0;
 		for (Produit item : prodD.findByCode(code,nom)) {
 			tableau.addRow(new Object[] {
 					item.getId(),

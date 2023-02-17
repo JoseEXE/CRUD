@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableRowSorter;
@@ -23,7 +22,10 @@ import controller.DetailDao;
 import metier.CommandeMetier;
 import metier.DetailMetier;
 import model.Commande;
+import javax.swing.border.EtchedBorder;
+import java.awt.Color;
 
+@SuppressWarnings("serial")
 public class VueLivraison extends JPanel {
 	private JTextField textField;
 	private JTable tableCommande;
@@ -46,7 +48,8 @@ public class VueLivraison extends JPanel {
 	/*
 	 * creation variable string Commande pour les differents messages d'affichage fenetre role
 	 */
-	String nomModel = "Commande";
+	String nomModel = "Commande(s)";
+	String nomModel2 = "détail(s)de commande";
 	/*
 	 * creation variable pour les 2 actions create et update
 	 */
@@ -71,7 +74,7 @@ public class VueLivraison extends JPanel {
 		panel.setLayout(null);
 		
 		JPanel panelMain = new JPanel();
-		panelMain.setBorder(new TitledBorder(null, "R\u00F4les", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelMain.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Tableau de bord commandes", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelMain.setBounds(0, 10, 1136, 555);
 		panel.add(panelMain);
 		panelMain.setLayout(null);
@@ -115,16 +118,16 @@ public class VueLivraison extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				idCommande =(int)tableCommande.getValueAt(tableCommande.getSelectedRow(), 0);
 				tableDetail(idCommande);
-				lblAffichage_1.setText("Affichage de "+detailM.totalM +" registres sur un total de "+ detailD.total()+" registres");
+				lblAffichage_1.setText("Affichage de "+detailM.totalM +" "+nomModel2+" sur un total de "+ detailD.total()+" registres");
 			}
 		});
 		tableCommande("");
-		lblAffichage.setText("Affichage de "+commandeM.totalM +" registres sur un total de "+ commandeD.total()+" registres");
+		lblAffichage.setText("Affichage de "+commandeM.totalM +" "+nomModel+" sur un total de "+ commandeD.total()+" registres");
 		JButton btnChercher = new JButton("Chercher");
 		btnChercher.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tableCommande(textField.getText());
-				lblAffichage.setText("Affichage de "+commandeM.totalM +" registres sur un total de "+ commandeD.total()+" registres");
+				lblAffichage.setText("Affichage de "+commandeM.totalM +" "+nomModel+" sur un total de "+ commandeD.total()+" registres");
 			}
 		});
 		btnChercher.setBounds(518, 34, 106, 23);
@@ -163,6 +166,8 @@ public class VueLivraison extends JPanel {
 				Commande commandeEnCours=new Commande(idCommande,total,type,etat);
 				commandeD.update(commandeEnCours);
 				tableCommande(textField.getText());
+				idCommande=0;
+				tableDetail(idCommande);
 			}
 			}});
 		
@@ -170,6 +175,12 @@ public class VueLivraison extends JPanel {
 		tabbedPane.addTab("Archive", null, panelArchive, null);
 		tabbedPane.setEnabledAt(1, true);
 		panelArchive.setLayout(null);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new TitledBorder(null, "Archives", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_1.setBounds(26, 69, 906, 356);
+		panelArchive.add(panel_1);
+		panel_1.setLayout(null);
 		
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
@@ -181,10 +192,20 @@ public class VueLivraison extends JPanel {
 		lblRecherche_1.setBounds(26, 32, 124, 27);
 		panelArchive.add(lblRecherche_1);
 
-		JLabel lblAffichageArchive = new JLabel("Affichage de 0 registres sur un total de 55 registres");
+		JLabel lblAffichageArchive = new JLabel("");
 		lblAffichageArchive.setBounds(565, 438, 367, 19);
 		panelArchive.add(lblAffichageArchive);
 		
+		
+		tableArchive = new JTable();
+		tableArchive.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
+		tableArchive("");
+		lblAffichageArchive.setText("Affichage de "+commandeM.totalM +" "+nomModel+" sur un total de "+ commandeD.total()+" registres");
+	    
 		JButton btnChercherArchive = new JButton("Chercher");
 		btnChercherArchive.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -195,30 +216,14 @@ public class VueLivraison extends JPanel {
 		btnChercherArchive.setBounds(524, 36, 106, 23);
 		panelArchive.add(btnChercherArchive);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "Archives", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(26, 69, 906, 356);
-		panelArchive.add(panel_1);
-		panel_1.setLayout(null);
-		
 		JScrollPane scrollPane_2 = new JScrollPane();
 		scrollPane_2.setBounds(10, 22, 886, 324);
 		panel_1.add(scrollPane_2);
-		
-		tableArchive = new JTable();
-		tableArchive("");
-		lblAffichageArchive.setText("Affichage de "+commandeM.totalM +" registres sur un total de "+ commandeD.total()+" registres");
-		
-		tableArchive.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
 		scrollPane_2.setViewportView(tableArchive);
 		
 		
 		JButton btnGnrerUnPdf = new JButton("Générer un PDF");
-		btnGnrerUnPdf.setBounds(26, 437, 124, 23);
+		btnGnrerUnPdf.setBounds(26, 437, 137, 23);
 		panelArchive.add(btnGnrerUnPdf);
 	}
 	public void tableCommande(String txt) {
@@ -254,7 +259,5 @@ public class VueLivraison extends JPanel {
 		tableArchive.setModel(commandeM.listerArchive(txt));
 		tableArchive.getColumnModel().getColumn(0).setMaxWidth(80);
 		tableArchive.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(80);
-		TableRowSorter order = new TableRowSorter(tableCommande.getModel());
-		tableArchive.setRowSorter(order);
 	}
 }

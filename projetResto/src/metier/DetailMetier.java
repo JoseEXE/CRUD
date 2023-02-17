@@ -39,7 +39,7 @@ public class DetailMetier {
 	public DefaultTableModel listeDetail1(int id) {
 		String col[]= {"id","Catégorie","Produit","Type de produit","Quantité","Description"};
 		DefaultTableModel tableau=new DefaultTableModel(null,col);
-		
+		totalM=0;
 		for (Detail_commande item : detailD.findById(id)) {
 			tableau.addRow(new Object[] {
 					item.getId(),

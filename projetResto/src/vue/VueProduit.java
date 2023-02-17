@@ -33,17 +33,17 @@ public class VueProduit extends JPanel {
 	private JTextField textField;
 	private JTable table;
 	/*
-	 * instanciation Class roleMetier
+	 * instanciation Class ProduitMetier
 	 */
 	ProduitMetier prodM=new ProduitMetier();
 	/*
-	 * instanciation Class roleDao
+	 * instanciation Class ProduitDao
 	 */
 	ProduitDao prodD=new ProduitDao();
 	/*
-	 * creation variable string role pour les differents messages d'affichage fenetre role
+	 * creation variable string Produit pour les differents messages d'affichage fenetre role
 	 */
-	String nomModel = "Produit";
+	String nomModel = "Produit(s)";
 	/*
 	 * creation variable pour les 2 actions create et update
 	 */
@@ -129,7 +129,7 @@ public class VueProduit extends JPanel {
 		comboBoxTri.addItem(cat);
 		comboBoxTri.setSelectedItem(cat);
         
-		JLabel lblAffichage = new JLabel("Affichage de "+prodM.totalM +" registres sur un total de "+ prodD.total()+" registres");
+		JLabel lblAffichage = new JLabel("Affichage de "+prodM.totalM +" "+nomModel+" sur un total de "+ prodD.total()+" registres");
 		JButton btnChercher = new JButton("Chercher");
 		JTextArea textDescription = new JTextArea();
 		btnChercher.addActionListener(new ActionListener() {
@@ -141,7 +141,7 @@ public class VueProduit extends JPanel {
 				table.setModel(prodM.lister(textField.getText(),tri));
 				TableRowSorter order = new TableRowSorter(table.getModel());
 				table.setRowSorter(order);
-				lblAffichage.setText("Affichage de "+prodM.totalM +" registres sur un total de "+ prodD.total()+" registres");
+				lblAffichage.setText("Affichage de "+prodM.totalM +" "+nomModel+" sur un total de "+ prodD.total()+" registres");
 			}
 		});
 		btnChercher.setBounds(405, 33, 106, 23);
