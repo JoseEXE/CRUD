@@ -89,8 +89,9 @@ public class VueCommande extends JPanel {
 		panelClient.setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(255, 206, 206));
 		panel_1.setBorder(new TitledBorder(null, "Client", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(42, 10, 361, 439);
+		panel_1.setBounds(42, 10, 474, 439);
 		panelClient.add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -101,17 +102,18 @@ public class VueCommande extends JPanel {
 		
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(23, 96, 306, 182);
+		scrollPane.setBounds(20, 95, 321, 223);
 		panel_1.add(scrollPane);
 		
 		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(new Color(255, 206, 206));
 		panel_2.setBorder(new TitledBorder(null, "Adresses", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_2.setBounds(413, 10, 437, 439);
+		panel_2.setBounds(526, 10, 565, 439);
 		panelClient.add(panel_2);
 		panel_2.setLayout(null);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(22, 100, 393, 182);
+		scrollPane_1.setBounds(22, 95, 406, 223);
 		panel_2.add(scrollPane_1);
 		
 		/*
@@ -143,7 +145,7 @@ public class VueCommande extends JPanel {
 		
 		JPanel cadreNom = new JPanel();
 		cadreNom.setBackground(new Color(255, 206, 206));
-		cadreNom.setBounds(725, 18, 280, 220);
+		cadreNom.setBounds(780, 18, 280, 220);
 		panelProduits.add(cadreNom);
 		cadreNom.setLayout(null);
 		
@@ -253,6 +255,22 @@ public class VueCommande extends JPanel {
 		tableAdresse = new JTable();
 		scrollPane_1.setViewportView(tableAdresse);
 		
+		JPanel panel_4_1 = new JPanel();
+		panel_4_1.setBackground(new Color(0, 0, 0));
+		panel_4_1.setBounds(10, 82, 545, 249);
+		panel_2.add(panel_4_1);
+		panel_4_1.setLayout(null);
+		
+		JPanel panel_6 = new JPanel();
+		panel_6.setBounds(416, 13, 119, 223);
+		panel_4_1.add(panel_6);
+		panel_6.setLayout(null);
+		
+		JLabel lblNewLabel_7 = new JLabel("");
+		lblNewLabel_7.setBounds(-51, -30, 170, 291);
+		lblNewLabel_7.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/paris1.jfif")));
+		panel_6.add(lblNewLabel_7);
+		
 		
 		tableClient = new JTable();
 		tableClient.addMouseListener(new MouseAdapter() {
@@ -271,6 +289,7 @@ public class VueCommande extends JPanel {
 				 */
 				tableAdresse.setModel(adresseM.lister(String.valueOf(Client.idNewClient)));
 				tableAdresse.getColumnModel().getColumn(0).setMaxWidth(20);
+				tableAdresse.setRowHeight(40);
 				tableAdresse.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(20);
 				tableAdresse.addMouseListener(new MouseAdapter() {
 					@Override
@@ -332,6 +351,7 @@ public class VueCommande extends JPanel {
 				String tel = textTel.getText();
 				if(clientM.checkRegexTel(tel)) {
 					tableClient.setModel(clientM.clientExist(tel));
+					tableClient.setRowHeight(40);
 					tableClient.getColumnModel().getColumn(0).setMaxWidth(20);
 					tableClient.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(20);
 					if(tableClient.getRowCount()==0) {
@@ -354,11 +374,21 @@ public class VueCommande extends JPanel {
 		lblNewLabel.setBounds(20, 17, 162, 24);
 		panel_1.add(lblNewLabel);
 		
-		JLabel lblimage = new JLabel("Photo New client");
-		lblimage.setBounds(849, -58, 182, 535);
-
-		//lblimage.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/sushiman.jfif")));
-		panelClient.add(lblimage);
+		JPanel panel_4 = new JPanel();
+		panel_4.setBackground(new Color(0, 0, 0));
+		panel_4.setBounds(10, 82, 454, 248);
+		panel_1.add(panel_4);
+		panel_4.setLayout(null);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setBounds(331, 13, 113, 223);
+		panel_4.add(panel_5);
+		panel_5.setLayout(null);
+		
+		JLabel lblNewLabel_6 = new JLabel("");
+		lblNewLabel_6.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/sushiman.jfif")));
+		lblNewLabel_6.setBounds(-32, 0, 145, 238);
+		panel_5.add(lblNewLabel_6);
 	
 		
 		textCode = new JTextField();
@@ -370,69 +400,26 @@ public class VueCommande extends JPanel {
 			}
 		});
 		textCode.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		textCode.setBounds(145, 10, 80, 44);
+		textCode.setBounds(148, 10, 73, 38);
 		panelProduits.add(textCode);
 		textCode.setColumns(10);
-		
-		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(50, 105, 658, 80);
-		panelProduits.add(scrollPane_2);
 		
 		JLabel lblTotal = new JLabel("0");
 		lblTotal.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTotal.setFont(new Font("Tahoma", Font.BOLD, 30));
-		lblTotal.setBounds(841, 273, 92, 59);
+		lblTotal.setBounds(880, 273, 92, 59);
 		panelProduits.add(lblTotal);
-		
-		JScrollPane scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(50, 210, 658, 220);
-		panelProduits.add(scrollPane_3);
 		
 		JLabel lblInfo = new JLabel("");
 		lblInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblInfo.setBounds(50, 183, 257, 19);
-		lblInfo.setForeground(new Color(40, 210, 45));
+		lblInfo.setBounds(36, 441, 198, 19);
 		panelProduits.add(lblInfo);
-		
-		
-		tableDetail = new JTable();
-		tableDetail.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				/*injection de la quantité de produit dans le label en bas de tableau
-				 * 
-				 */
-				idDetail =(int)(tableDetail.getValueAt(tableDetail.getSelectedRow(), 0));
-				lblInfo.setText("");
-				textQte.requestFocus();			}
-		});
-		
-		tableProduits = new JTable();
-		tableProduits.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			/*
-			 * ici selection de la ligne de produit pour creer un produit, puis un détail de commande 
-			 */
-				int idProd=(int) (tableProduits.getValueAt(tableProduits.getSelectedRow(), 0));
-				Double prixProd=(double) (tableProduits.getValueAt(tableProduits.getSelectedRow(), 5));
-				Produit newProduit= new Produit(idProd,User.userLogin,prixProd);
-				Detail_commande newDetail = new Detail_commande(newCommande,newProduit);
-				detailD.create(newDetail);
-				lblTotal.setText(String.valueOf(commandeD.totalCommande(idNewCommande)));
-				lblInfo.setText("");
-				tableDetail(idNewCommande);
-			}
-		});
-		
-		scrollPane_2.setViewportView(tableProduits);
-		scrollPane_3.setViewportView(tableDetail);
 		
 		
 		
 		JLabel lblNewLabel_1 = new JLabel("Changer la quantite ici : ");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblNewLabel_1.setBounds(148, 440, 126, 26);
+		lblNewLabel_1.setBounds(204, 451, 126, 26);
 		panelProduits.add(lblNewLabel_1);
 		
 		textQte = new JTextField("");
@@ -461,13 +448,13 @@ public class VueCommande extends JPanel {
 				}
 			}
 		});
-		textQte.setBounds(284, 444, 36, 19);
+		textQte.setBounds(322, 458, 36, 19);
 		panelProduits.add(textQte);
 		textQte.setColumns(10);
 		
 		JLabel lblNewLabel_2 = new JLabel("Total:");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNewLabel_2.setBounds(752, 293, 80, 26);
+		lblNewLabel_2.setBounds(791, 293, 80, 26);
 		panelProduits.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Code de produit:");
@@ -475,7 +462,7 @@ public class VueCommande extends JPanel {
 		panelProduits.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_3_1 = new JLabel("Nom:");
-		lblNewLabel_3_1.setBounds(50, 64, 85, 26);
+		lblNewLabel_3_1.setBounds(50, 54, 85, 26);
 		panelProduits.add(lblNewLabel_3_1);
 		
 		textNom = new JTextField();
@@ -487,7 +474,7 @@ public class VueCommande extends JPanel {
 		});
 		textNom.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textNom.setColumns(10);
-		textNom.setBounds(145, 64, 170, 26);
+		textNom.setBounds(148, 54, 170, 26);
 		panelProduits.add(textNom);
 		
 		JButton btnClear = new JButton("Vider les champs");
@@ -498,17 +485,17 @@ public class VueCommande extends JPanel {
 				tableProduit();
 			}
 		});
-		btnClear.setBounds(235, 28, 138, 21);
+		btnClear.setBounds(235, 18, 138, 21);
 		panelProduits.add(btnClear);
 		
 		JLabel lblTotal_1 = new JLabel("€");
 		lblTotal_1.setFont(new Font("Tahoma", Font.BOLD, 25));
-		lblTotal_1.setBounds(963, 275, 58, 59);
+		lblTotal_1.setBounds(1002, 275, 58, 59);
 		panelProduits.add(lblTotal_1);
 		
 		JPanel PanelGo = new JPanel();
 		PanelGo.setBackground(new Color(0, 0, 0));
-		PanelGo.setBounds(749, 330, 241, 147);
+		PanelGo.setBounds(788, 330, 241, 147);
 		panelProduits.add(PanelGo);
 		PanelGo.setLayout(null);
 		PanelGo.setVisible(false);
@@ -579,12 +566,12 @@ public class VueCommande extends JPanel {
 		btnFinaliser.setBounds(777, 391, 183, 39);
 		panelProduits.add(btnFinaliser);
 		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnDelete.setBounds(602, 442, 106, 23);
+		btnDelete.setBounds(602, 454, 106, 23);
 		panelProduits.add(btnDelete);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Effacer la ligne de commande ici : ");
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblNewLabel_1_1.setBounds(435, 440, 157, 26);
+		lblNewLabel_1_1.setBounds(435, 451, 157, 26);
 		panelProduits.add(lblNewLabel_1_1);
 		
 		JButton btnNewButton_1 = new JButton("Annuler la commande");
@@ -609,8 +596,72 @@ public class VueCommande extends JPanel {
 				
 			}
 		});
-		btnNewButton_1.setBounds(479, 51, 138, 44);
+		btnNewButton_1.setBounds(558, 30, 138, 44);
 		panelProduits.add(btnNewButton_1);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setBackground(new Color(255,206,206));
+		panel_3.setBounds(36, 200, 715, 240);
+		panelProduits.add(panel_3);
+		panel_3.setLayout(null);
+		
+		JLabel lblNewLabel_5 = new JLabel("New label");
+		lblNewLabel_5.setBounds(10, 10, 61, 220);
+		lblNewLabel_5.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/sushi.jfif")));
+		panel_3.add(lblNewLabel_5);
+		
+		JScrollPane scrollPane_3 = new JScrollPane();
+		scrollPane_3.setBounds(67, 10, 638, 220);
+		panel_3.add(scrollPane_3);
+		
+		
+		tableDetail = new JTable();
+		tableDetail.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				/*injection de la quantité de produit dans le label en bas de tableau
+				 * 
+				 */
+				idDetail =(int)(tableDetail.getValueAt(tableDetail.getSelectedRow(), 0));
+				lblInfo.setText("");
+				textQte.requestFocus();			}
+		});
+		scrollPane_3.setViewportView(tableDetail);
+		
+		JPanel panel_3_1 = new JPanel();
+		panel_3_1.setLayout(null);
+		panel_3_1.setBackground(new Color(255, 206, 206));
+		panel_3_1.setBounds(36, 90, 715, 100);
+		panelProduits.add(panel_3_1);
+		
+		JLabel lblNewLabel_5_1 = new JLabel("New label");
+		lblNewLabel_5_1.setBounds(10, 10, 61, 82);
+		lblNewLabel_5_1.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/sushi.jfif")));
+		panel_3_1.add(lblNewLabel_5_1);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(70, 10, 638, 80);
+		panel_3_1.add(scrollPane_2);
+		
+		tableProduits = new JTable();
+		tableProduits.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			/*
+			 * ici selection de la ligne de produit pour creer un produit, puis un détail de commande 
+			 */
+				int idProd=(int) (tableProduits.getValueAt(tableProduits.getSelectedRow(), 0));
+				Double prixProd=(double) (tableProduits.getValueAt(tableProduits.getSelectedRow(), 5));
+				Produit newProduit= new Produit(idProd,User.userLogin,prixProd);
+				Detail_commande newDetail = new Detail_commande(newCommande,newProduit);
+				detailD.create(newDetail);
+				lblTotal.setText(String.valueOf(commandeD.totalCommande(idNewCommande)));
+				lblInfo.setText("");
+				tableDetail(idNewCommande);
+			}
+		});
+		
+		scrollPane_2.setViewportView(tableProduits);
 		
 		
 	

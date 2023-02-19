@@ -43,7 +43,7 @@ public class CommandeDao implements IDao<Commande>{
 			rs=sql.executeQuery();
 			while (rs.next()) {
 				
-				Client client = new Client(rs.getString("nom"),rs.getString("prenom"),rs.getString("numTel"));
+				Client client = new Client(rs.getInt("id_client"),rs.getString("nom"),rs.getString("prenom"),rs.getString("numTel"));
 				Commande commande =new Commande(rs.getInt("idCom"),client,rs.getDouble("total"),rs.getTimestamp("date_comm"),rs.getString("type_paiement"),rs.getString("etat"));
 				list.add(commande);
 			}

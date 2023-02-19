@@ -1,11 +1,13 @@
 package vue;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -14,16 +16,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableRowSorter;
 
+import controller.AdresseDao;
 import controller.CommandeDao;
 import controller.DetailDao;
 import metier.CommandeMetier;
 import metier.DetailMetier;
+import model.Adresse;
 import model.Commande;
-import javax.swing.border.EtchedBorder;
-import java.awt.Color;
+import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class VueLivraison extends JPanel {
@@ -45,6 +49,10 @@ public class VueLivraison extends JPanel {
 	 * instanciation Class DetailDao
 	 */
 	DetailDao detailD = new DetailDao();
+	/*
+	 * instanciation adresse controleur pour appeler le read et récupérer l'adresse du client 
+	 */
+	AdresseDao adresseD = new AdresseDao();
 	/*
 	 * creation variable string Commande pour les differents messages d'affichage fenetre role
 	 */
@@ -95,12 +103,11 @@ public class VueLivraison extends JPanel {
 		
 		JLabel lblRecherche = new JLabel("Rechercher par id :");
 		lblRecherche.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblRecherche.setBounds(20, 30, 124, 27);
+		lblRecherche.setBounds(20, 10, 124, 27);
 		panelListe.add(lblRecherche);
 		
-		
 		textField = new JTextField();
-		textField.setBounds(194, 35, 237, 19);
+		textField.setBounds(194, 15, 237, 19);
 		panelListe.add(textField);
 		textField.setColumns(10);
 		
@@ -112,6 +119,55 @@ public class VueLivraison extends JPanel {
 		lblAffichage.setBounds(533, 188, 367, 19);
 		panelListe.add(lblAffichage);
 		
+		JLabel lblLabel1 = new JLabel("Adresse de livraison :");
+		lblLabel1.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 10));
+		lblLabel1.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setBackground(new Color(0, 0, 0));
+		panel_3.setBounds(927, 47, 174, 396);
+		panelListe.add(panel_3);
+		panel_3.setLayout(null);
+		
+		JPanel panel_4 = new JPanel();
+		panel_4.setBounds(10, 10, 154, 159);
+	
+		panel_3.add(panel_4);
+		panel_4.setLayout(null);
+		
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setBounds(-26, 0, 180, 172);
+		lblNewLabel_1.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/menu.jfif")));
+		panel_4.add(lblNewLabel_1);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setBounds(10, 179, 154, 207);
+		panel_3.add(panel_5);
+		panel_5.setLayout(null);
+		
+		lblLabel1.setBounds(10, 10, 134, 18);
+		panel_5.add(lblLabel1);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setBounds(63, 13, 81, 15);
+		panel_5.add(lblNewLabel);
+		
+		JLabel lblRue = new JLabel("");
+		lblRue.setBounds(10, 57, 134, 18);
+		panel_5.add(lblRue);
+		
+		JLabel lblCode = new JLabel("");
+		lblCode.setBounds(10, 95, 55, 18);
+		panel_5.add(lblCode);
+		
+		JLabel lblVille = new JLabel("");
+		lblVille.setBounds(10, 138, 134, 18);
+		panel_5.add(lblVille);
+		
+		JLabel lblComplement = new JLabel("");
+		lblComplement.setBounds(10, 166, 134, 18);
+		panel_5.add(lblComplement);
+		
 		tableCommande = new JTable();
 		tableCommande.addMouseListener(new MouseAdapter() {
 			@Override
@@ -119,6 +175,12 @@ public class VueLivraison extends JPanel {
 				idCommande =(int)tableCommande.getValueAt(tableCommande.getSelectedRow(), 0);
 				tableDetail(idCommande);
 				lblAffichage_1.setText("Affichage de "+detailM.totalM +" "+nomModel2+" sur un total de "+ detailD.total()+" registres");
+				Adresse clientAdresse = findAddress(String.valueOf(tableCommande.getValueAt(tableCommande.getSelectedRow(), 5)));
+				lblRue.setText(clientAdresse.getRue());
+				lblCode.setText(clientAdresse.getCod_postal());
+				lblVille.setText(clientAdresse.getVille());
+				lblComplement.setText(clientAdresse.getComplement());
+				;
 			}
 		});
 		tableCommande("");
@@ -130,17 +192,18 @@ public class VueLivraison extends JPanel {
 				lblAffichage.setText("Affichage de "+commandeM.totalM +" "+nomModel+" sur un total de "+ commandeD.total()+" registres");
 			}
 		});
-		btnChercher.setBounds(518, 34, 106, 23);
+		btnChercher.setBounds(518, 14, 106, 23);
 		panelListe.add(btnChercher);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 67, 897, 111);
+		scrollPane.setBounds(34, 67, 877, 89);
 		panelListe.add(scrollPane);
 		scrollPane.setViewportView(tableCommande);
 		
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(null, "D\u00E9tails de la Commande ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_2.setBackground(new Color(255, 206, 206));
+		panel_2.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(0, 0, 0)), "D\u00E9tails de la Commande ", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_2.setBounds(20, 230, 897, 214);
 		panelListe.add(panel_2);
 		panel_2.setLayout(null);
@@ -152,8 +215,16 @@ public class VueLivraison extends JPanel {
 		tableDetail = new JTable();
 		scrollPane_1.setViewportView(tableDetail);
 		JButton btnExpedier = new JButton("Expédiée");
-		btnExpedier.setBounds(30, 188, 114, 32);
+		btnExpedier.setBounds(30, 181, 114, 32);
 		panelListe.add(btnExpedier);
+		
+		JPanel panel_6 = new JPanel();
+		panel_6.setBorder(new TitledBorder(null, "Commandes en cours", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_6.setBackground(new Color(255, 206, 206));
+		panel_6.setBounds(20, 47, 897, 118);
+		panelListe.add(panel_6);
+		
+
 		
 		btnExpedier.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -233,12 +304,17 @@ public class VueLivraison extends JPanel {
 		tableCommande.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(80);
 		tableCommande.getColumnModel().getColumn(2).setMaxWidth(80);
 		tableCommande.getTableHeader().getColumnModel().getColumn(2).setMaxWidth(80);
+		tableCommande.getColumnModel().getColumn(5).setMinWidth(0);
+		tableCommande.getTableHeader().getColumnModel().getColumn(5).setMinWidth(0);
+		tableCommande.getColumnModel().getColumn(5).setMaxWidth(0);
+		tableCommande.getTableHeader().getColumnModel().getColumn(5).setMaxWidth(0);
 		TableRowSorter order = new TableRowSorter(tableCommande.getModel());
 		tableCommande.setRowSorter(order);
 	}
 	public void tableDetail(int id) {
 		
 		tableDetail.setModel(detailM.listeDetail1(id));
+		tableDetail.setRowHeight(30);
 		tableDetail.getColumnModel().getColumn(0).setMaxWidth(80);
 		tableDetail.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(80);
 		tableDetail.getColumnModel().getColumn(1).setMaxWidth(80);
@@ -259,5 +335,17 @@ public class VueLivraison extends JPanel {
 		tableArchive.setModel(commandeM.listerArchive(txt));
 		tableArchive.getColumnModel().getColumn(0).setMaxWidth(80);
 		tableArchive.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(80);
+	}
+	/*
+	 * methode pour retrouver l'adresse du client correspondant à la commande selectionnée afin d'injecter les données adresse dans la vue
+	 */
+	public Adresse findAddress(String txt) {
+		
+		Adresse adresse = null;
+		
+		for (Adresse item : adresseD.read(txt)) {
+			adresse = new Adresse(item.getId_client(),item.getRue(),item.getCod_postal(),item.getVille(),item.getComplement());
+		}
+		return adresse;
 	}
 }
