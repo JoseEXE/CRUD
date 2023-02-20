@@ -19,6 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.JPasswordField;
@@ -28,6 +30,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JProgressBar;
+import java.awt.Label;
+import java.awt.Panel;
 
 public class VueLogin extends JFrame {
 
@@ -62,7 +66,7 @@ public class VueLogin extends JFrame {
 		setTitle("Login");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 683, 273);
+		setBounds(100, 100, 806, 352);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -70,29 +74,29 @@ public class VueLogin extends JFrame {
 		contentPane.setLayout(null);
 		User user = new User();
 		JPanel panel = new JPanel();
-		panel.setBackground(SystemColor.inactiveCaption);
+		panel.setBackground(new Color(255, 255, 255));
 		panel.setBorder(new CompoundBorder());
-		panel.setBounds(10, 11, 651, 216);
+		panel.setBounds(10, 11, 784, 306);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblEmailLogin = new JLabel("Email: (*)");
 		lblEmailLogin.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblEmailLogin.setBounds(118, 24, 114, 46);
+		lblEmailLogin.setBounds(73, 65, 114, 46);
 		panel.add(lblEmailLogin);
 		
 		textEmailLogin = new JTextField();
-		textEmailLogin.setBounds(224, 37, 239, 25);
+		textEmailLogin.setBounds(179, 78, 239, 25);
 		panel.add(textEmailLogin);
 		textEmailLogin.setColumns(10);
 		
 		JLabel lblPassword = new JLabel("Password: (*)");
 		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblPassword.setBounds(88, 81, 159, 46);
+		lblPassword.setBounds(43, 122, 159, 46);
 		panel.add(lblPassword);
 		
 		textPasswordLogin = new JPasswordField();
-		textPasswordLogin.setBounds(224, 91, 239, 25);
+		textPasswordLogin.setBounds(179, 132, 239, 25);
 		panel.add(textPasswordLogin);
 		
 		JButton btnLoginEntrer = new JButton("Entrer");
@@ -128,7 +132,7 @@ public class VueLogin extends JFrame {
 			}
 		});
 		btnLoginEntrer.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnLoginEntrer.setBounds(142, 149, 139, 37);
+		btnLoginEntrer.setBounds(99, 195, 139, 37);
 		panel.add(btnLoginEntrer);
 		
 		JButton btnLoginSortir = new JButton("Sortir");
@@ -138,9 +142,35 @@ public class VueLogin extends JFrame {
 			}
 		});
 		btnLoginSortir.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnLoginSortir.setBounds(304, 149, 139, 37);
+		btnLoginSortir.setBounds(261, 195, 139, 37);
 		panel.add(btnLoginSortir);
+		
+		ImageIcon imageIcon = new ImageIcon(VueFrameMain.class.getResource("/ressources/logo.jpg")); // load the image to a imageIcon
+		Image image = imageIcon.getImage(); // transform it 
+		Image newimg = image.getScaledInstance(300, 300,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		imageIcon = new ImageIcon(newimg);  // transform it back
+		
+		Panel panel_1 = new Panel();
+		panel_1.setBackground(new Color(0, 0, 0));
+		panel_1.setBounds(450, 11, 3, 285);
+		panel.add(panel_1);
+		panel_1.setLayout(null);
+		
+		Panel panel_2 = new Panel();
+		panel_2.setBackground(new Color(0, 0, 0));
+		panel_2.setBounds(10, 260, 551, 2);
+		panel.add(panel_2);
+		panel_2.setLayout(null);
+		
+		Panel panel_2_1 = new Panel();
+		panel_2_1.setLayout(null);
+		panel_2_1.setBackground(Color.BLACK);
+		panel_2_1.setBounds(663, 260, 100, 2);
+		panel.add(panel_2_1);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(imageIcon);
+		lblNewLabel.setBounds(462, 11, 294, 263);
+		panel.add(lblNewLabel);
 	}
-	
-	
 }

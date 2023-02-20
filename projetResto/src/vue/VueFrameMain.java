@@ -260,12 +260,26 @@ public class VueFrameMain extends JFrame {
 		/*
 		 * label image accueil
 		 */
+		
+		//ImageIcon imageIcon2 = new ImageIcon(VueFrameMain.class.getResource("/ressources/wallpaper.PNG")); // load the image to a imageIcon
+		//Image image2 = imageIcon2.getImage(); // transform it 
+		//Image newimg2 = image2.getScaledInstance(1152 , 768,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		//imageIcon2 = new ImageIcon(newimg2);  // transform it back
+		
 		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/wallpaper.png")));
 		lblNewLabel_1.setBackground(new Color(0, 0, 0));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/bateau_sushis.jpg")));
-		lblNewLabel_1.setBounds(6, 19, 1122, 535);
+		lblNewLabel_1.setBounds(10, 19, 1122, 535);
 		desktopPane.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBounds(64, 96, 183, 126);
+		desktopPane.add(lblNewLabel);
+		
+		JLabel label = new JLabel("New label");
+		label.setBounds(39, 322, 283, 220);
+		desktopPane.add(label);
 		
 		if(User.userLogin != null) {
 			lblNomResto.setText(User.userLogin.nomEtablissement);
