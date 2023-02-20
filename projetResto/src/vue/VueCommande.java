@@ -558,8 +558,6 @@ public class VueCommande extends JPanel {
 				PanelGo.setVisible(true);
 				btnFinaliser.setVisible(false);
 				btnFinaliser.setEnabled(false);
-				btnDelete.setEnabled(false);
-				textQte.setEditable(false);
 			}
 		});
 		btnFinaliser.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -606,8 +604,8 @@ public class VueCommande extends JPanel {
 		panel_3.setLayout(null);
 		
 		JLabel lblNewLabel_5 = new JLabel("New label");
-		lblNewLabel_5.setBounds(10, 10, 61, 220);
-		lblNewLabel_5.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/sushi.jfif")));
+		lblNewLabel_5.setBounds(-118, 10, 202, 220);
+		lblNewLabel_5.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/coman.gif")));
 		panel_3.add(lblNewLabel_5);
 		
 		JScrollPane scrollPane_3 = new JScrollPane();
@@ -635,7 +633,7 @@ public class VueCommande extends JPanel {
 		panelProduits.add(panel_3_1);
 		
 		JLabel lblNewLabel_5_1 = new JLabel("New label");
-		lblNewLabel_5_1.setBounds(10, 10, 61, 82);
+		lblNewLabel_5_1.setBounds(0, 10, 71, 82);
 		lblNewLabel_5_1.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/sushi.jfif")));
 		panel_3_1.add(lblNewLabel_5_1);
 		

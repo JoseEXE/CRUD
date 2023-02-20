@@ -136,8 +136,8 @@ public class VueLivraison extends JPanel {
 		panel_4.setLayout(null);
 		
 		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setBounds(-26, 0, 180, 172);
-		lblNewLabel_1.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/menu.jfif")));
+		lblNewLabel_1.setBounds(-106, -92, 260, 292);
+		lblNewLabel_1.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/menu.gif")));
 		panel_4.add(lblNewLabel_1);
 		
 		JPanel panel_5 = new JPanel();
