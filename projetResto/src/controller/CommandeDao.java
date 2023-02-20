@@ -1,10 +1,13 @@
 package controller;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import connetion.ConnectionSql;
 import model.Cat_produit;
@@ -12,6 +15,15 @@ import model.Client;
 import model.Commande;
 import model.Produit;
 import model.User;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.swing.JRViewer;
+import net.sf.jasperreports.view.JasperViewer;
+
 
 public class CommandeDao implements IDao<Commande>{
 
@@ -192,5 +204,29 @@ public class CommandeDao implements IDao<Commande>{
 			e.printStackTrace();
 		}
 		return id;
+	}
+	
+	public void rapportFacture(int commande_id){
+		Map p = new HashMap();
+		p.put("commande_id", commande_id);
+		JasperReport report;
+		JasperPrint print;
+		try {
+			System.out.println("commande_id: "+commande_id);
+			System.out.println("Try");
+			report=JasperCompileManager.compileReport(new File("").getAbsolutePath()+"/src/ressources/rapports/RptFacture.jrxml");
+			System.out.println("report: "+report);
+			System.out.println("report Title: "+report.getTitle());
+			print=JasperFillManager.fillReport(report, p, ConnectionSql.myConnection());
+			
+			
+	        JasperViewer view=new JasperViewer(print,false);
+	        view.setTitle("FACTURE");
+	        view.setVisible(true);
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		
+
 	}
 }
