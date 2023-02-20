@@ -1153,7 +1153,6 @@ public class VueClient extends JPanel {
 		panelListe.add(panel_2);
 		panel_2.setLayout(null);
 		JButton btnNouveau = new JButton("Nouveau Client");
-		btnNouveau.setHorizontalAlignment(SwingConstants.LEFT);
 		btnNouveau.setBounds(814, 34, 143, 23);
 		panel_2.add(btnNouveau);
 		JButton btnModifier = new JButton("Modifier Client");
@@ -1207,6 +1206,8 @@ public class VueClient extends JPanel {
 						btnContinuer.setVisible(false);
 					}
 				}
+			    textNom.grabFocus();
+			    textNom.requestFocus();
 			}
 		});
 		btnNouveau.addActionListener(new ActionListener() {
@@ -1228,8 +1229,6 @@ public class VueClient extends JPanel {
                 btnSauvegarder.setEnabled(true);
                 btnClientNoVisible.setVisible(false);
 
-                
-                
                 //panel1
                 //panelAdresseClient.setEnabled(false);
                 textRue.setEditable(false);
@@ -1249,10 +1248,14 @@ public class VueClient extends JPanel {
 					btnContinuer.setEnabled(false);
 					btnContinuer.setVisible(false);
 				}
+			    
+
 			    textNom.requestFocus();
+	
                 
 			}
 		});
+
 		
 		JPanel panel_2_1 = new JPanel();
 		panel_2_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Liste Adresse de Client", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
