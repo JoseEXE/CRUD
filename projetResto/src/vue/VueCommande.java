@@ -526,6 +526,7 @@ public class VueCommande extends JPanel {
 					newCommande.setTotal(Double.parseDouble(lblTotal.getText()));
 					if(commandeD.update(newCommande)) {
 						JOptionPane.showMessageDialog(null, "La commande est validée","Paiement", JOptionPane.INFORMATION_MESSAGE);
+						commandeD.rapportFacture(idNewCommande);
 						panel.removeAll();
 						panel.add(new VueCommande(1));
 						panel.repaint();
