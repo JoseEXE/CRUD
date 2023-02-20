@@ -257,12 +257,12 @@ public class VueCommande extends JPanel {
 		
 		JPanel panel_4_1 = new JPanel();
 		panel_4_1.setBackground(new Color(0, 0, 0));
-		panel_4_1.setBounds(10, 82, 545, 249);
+		panel_4_1.setBounds(14, 86, 540, 240);
 		panel_2.add(panel_4_1);
 		panel_4_1.setLayout(null);
 		
 		JPanel panel_6 = new JPanel();
-		panel_6.setBounds(416, 13, 119, 223);
+		panel_6.setBounds(416, 10, 119, 223);
 		panel_4_1.add(panel_6);
 		panel_6.setLayout(null);
 		
@@ -376,18 +376,18 @@ public class VueCommande extends JPanel {
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBackground(new Color(0, 0, 0));
-		panel_4.setBounds(10, 82, 454, 248);
+		panel_4.setBounds(12, 86, 450, 240);
 		panel_1.add(panel_4);
 		panel_4.setLayout(null);
 		
 		JPanel panel_5 = new JPanel();
-		panel_5.setBounds(331, 13, 113, 223);
+		panel_5.setBounds(331, 10, 113, 223);
 		panel_4.add(panel_5);
 		panel_5.setLayout(null);
 		
 		JLabel lblNewLabel_6 = new JLabel("");
 		lblNewLabel_6.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/sushiman.jfif")));
-		lblNewLabel_6.setBounds(-32, 0, 145, 238);
+		lblNewLabel_6.setBounds(-32, -5, 145, 238);
 		panel_5.add(lblNewLabel_6);
 	
 		
@@ -493,6 +493,11 @@ public class VueCommande extends JPanel {
 		lblTotal_1.setBounds(1002, 275, 58, 59);
 		panelProduits.add(lblTotal_1);
 		
+		JLabel lblTotalHt = new JLabel("");
+		lblTotalHt.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblTotalHt.setBounds(892, 248, 58, 19);
+		panelProduits.add(lblTotalHt);
+		
 		JPanel PanelGo = new JPanel();
 		PanelGo.setBackground(new Color(0, 0, 0));
 		PanelGo.setBounds(788, 330, 241, 147);
@@ -511,9 +516,10 @@ public class VueCommande extends JPanel {
 				case 1:
 					newCommande.setEtat("Validée");
 					newCommande.setTotal(Double.parseDouble(lblTotal.getText()));
+					newCommande.setTotalHt(Double.parseDouble(lblTotalHt.getText()));
 					if(commandeD.update(newCommande)) {
 						JOptionPane.showMessageDialog(null, "La commande est validée","Paiement", JOptionPane.INFORMATION_MESSAGE);
-						commandeD.rapportFacture(idNewCommande);
+						commandeD.rapportFacture(idNewCommande,Commande.TVA);
 						panel.removeAll();
 						panel.add(new VueCommande(1));
 						panel.repaint();
@@ -547,23 +553,6 @@ public class VueCommande extends JPanel {
 				}
 			}
 		});
-		
-		JButton btnFinaliser = new JButton("Finaliser");
-		btnFinaliser.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				panelCadre.setEnabled(false);
-				panelCadre.removeAll();
-				panelCadre.add(new VuePaiement());
-				panelCadre.repaint();
-				panelCadre.revalidate();
-				PanelGo.setVisible(true);
-				btnFinaliser.setVisible(false);
-				btnFinaliser.setEnabled(false);
-			}
-		});
-		btnFinaliser.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnFinaliser.setBounds(777, 391, 183, 39);
-		panelProduits.add(btnFinaliser);
 		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnDelete.setBounds(602, 454, 106, 23);
 		panelProduits.add(btnDelete);
@@ -655,12 +644,49 @@ public class VueCommande extends JPanel {
 				Detail_commande newDetail = new Detail_commande(newCommande,newProduit);
 				detailD.create(newDetail);
 				lblTotal.setText(String.valueOf(commandeD.totalCommande(idNewCommande)));
+				lblTotalHt.setText(String.valueOf(commandeD.totalHt(idNewCommande)));
 				lblInfo.setText("");
 				tableDetail(idNewCommande);
 			}
 		});
 		
 		scrollPane_2.setViewportView(tableProduits);
+		
+		JLabel lblNewLabel_8 = new JLabel("TVA :");
+		lblNewLabel_8.setBounds(791, 273, 45, 13);
+		panelProduits.add(lblNewLabel_8);
+		
+		JLabel lblTVA = new JLabel("");
+		lblTVA.setBounds(846, 273, 45, 13);
+		lblTVA.setText(String.valueOf(Commande.TVA)+" %");
+		panelProduits.add(lblTVA);
+		
+		JLabel lblNewLabel_2_1 = new JLabel("Total HT:");
+		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel_2_1.setBounds(790, 248, 80, 19);
+		panelProduits.add(lblNewLabel_2_1);
+		
+		JButton btnFinaliser = new JButton("Finaliser");
+		btnFinaliser.setBounds(857, 384, 183, 39);
+		panelProduits.add(btnFinaliser);
+		btnFinaliser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelCadre.setEnabled(false);
+				panelCadre.removeAll();
+				panelCadre.add(new VuePaiement());
+				panelCadre.repaint();
+				panelCadre.revalidate();
+				PanelGo.setVisible(true);
+				btnFinaliser.setVisible(false);
+				btnFinaliser.setEnabled(false);
+			}
+		});
+		btnFinaliser.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		
+		JLabel lblNewLabel_2_1_1 = new JLabel("€");
+		lblNewLabel_2_1_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel_2_1_1.setBounds(949, 248, 23, 19);
+		panelProduits.add(lblNewLabel_2_1_1);
 		
 		
 	

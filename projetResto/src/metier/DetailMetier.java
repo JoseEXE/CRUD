@@ -57,9 +57,7 @@ public class DetailMetier {
 	 * Methode de verification pour le changement de quantite de produit dans la commande. seul les chifres sont autorisés
 	 */
 	public Boolean checkRegexQte(String txt) {
-
 		Boolean test =Pattern.matches("[1-9]", txt);
-		System.out.println(test);
 		return test;
 		
 	}

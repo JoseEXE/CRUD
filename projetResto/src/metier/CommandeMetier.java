@@ -20,7 +20,7 @@ public class CommandeMetier {
 	 */
 	
 	public DefaultTableModel lister(String txt) {
-		String col[]= {"N° Commande","Client","Total","Type de Paiement","Etat commande","idClient"};
+		String col[]= {"N° Commande","Client","Hors Taxes","Total","Type de Paiement","Etat commande","idClient"};
 		DefaultTableModel list = new DefaultTableModel(null,col);
 		totalM=0;
 		/*
@@ -30,6 +30,7 @@ public class CommandeMetier {
 			list.addRow(new Object[] {
 					item.getId(),
 					item.getId_client().getNom()+" "+item.getId_client().getPrenom(),
+					item.getTotalHt(),
 					item.getTotal(),
 					item.getType_paiement(),
 					item.getEtat(),

@@ -10,18 +10,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import connetion.ConnectionSql;
-import model.Cat_produit;
 import model.Client;
 import model.Commande;
-import model.Produit;
 import model.User;
 import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.swing.JRViewer;
 import net.sf.jasperreports.view.JasperViewer;
 
 
@@ -56,7 +51,7 @@ public class CommandeDao implements IDao<Commande>{
 			while (rs.next()) {
 				
 				Client client = new Client(rs.getInt("id_client"),rs.getString("nom"),rs.getString("prenom"),rs.getString("numTel"));
-				Commande commande =new Commande(rs.getInt("idCom"),client,rs.getDouble("total"),rs.getTimestamp("date_comm"),rs.getString("type_paiement"),rs.getString("etat"));
+				Commande commande =new Commande(rs.getInt("idCom"),client,rs.getDouble("totalHt"),rs.getDouble("total"),rs.getTimestamp("date_comm"),rs.getString("type_paiement"),rs.getString("etat"));
 				list.add(commande);
 			}
 			
@@ -76,7 +71,7 @@ public class CommandeDao implements IDao<Commande>{
 			while (rs.next()) {
 				
 				Client client = new Client(rs.getString("nom"),rs.getString("prenom"),rs.getString("numTel"));
-				Commande commande =new Commande(rs.getInt("idCom"),client,rs.getDouble("total"),rs.getTimestamp("date_comm"),rs.getString("type_paiement"),rs.getString("etat"));
+				Commande commande =new Commande(rs.getInt("idCom"),client,rs.getDouble("totalHt"),rs.getDouble("total"),rs.getTimestamp("date_comm"),rs.getString("type_paiement"),rs.getString("etat"));
 				list.add(commande);
 			}
 			
@@ -111,11 +106,12 @@ public class CommandeDao implements IDao<Commande>{
 	@Override
 	public Boolean update(Commande commande) {
 		try {
-			sql=conn.prepareStatement("UPDATE commande SET total=?,type_paiement=?,etat=? WHERE id=?");
-			sql.setDouble(1, commande.getTotal());
-			sql.setString(2, commande.getType_paiement());
-			sql.setString(3, commande.getEtat());
-			sql.setInt(4, commande.getId());
+			sql=conn.prepareStatement("UPDATE commande SET totalHt=?,total=?,type_paiement=?,etat=? WHERE id=?");
+			sql.setDouble(1, commande.getTotalHt());
+			sql.setDouble(2, commande.getTotal());
+			sql.setString(3, commande.getType_paiement());
+			sql.setString(4, commande.getEtat());
+			sql.setInt(5, commande.getId());
 			if(sql.executeUpdate()>0) {
 				return true;
 			}
@@ -138,24 +134,6 @@ public class CommandeDao implements IDao<Commande>{
 			e.printStackTrace();
 		}
 		return false;
-	}
-
-	@Override
-	public Boolean activer(Commande object) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean desactiver(Commande object) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean isExist(String txt) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -206,27 +184,45 @@ public class CommandeDao implements IDao<Commande>{
 		return id;
 	}
 	
-	public void rapportFacture(int commande_id){
+	public void rapportFacture(int commande_id,Double taxe){
 		Map p = new HashMap();
 		p.put("commande_id", commande_id);
+		p.put("taxe", taxe);
 		JasperReport report;
 		JasperPrint print;
 		try {
-			System.out.println("commande_id: "+commande_id);
-			System.out.println("Try");
 			report=JasperCompileManager.compileReport(new File("").getAbsolutePath()+"/src/ressources/rapports/RptFacture.jrxml");
-			System.out.println("report: "+report);
-			System.out.println("report Title: "+report.getTitle());
 			print=JasperFillManager.fillReport(report, p, ConnectionSql.myConnection());
-			
-			
 	        JasperViewer view=new JasperViewer(print,false);
 	        view.setTitle("FACTURE");
 	        view.setVisible(true);
 		} catch (Exception e) {
 			e.getMessage();
 		}
-		
-
+	}
+	/*
+	 * methode de calcul du total hors taxes qui est renvoyé vers commande, puis dans la BDD
+	 */
+	public Double totalHt(int id) {
+		Double totalHt =totalCommande(id)-(totalCommande(id)*Commande.TVA/100);
+		return totalHt;
+	}
+	
+	@Override
+	public Boolean activer(Commande object) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Boolean desactiver(Commande object) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Boolean isExist(String txt) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Timer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -175,7 +176,7 @@ public class VueLivraison extends JPanel {
 				idCommande =(int)tableCommande.getValueAt(tableCommande.getSelectedRow(), 0);
 				tableDetail(idCommande);
 				lblAffichage_1.setText("Affichage de "+detailM.totalM +" "+nomModel2+" sur un total de "+ detailD.total()+" registres");
-				Adresse clientAdresse = findAddress(String.valueOf(tableCommande.getValueAt(tableCommande.getSelectedRow(), 5)));
+				Adresse clientAdresse = findAddress(String.valueOf(tableCommande.getValueAt(tableCommande.getSelectedRow(), 6)));
 				lblRue.setText(clientAdresse.getRue());
 				lblCode.setText(clientAdresse.getCod_postal());
 				lblVille.setText(clientAdresse.getVille());
@@ -231,10 +232,11 @@ public class VueLivraison extends JPanel {
 			if(tableCommande.getSelectedColumnCount()==0) {
 				JOptionPane.showMessageDialog(null, "Vous devez selectionner une commande","Expediée", JOptionPane.WARNING_MESSAGE);
 			}else {
-				Double total =(Double)tableCommande.getValueAt(tableCommande.getSelectedRow(), 2);
-				String type =String.valueOf(tableCommande.getValueAt(tableCommande.getSelectedRow(), 3));
+				Double total =(Double)tableCommande.getValueAt(tableCommande.getSelectedRow(), 3);
+				Double Ht =(Double)tableCommande.getValueAt(tableCommande.getSelectedRow(), 2);
+				String type =String.valueOf(tableCommande.getValueAt(tableCommande.getSelectedRow(), 4));
 				String etat = "Expédiée";
-				Commande commandeEnCours=new Commande(idCommande,total,type,etat);
+				Commande commandeEnCours=new Commande(idCommande,Ht,total,type,etat);
 				commandeD.update(commandeEnCours);
 				tableCommande(textField.getText());
 				idCommande=0;
@@ -264,7 +266,7 @@ public class VueLivraison extends JPanel {
 		panelArchive.add(lblRecherche_1);
 
 		JLabel lblAffichageArchive = new JLabel("");
-		lblAffichageArchive.setBounds(565, 438, 367, 19);
+		lblAffichageArchive.setBounds(547, 435, 367, 19);
 		panelArchive.add(lblAffichageArchive);
 		
 		
@@ -293,8 +295,18 @@ public class VueLivraison extends JPanel {
 		scrollPane_2.setViewportView(tableArchive);
 		
 		
-		JButton btnGnrerUnPdf = new JButton("Générer un PDF");
-		btnGnrerUnPdf.setBounds(26, 437, 137, 23);
+		JButton btnGnrerUnPdf = new JButton("Générer une facture");
+		btnGnrerUnPdf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(tableArchive.getSelectedColumnCount()==0) {
+					JOptionPane.showMessageDialog(null, "Vous devez selectionner une commande","Expediée", JOptionPane.WARNING_MESSAGE);
+				}else {
+					int idAchive=(int)tableArchive.getValueAt(tableArchive.getSelectedRow(), 0);
+					commandeD.rapportFacture(idAchive,Commande.TVA);
+				}
+			}
+		});
+		btnGnrerUnPdf.setBounds(26, 437, 152, 23);
 		panelArchive.add(btnGnrerUnPdf);
 	}
 	public void tableCommande(String txt) {
