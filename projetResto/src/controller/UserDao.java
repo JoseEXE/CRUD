@@ -72,8 +72,22 @@ public class UserDao implements IDao<User>{
 
 	@Override
 	public Object findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Role> list=new ArrayList<>();
+		try {
+		sql = conn.prepareStatement("SELECT * FROM user WHERE id_role= ? AND statut='Actif'");
+		sql.setInt(1, id);
+		rs=sql.executeQuery();
+		
+		while (rs.next()) {
+			return true;
+		}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		
+		return false;
 	}
 /*
  * méthode update du CRUD

@@ -1,6 +1,8 @@
 package vue;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -9,17 +11,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableRowSorter;
 
 import controller.RoleDao;
+import controller.UserDao;
 import metier.RoleMetier;
 import model.Role;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JTextArea;
 
 public class VueRole extends JPanel {
 	private JTextField textField;
@@ -32,6 +32,10 @@ public class VueRole extends JPanel {
 	 * instanciation Class roleDao
 	 */
 	RoleDao roleD = new RoleDao();
+	/*
+	 * instanciation Class UserDao
+	 */
+	UserDao userD = new UserDao();
 	/*
 	 * creation variable string role pour les differents messages d'affichage fenetre role
 	 */
@@ -180,6 +184,9 @@ public class VueRole extends JPanel {
 				tabbedPane.setEnabledAt(1, true);
                 tabbedPane.setEnabledAt(0, false);
                 tabbedPane.setSelectedIndex(1);
+                textNom.setText("");
+                textDescription.setText("");
+                textId.setText("");
                 action="Sauvegarder";
                 btnSauvegarder.setText("Sauvegarder");
 			}
@@ -237,7 +244,7 @@ public class VueRole extends JPanel {
 					String nom = String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
 					String desc = String.valueOf(table.getValueAt(table.getSelectedRow(), 2));
 					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
-						if(stat.equalsIgnoreCase("active")) {
+						if(stat.equalsIgnoreCase("actif")) {
 							JOptionPane.showMessageDialog(null,"Le "+nomModel+" est déjà actif","Statut",JOptionPane.WARNING_MESSAGE);
 						}else {
 							Role newRole =new Role(Integer.parseInt(id), nom, desc, stat);
@@ -260,9 +267,15 @@ public class VueRole extends JPanel {
 				if(table.getSelectedColumnCount()==0) {
 					JOptionPane.showMessageDialog(null,"Merci de selectionner un "+nomModel+" dans le tableau","Statut",JOptionPane.WARNING_MESSAGE);
 				}else {
+					int idRow =(int)(table.getValueAt(table.getSelectedRow(), 0));
+					if((boolean) userD.findById(idRow)) {
+						JOptionPane.showMessageDialog(null,"Le rôle ne peut pas être désactiver car un employé possède ce rôle ","Statut",JOptionPane.WARNING_MESSAGE);
+						return;
+					}
 					/*
 					 * recupération des données selectionnées avant instanciation
 					 */
+					
 					String id = String.valueOf(table.getValueAt(table.getSelectedRow(), 0));
 					String nom = String.valueOf(table.getValueAt(table.getSelectedRow(), 1));
 					String desc = String.valueOf(table.getValueAt(table.getSelectedRow(), 2));

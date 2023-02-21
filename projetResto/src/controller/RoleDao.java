@@ -59,7 +59,21 @@ public class RoleDao implements IDao<Role>{
 
 	@Override
 	public Object findById(int id) {
-		// TODO Auto-generated method stub
+		ArrayList<Role> list=new ArrayList<>();
+		try {
+		sql = conn.prepareStatement("SELECT * FROM role WHERE id= ? AND statut='Inactif'");
+		sql.setInt(1, id);
+		rs=sql.executeQuery();
+		
+		while (rs.next()) {
+			return true;
+		}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		
 		return false;
 	}
 /*
