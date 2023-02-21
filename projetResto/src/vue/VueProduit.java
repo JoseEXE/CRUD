@@ -4,8 +4,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -17,16 +18,12 @@ import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableRowSorter;
-
 import controller.Cat_produitDao;
 import controller.ProduitDao;
-import metier.Cat_produitMetier;
 import metier.ProduitMetier;
 import model.Cat_produit;
 import model.Produit;
 import model.User;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 
 @SuppressWarnings("serial")
 public class VueProduit extends JPanel {
@@ -112,13 +109,13 @@ public class VueProduit extends JPanel {
 		 * Les  3 combobox 
 		 */
 		DefaultComboBoxModel itemCmb = prodM.selectCmb();
-        JComboBox comboBoxCat = new JComboBox();
+        JComboBox comboBoxCat = new JComboBox(itemCmb);
 		
 		comboBoxCat.setBounds(472, 213, 82, 20);
 		JComboBox comboBoxType = new JComboBox();
+		
 		comboBoxType.setModel(new DefaultComboBoxModel(new String[] {"Chaud", "Froid"}));
 		comboBoxType.setBounds(470, 137, 82, 20);
-		
 		
 		JComboBox comboBoxTri = new JComboBox();
 		comboBoxTri.setModel(itemCmb);
@@ -167,7 +164,7 @@ public class VueProduit extends JPanel {
 							 Produit newProd =new Produit(Integer.parseInt(textId.getText()),Cat_produit,User.userLogin,textCode.getText(),textNom.getText(),
 									 typePlatcat,textDescription.getText(),(Double.parseDouble(textPrix.getText())));
 							 if(prodD.update(newProd)) {
-								 JOptionPane.showMessageDialog(null,"Le rôle "+newProd.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
+								 JOptionPane.showMessageDialog(null,"Le produit "+newProd.getNom()+" a bien été enregistré","Modification",JOptionPane.INFORMATION_MESSAGE);
 								 tabbedPane.setEnabledAt(1, false);
 					             tabbedPane.setEnabledAt(0, true);
 					             tabbedPane.setSelectedIndex(0);
@@ -187,7 +184,7 @@ public class VueProduit extends JPanel {
 					                 tabbedPane.setEnabledAt(0, true);
 					                 tabbedPane.setSelectedIndex(0);
 					                 String tri = String.valueOf(comboBoxTri.getSelectedItem());
-					                 table.setModel(prodM.lister(textField.getText(),tri));
+						             table.setModel(prodM.lister(textField.getText(),tri));
 								 }else {
 									 JOptionPane.showMessageDialog(null,"Impossible de modifier le "+nomModel, "Modification", JOptionPane.ERROR_MESSAGE);
 								 }//fin du update
@@ -209,8 +206,7 @@ public class VueProduit extends JPanel {
 								 tabbedPane.setEnabledAt(1, false);
 					             tabbedPane.setEnabledAt(0, true);
 					             tabbedPane.setSelectedIndex(0);
-					             String tri = String.valueOf(comboBoxTri.getSelectedItem());
-					             table.setModel(prodM.lister(textField.getText(),tri));
+					             comboBoxTri.setSelectedIndex(0);
 							 }else {
 								 JOptionPane.showMessageDialog(null,"Impossible de créer le "+nomModel, "Création", JOptionPane.ERROR_MESSAGE);
 							 }
@@ -290,15 +286,15 @@ public class VueProduit extends JPanel {
 					 * recupération des données selectionnées avant instanciation
 					 */
 					String id = String.valueOf(table.getValueAt(table.getSelectedRow(), 0));
-					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
-						if(stat.equalsIgnoreCase("active")) {
+					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 9));
+						if(stat.equalsIgnoreCase("actif")) {
 							JOptionPane.showMessageDialog(null,"Le "+nomModel+" est déjà actif","Statut",JOptionPane.WARNING_MESSAGE);
 						}else {
 							Produit newProd =new Produit(Integer.parseInt(id),User.userLogin);
 								if(prodD.activer(newProd)) {
 									JOptionPane.showMessageDialog(null,"Le "+nomModel+" est maintenant actif","Statut",JOptionPane.INFORMATION_MESSAGE);
 									String tri = String.valueOf(comboBoxTri.getSelectedItem());
-									table.setModel(prodM.lister(textField.getText(),tri));	
+									table.setModel(prodM.lister(textField.getText(),""));	
 								}
 						}
 				}
@@ -319,7 +315,7 @@ public class VueProduit extends JPanel {
 					 * recupération des données selectionnées avant instanciation
 					 */
 					String id = String.valueOf(table.getValueAt(table.getSelectedRow(), 0));
-					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
+					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 9));
 						if(stat.equalsIgnoreCase("inactif")) {
 							JOptionPane.showMessageDialog(null,"Le "+nomModel+" est déjà inactif","Statut",JOptionPane.WARNING_MESSAGE);
 							
@@ -328,7 +324,7 @@ public class VueProduit extends JPanel {
 								if(prodD.desactiver(newProd)) {
 									JOptionPane.showMessageDialog(null,"Le "+nomModel+" est maintenant inactif","Statut",JOptionPane.INFORMATION_MESSAGE);
 									String tri = String.valueOf(comboBoxTri.getSelectedItem());
-									table.setModel(prodM.lister(textField.getText(),tri));	
+									table.setModel(prodM.lister(textField.getText(),""));	
 								}
 						}
 				}
@@ -389,9 +385,11 @@ public class VueProduit extends JPanel {
                 tabbedPane.setEnabledAt(0, true);
                 tabbedPane.setSelectedIndex(0);
                 String tri = String.valueOf(comboBoxTri.getSelectedItem());
+                System.out.println("tri avant "+tri);
                 if (tri.equalsIgnoreCase("Tous")) {
 					tri="";
 				}	
+                System.out.println("tri apres "+tri);
                 table.setModel(prodM.lister(textField.getText(),tri));
 			}
 		});
@@ -439,10 +437,6 @@ public class VueProduit extends JPanel {
 		panelGestion.add(comboBoxCat);
 		panelGestion.add(comboBoxType);
 		textField.requestFocus();
-		/*
-		 * Tri asc desc pour le tabeau produit
-		 */
-//		TableRowSorter order = new TableRowSorter(table.getModel());
-//        table.setRowSorter(order);
+		
 	}
 }

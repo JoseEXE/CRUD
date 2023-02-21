@@ -164,7 +164,6 @@ public class Cat_produitDao implements IDao<Cat_produit>{
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
-		System.out.println(list);
 		return list;
 	}
 
