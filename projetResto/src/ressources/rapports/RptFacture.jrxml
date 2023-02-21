@@ -5,6 +5,7 @@
 	<property name="ireport.y" value="21"/>
 	<parameter name="commande_id" class="java.lang.Integer"/>
 	<parameter name="taxe" class="java.lang.String"/>
+	<parameter name="adresse" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[SELECT
      adresse.`rue` AS adresse_rue,
@@ -42,7 +43,8 @@ FROM
      AND produit.`id` = detail_commande.`id_produit`,
      `etablissement` etablissement
 WHERE
-     commande.`id` = $P{commande_id}]]>
+     commande.`id` = $P{commande_id}
+AND adresse.`id` = $P{adresse}]]>
 	</queryString>
 	<field name="adresse_rue" class="java.lang.String"/>
 	<field name="adresse_cod_postal" class="java.lang.String"/>

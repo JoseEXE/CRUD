@@ -302,7 +302,7 @@ public class VueLivraison extends JPanel {
 					JOptionPane.showMessageDialog(null, "Vous devez selectionner une commande","Expediée", JOptionPane.WARNING_MESSAGE);
 				}else {
 					int idAchive=(int)tableArchive.getValueAt(tableArchive.getSelectedRow(), 0);
-					commandeD.rapportFacture(idAchive,Commande.TVA);
+					commandeD.rapportFacture(idAchive,Commande.TVA,Adresse.adresseLast.getId());
 				}
 			}
 		});
@@ -316,10 +316,10 @@ public class VueLivraison extends JPanel {
 		tableCommande.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(80);
 		tableCommande.getColumnModel().getColumn(2).setMaxWidth(80);
 		tableCommande.getTableHeader().getColumnModel().getColumn(2).setMaxWidth(80);
-		tableCommande.getColumnModel().getColumn(5).setMinWidth(0);
-		tableCommande.getTableHeader().getColumnModel().getColumn(5).setMinWidth(0);
-		tableCommande.getColumnModel().getColumn(5).setMaxWidth(0);
-		tableCommande.getTableHeader().getColumnModel().getColumn(5).setMaxWidth(0);
+		tableCommande.getColumnModel().getColumn(6).setMinWidth(0);
+		tableCommande.getTableHeader().getColumnModel().getColumn(6).setMinWidth(0);
+		tableCommande.getColumnModel().getColumn(6).setMaxWidth(0);
+		tableCommande.getTableHeader().getColumnModel().getColumn(6).setMaxWidth(0);
 		TableRowSorter order = new TableRowSorter(tableCommande.getModel());
 		tableCommande.setRowSorter(order);
 	}

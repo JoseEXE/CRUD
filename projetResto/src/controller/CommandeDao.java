@@ -184,10 +184,11 @@ public class CommandeDao implements IDao<Commande>{
 		return id;
 	}
 	
-	public void rapportFacture(int commande_id,Double taxe){
+	public void rapportFacture(int commande_id,Double taxe,int idAdresse){
 		Map p = new HashMap();
 		p.put("commande_id", commande_id);
 		p.put("taxe", taxe);
+		p.put("adresse", idAdresse);
 		JasperReport report;
 		JasperPrint print;
 		try {

@@ -294,16 +294,17 @@ public class VueCommande extends JPanel {
 				tableAdresse.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						Adresse.idNewAdresse=String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(),1));
 						/*
 						 * récupération des données adresse du client pour instancicier adresselLast et l'envoyer vers VueClient() option 4
 						 */
 						int idAd=(int) (tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 0));
+						System.out.println(idAd);
+						//textIdAdresse.setText(String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 0)));
 						String rue=String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 1));
 						String codePost=String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 2));
 						String ville=String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 3));
 						String complet=String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 4));
-						Adresse.adresseLast =new Adresse (idAd,rue,codePost,ville,complet);
+						Adresse.adresseLast =new Adresse (idAd,Client.idNewClient,rue,codePost,ville,complet);
 						
 						btnContinue.setVisible(true);
 						btnModifAdresse.setVisible(true);
@@ -389,6 +390,7 @@ public class VueCommande extends JPanel {
 		lblNewLabel_6.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/sushiman.jfif")));
 		lblNewLabel_6.setBounds(-32, -5, 145, 238);
 		panel_5.add(lblNewLabel_6);
+		//textIdAdresse.setVisible(true);
 	
 		
 		textCode = new JTextField();
@@ -519,7 +521,9 @@ public class VueCommande extends JPanel {
 					newCommande.setTotalHt(Double.parseDouble(lblTotalHt.getText()));
 					if(commandeD.update(newCommande)) {
 						JOptionPane.showMessageDialog(null, "La commande est validée","Paiement", JOptionPane.INFORMATION_MESSAGE);
-						commandeD.rapportFacture(idNewCommande,Commande.TVA);
+						
+						System.out.println("idadress: "+Adresse.adresseLast.getId());
+						commandeD.rapportFacture(idNewCommande,Commande.TVA,Adresse.adresseLast.getId());
 						panel.removeAll();
 						panel.add(new VueCommande(1));
 						panel.repaint();
@@ -694,10 +698,15 @@ public class VueCommande extends JPanel {
 			tabbedPane.setEnabledAt(1, true);
 	        tabbedPane.setEnabledAt(0, false);
 	        tabbedPane.setSelectedIndex(1);
-	        
 	    	commandeD.create(newCommande);
 			idNewCommande =commandeD.dernierIdCommande();
 			newCommande = (Commande) commandeD.findById(idNewCommande);
+			lblNomClient.setText(Client.clientLast.getPrenom()+" "+Client.clientLast.getNom());
+			lblTelClient.setText(Client.clientLast.getNumtel());
+			lblRueClient.setText(Adresse.adresseLast.getRue());
+			lblCodePostal.setText(Adresse.adresseLast.getCod_postal());
+			lblVille.setText(Adresse.adresseLast.getVille());
+			lblComplement.setText(Adresse.adresseLast.getComplement());
 	        tableProduit();
 	        
 		}else {
