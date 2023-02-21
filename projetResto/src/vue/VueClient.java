@@ -157,21 +157,27 @@ public class VueClient extends JPanel {
 	            textComplement.setEditable(true);
 	            btnSauvegarderAdresse.setEnabled(true);
 	            btnAnnulerAdresse.setEnabled(true);
-	            btnAdresseNouvelle.setEnabled(false);
-	            btnAdresseMod.setEnabled(false);
-	            btnAdresseEffacer.setEnabled(false);
 	            btnAnnuler.setEnabled(false);
 	            btnSauvegarder.setEnabled(false);
 	            btnClientNoVisible.setVisible(true);
-		        btnContinuer.setVisible(false);
-		        btnReturner.setVisible(true);
-		        btnReturner.setEnabled(false);
+	            
+	            btnAdresseMod.setEnabled(false);
+	            btnAdresseNouvelle.setEnabled(false);
+	            btnAdresseEffacer.setEnabled(false);
+	
 		        tableAdresse.setModel(adresseM.lister(textId.getText()));
 		        textRue.requestFocus();
+		        
+		        if(optionGestion == 1) {
+			    	btnReturner.setEnabled(false);
+				}else if(optionGestion == 2 || optionGestion == 3 || optionGestion == 4) {
+					btnContinuer.setVisible(false);
+					btnContinuer.setEnabled(false);
+					btnReturner.setVisible(true);
+				}
 			}
 		});
 		
-		int dialogButton = JOptionPane.YES_NO_OPTION;
 		btnReturner.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 
@@ -187,8 +193,9 @@ public class VueClient extends JPanel {
 		btnAnnulerAdresse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(optionGestion == 1) {
-		            JOptionPane.showConfirmDialog (null, "Voulez-vous retourner à la page de liste clients, sans sauvegarder l'adresse ?","WARNING", dialogButton);
-		            if(dialogButton == JOptionPane.YES_OPTION) {
+					int dialogButton1 = JOptionPane.showConfirmDialog (null, "Voulez-vous retourner à la page de liste clients, sans sauvegarder l'adresse ?","WARNING", JOptionPane.YES_NO_OPTION);
+		            System.out.println("dialogButton Apres Click: "+dialogButton1);
+		            if(dialogButton1 == JOptionPane.YES_OPTION) {
 		            	tabbedPane.setEnabledAt(1, false);
 		                tabbedPane.setEnabledAt(0, true);
 		                tabbedPane.setSelectedIndex(0);
@@ -204,19 +211,20 @@ public class VueClient extends JPanel {
 		                table.setModel(clientM.lister(textField.getText()));
 		                tableAdresseListe.setModel(adresseM.lister(""));
 		            }
-		            if(dialogButton == JOptionPane.NO_OPTION) {
+		            if(dialogButton1 == JOptionPane.NO_OPTION) {
 		                  return;
 		                }
 				}else if(optionGestion == 2 || optionGestion == 3 || optionGestion == 4) {
-		            JOptionPane.showConfirmDialog (null, "Voulez-vous retourner à la page de commandes, sans sauvegarder l'adresse ?","WARNING", dialogButton);
-					 if(dialogButton == JOptionPane.YES_OPTION) {
+					int dialogButton1 = JOptionPane.showConfirmDialog (null, "Voulez-vous retourner à la page de commandes, sans sauvegarder l'adresse ?","WARNING", JOptionPane.YES_NO_OPTION);
+					 if(dialogButton1 == JOptionPane.YES_OPTION) {
 							panel.removeAll();
 							panel.add(new VueCommande(1));
 							panel.repaint();
 							panel.revalidate();
 			         }
-			         if(dialogButton == JOptionPane.NO_OPTION) {
-			               return;
+			         if(dialogButton1 == JOptionPane.NO_OPTION) {
+			        	 System.out.println("Return NO: ");
+			        	 return;
 			             }
 				}
 				
@@ -570,7 +578,7 @@ public class VueClient extends JPanel {
 	        System.out.println("Apres tabbed"+Client.clientLast);
 	        actionAdresse ="Sauvegarder";
 	        textId.setText(String.valueOf(Client.clientLast.getId()));
-	        textNom.setText("dsd");
+	        textNom.setText(Client.clientLast.getNom());
 	        textPrenom.setText(Client.clientLast.getPrenom());
 	        textTel.setText(Client.clientLast.getNumtel());
 	        
@@ -665,29 +673,31 @@ public class VueClient extends JPanel {
 		/*
 		 * Annulation et retour a la page accueil
 		 */
+	
 		btnAnnuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(optionGestion == 1) {
-		            JOptionPane.showConfirmDialog (null, "Voulez-vous retourner à la page de liste clients, sans Sauvegarder le client ?","WARNING", dialogButton);
-		            if(dialogButton == JOptionPane.YES_OPTION) {
+					int dialogButton1 = JOptionPane.showConfirmDialog (null, "Voulez-vous retourner à la page de liste clients, sans Sauvegarder le client ?","WARNING", JOptionPane.YES_NO_OPTION);
+		            System.out.println("dialogButton Apres Click: "+dialogButton1);
+		            if(dialogButton1 == JOptionPane.YES_OPTION) {
 		            	tabbedPane.setEnabledAt(1, false);
 		                tabbedPane.setEnabledAt(0, true);
 		                tabbedPane.setSelectedIndex(0);
 		                table.setModel(clientM.lister(textField.getText()));
 		                tableAdresseListe.setModel(adresseM.lister(""));
 		            }
-		            if(dialogButton == JOptionPane.NO_OPTION) {
+		            if(dialogButton1 == JOptionPane.NO_OPTION) {
 		                  return;
 		                }
 				}else if(optionGestion == 2 || optionGestion == 3 || optionGestion == 4) {
-		            JOptionPane.showConfirmDialog (null, "Voulez-vous retourner à la page de commandes, sans Sauvegarder le client ?","WARNING", dialogButton);
-					 if(dialogButton == JOptionPane.YES_OPTION) {
+					int dialogButton1 = JOptionPane.showConfirmDialog (null, "Voulez-vous retourner à la page de commandes, sans Sauvegarder le client ?","WARNING", JOptionPane.YES_NO_OPTION);
+					 if(dialogButton1 == JOptionPane.YES_OPTION) {
 							panel.removeAll();
 							panel.add(new VueCommande(1));
 							panel.repaint();
 							panel.revalidate();
 			         }
-			         if(dialogButton == JOptionPane.NO_OPTION) {
+			         if(dialogButton1 == JOptionPane.NO_OPTION) {
 			               return;
 			             }
 				}
@@ -806,7 +816,8 @@ public class VueClient extends JPanel {
 					System.out.println("ID "+Integer.parseInt(textId.getText()));
 					if(adresseD.create(adresse)) {
 						 JOptionPane.showMessageDialog(null,"L'adresse de client "+textNom.getText()+" a bien été enregistré","Adresse",JOptionPane.INFORMATION_MESSAGE);
-							textRue.setText("");
+						 updatetadresse();	
+						 textRue.setText("");
 							textCodPostal.setText("");
 							textVille.setText("");
 							textComplement.setText("");
@@ -841,7 +852,7 @@ public class VueClient extends JPanel {
 				
 			}
 		});
-		btnSauvegarderAdresse.setBounds(133, 375, 146, 23);
+		btnSauvegarderAdresse.setBounds(139, 375, 146, 23);
 		panelAdresseClient.add(btnSauvegarderAdresse);
 		
 		
@@ -948,6 +959,11 @@ public class VueClient extends JPanel {
 	
 					Client.clientLast = new Client(Integer.parseInt(textId.getText()), textNom.getText(), textPrenom.getText(), textTel.getText());
 					
+					System.out.println("ID: "+ Client.clientLast.getId());
+					System.out.println("NOM: "+ Client.clientLast.getNom());
+					System.out.println("PRENOM: "+ Client.clientLast.getPrenom());
+					System.out.println("TEL: "+ Client.clientLast.getNumtel());
+					
 					
 					panel.removeAll();
 					panel.add(new VueCommande(2));
@@ -1008,12 +1024,29 @@ public class VueClient extends JPanel {
 					btnSauvegarderAdresse.setEnabled(true);
 					btnAnnulerAdresse.setEnabled(true);
 					panelAdresseClient.setEnabled(true);
+					
+	
 
 					textIdAdresse.setText(String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 0)));
 					textRue.setText(String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 1)));
 					textCodPostal.setText(String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 2)));
 					textVille.setText(String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 3)));
 					textComplement.setText(String.valueOf(tableAdresse.getValueAt(tableAdresse.getSelectedRow(), 4)));
+					
+					 btnAdresseMod.setEnabled(false);
+			            btnAdresseNouvelle.setEnabled(false);
+			            btnAdresseEffacer.setEnabled(false);
+			
+				        tableAdresse.setModel(adresseM.lister(textId.getText()));
+				        textRue.requestFocus();
+				        
+				        if(optionGestion == 1) {
+					    	btnReturner.setEnabled(false);
+						}else if(optionGestion == 2 || optionGestion == 3 || optionGestion == 4) {
+							btnContinuer.setVisible(false);
+							btnContinuer.setEnabled(false);
+							btnReturner.setVisible(true);
+						}
 				
 				}	
 			}
@@ -1208,6 +1241,7 @@ public class VueClient extends JPanel {
 				}
 			    textNom.grabFocus();
 			    textNom.requestFocus();
+	
 			}
 		});
 		btnNouveau.addActionListener(new ActionListener() {

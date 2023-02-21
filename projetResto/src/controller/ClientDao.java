@@ -67,6 +67,7 @@ public class ClientDao implements IDao<Client>{
 		try {
 			sql = conn.prepareStatement("SELECT * FROM client Where numtel = ? AND statut = 'Actif'");
 			sql.setString(1, tel.trim());
+			System.out.println("SQL/ "+sql);
 			rs=sql.executeQuery();
 			while (rs.next()) {
 				list.add(new Client(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom"),rs.getString("numtel"),rs.getString("statut")));
