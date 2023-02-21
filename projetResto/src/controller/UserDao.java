@@ -279,8 +279,10 @@ public class UserDao implements IDao<User>{
 			sql.setString(2, pass);
 			System.out.println(sql);
 			rs=sql.executeQuery();
-			
+	
 			while (rs.next()) {
+				System.out.println();
+				
 				Role role = new Role(rs.getInt("id"), rs.getString("nom"));
 				User.userLogin.setId(rs.getInt("IDUSER"));
 				User.userLogin.setNom(rs.getString("NOMUSER"));
@@ -290,8 +292,17 @@ public class UserDao implements IDao<User>{
 				User.userLogin.setId_role(role);
 				User.nomEtablissement = rs.getString("NOMET");
 				
-				return true;
 			}
+			System.out.println(User.userLogin.getId());
+			System.out.println(User.userLogin.getNom());
+			System.out.println(User.userLogin.getPrenom());
+			System.out.println(User.userLogin.getEmail());
+			System.out.println(User.userLogin.getUrl());
+			System.out.println(User.userLogin.getId_role().toString());
+			System.out.println("pppp");
+			
+			
+			return true;
 	
 			
 

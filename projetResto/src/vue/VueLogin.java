@@ -114,7 +114,8 @@ public class VueLogin extends JFrame {
 				}
 				
 				if(userD.loginPass(textEmailLogin.getText(), String.valueOf(textPasswordLogin.getText()))) {
-					JOptionPane.showMessageDialog(null, "Bienvenue "+user.userLogin, "Login", JOptionPane.INFORMATION_MESSAGE);
+					System.out.println("Termina");
+					JOptionPane.showMessageDialog(null, "Bienvenue "+User.userLogin, "Login", JOptionPane.INFORMATION_MESSAGE);
 
 				
 					dispose();
