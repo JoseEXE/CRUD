@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RptFacture" language="groovy" pageWidth="226" pageHeight="623" columnWidth="186" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="68f003dc-2c89-4dae-8ba2-5ab27fc0057d">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="21"/>
 	<parameter name="commande_id" class="java.lang.Integer"/>
 	<parameter name="taxe" class="java.lang.String"/>
+	<parameter name="adresse" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[SELECT
      adresse.`rue` AS adresse_rue,
@@ -43,7 +43,8 @@ FROM
      AND produit.`id` = detail_commande.`id_produit`,
      `etablissement` etablissement
 WHERE
-     commande.`id` = $P{commande_id}]]>
+     commande.`id` = $P{commande_id}
+AND adresse.`id` = $P{adresse}]]>
 	</queryString>
 	<field name="adresse_rue" class="java.lang.String"/>
 	<field name="adresse_cod_postal" class="java.lang.String"/>
