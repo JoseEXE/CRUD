@@ -227,6 +227,11 @@ public class VueProduit extends JPanel {
 				tabbedPane.setEnabledAt(1, true);
                 tabbedPane.setEnabledAt(0, false);
                 tabbedPane.setSelectedIndex(1);
+                textNom.setText("");
+                textDescription.setText("");
+                textCode.setText("");
+                textId.setText("");
+                textPrix.setText("");
                 action="Sauvegarder";
                 btnSauvegarder.setText("Sauvegarder");
                 System.out.println(comboBoxCat.getSelectedItem());

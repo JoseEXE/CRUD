@@ -458,6 +458,11 @@ public class VueUser extends JPanel {
 				if(table.getSelectedColumnCount()==0) {
 					JOptionPane.showMessageDialog(null,"Merci de selectionner un "+nomModel+" dans le tableau","Statut",JOptionPane.WARNING_MESSAGE);
 				}else {
+					int idRow =(int)(table.getValueAt(table.getSelectedRow(), 5));
+					if((boolean) roleD.findById(idRow)) {
+						JOptionPane.showMessageDialog(null,"Cet(te) employé(e) ne peut pas être activé(e) car son rôle est inactif","Statut",JOptionPane.WARNING_MESSAGE);
+						return;
+					}
 					/*
 					 * recupération des données selectionnées avant instanciation
 					 */
@@ -469,7 +474,7 @@ public class VueUser extends JPanel {
 					String idrol = String.valueOf(table.getValueAt(table.getSelectedRow(), 5));
 					String nomrol = String.valueOf(table.getValueAt(table.getSelectedRow(), 6));
 					String stat = String.valueOf(table.getValueAt(table.getSelectedRow(), 7));
-						if(stat.equalsIgnoreCase("active")) {
+						if(stat.equalsIgnoreCase("actif")) {
 							JOptionPane.showMessageDialog(null,"Le "+nomModel+" est déjà actif","Statut",JOptionPane.WARNING_MESSAGE);
 						}else {
 							User userNew =new User(Integer.parseInt(id), (Role) userD.findRolUser(Integer.parseInt(id)), nom, prenom, email, url, stat);
