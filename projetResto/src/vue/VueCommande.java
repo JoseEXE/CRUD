@@ -336,6 +336,7 @@ public class VueCommande extends JPanel {
 		JButton btnAddClient = new JButton("Ajouter");
 		btnAddClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Client.newClientTel=textTel.getText();
 				panel.removeAll();
 				panel.add(new VueClient(2));
 				panel.repaint();

@@ -536,7 +536,7 @@ public class VueClient extends JPanel {
 	     
             textNom.setText("");
             textPrenom.setText("");
-            textTel.setText("");
+            textTel.setText(Client.newClientTel);
             textNom.setEditable(true);
             textPrenom.setEditable(true);
             textTel.setEditable(true);

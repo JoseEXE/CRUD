@@ -42,7 +42,7 @@ public class ProduitDao implements IDao<Produit>{
 		ArrayList<Produit> list = new ArrayList<>();
 	try {
 		sql = conn.prepareStatement("SELECT *,p.id as idprod,ct.id as idcat,u.id as iduser,p.nom as nomprod,ct.nom as nomcat,u.nom as nomuser,p.description as descprod,p.statut as statprod"
-				+ " FROM produit p INNER JOIN cat_produit ct ON id_cat_produit=ct.id INNER JOIN user u ON u.id=id_user WHERE p.nom LIKE ? ");
+				+ " FROM produit p INNER JOIN cat_produit ct ON id_cat_produit=ct.id INNER JOIN user u ON u.id=id_user WHERE statut ='Actif' AND p.nom LIKE ? ");
 		sql.setString(1, "%"+txt+"%");
 		rs=sql.executeQuery();
 		while (rs.next()) {

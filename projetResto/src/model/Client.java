@@ -11,6 +11,7 @@ public class Client {
 	 */
 	public static int idNewClient=0;
 	public static Client clientLast = new Client();
+	public static String newClientTel;
 	
 	
 	/*

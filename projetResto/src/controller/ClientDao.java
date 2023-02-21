@@ -65,7 +65,7 @@ public class ClientDao implements IDao<Client>{
 	public ArrayList<Client> findByNum(String tel) {
 		ArrayList<Client> list=new ArrayList<>();
 		try {
-			sql = conn.prepareStatement("SELECT * FROM client Where numtel = ?");
+			sql = conn.prepareStatement("SELECT * FROM client Where numtel = ? AND statut = 'Actif'");
 			sql.setString(1, tel.trim());
 			rs=sql.executeQuery();
 			while (rs.next()) {

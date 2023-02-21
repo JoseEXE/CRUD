@@ -66,9 +66,9 @@ public class ProduitMetier {
 	@SuppressWarnings("rawtypes")
 	public DefaultComboBoxModel selectCmb(){
 		DefaultComboBoxModel itemCmb = new DefaultComboBoxModel();
-		ArrayList<Cat_produit> listRoles = new ArrayList<>();
-		listRoles = catprodD.selectRoles();
-		for(Cat_produit item: listRoles){
+		ArrayList<Cat_produit> listCat = new ArrayList<>();
+		listCat = catprodD.selectRoles();
+		for(Cat_produit item: listCat){
 			itemCmb.addElement(new Cat_produit(item.getId(), item.getNom()));
 		}	
 		return itemCmb;
