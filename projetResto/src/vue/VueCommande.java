@@ -614,11 +614,6 @@ public class VueCommande extends JPanel {
 		panelProduits.add(panel_3);
 		panel_3.setLayout(null);
 
-		JLabel lblNewLabel_5 = new JLabel("New label");
-		lblNewLabel_5.setBounds(-118, 10, 202, 220);
-		lblNewLabel_5.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/coman.gif")));
-		panel_3.add(lblNewLabel_5);
-
 		JScrollPane scrollPane_3 = new JScrollPane();
 		scrollPane_3.setBounds(67, 10, 638, 220);
 		panel_3.add(scrollPane_3);
@@ -637,7 +632,17 @@ public class VueCommande extends JPanel {
 			}
 		});
 		scrollPane_3.setViewportView(tableDetail);
-
+		
+		JPanel panel_7 = new JPanel();
+		panel_7.setBounds(10, 10, 57, 220);
+		panel_3.add(panel_7);
+		panel_7.setLayout(null);
+		
+		JLabel lblNewLabel_5 = new JLabel("New label");
+		lblNewLabel_5.setBounds(-132, 0, 189, 220);
+		panel_7.add(lblNewLabel_5);
+		lblNewLabel_5.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/coman.gif")));
+		
 		JPanel panel_3_1 = new JPanel();
 		panel_3_1.setLayout(null);
 		panel_3_1.setBackground(new Color(255, 206, 206));
@@ -645,7 +650,7 @@ public class VueCommande extends JPanel {
 		panelProduits.add(panel_3_1);
 
 		JLabel lblNewLabel_5_1 = new JLabel("New label");
-		lblNewLabel_5_1.setBounds(0, 10, 71, 82);
+		lblNewLabel_5_1.setBounds(10, 10, 61, 82);
 		lblNewLabel_5_1.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/sushi.jfif")));
 		panel_3_1.add(lblNewLabel_5_1);
 
