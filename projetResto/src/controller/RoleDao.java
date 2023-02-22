@@ -194,6 +194,7 @@ public class RoleDao implements IDao<Role> {
 		ArrayList<Role> list = new ArrayList<>();
 		try {
 			sql = conn.prepareStatement("SELECT id, nom FROM role");
+
 			rs = sql.executeQuery();
 
 			while (rs.next()) {

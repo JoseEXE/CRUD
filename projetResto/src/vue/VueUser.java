@@ -423,6 +423,7 @@ public class VueUser extends JPanel {
 							Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 5))),
 							String.valueOf(table.getValueAt(table.getSelectedRow(), 6)));
 
+
 					ArrayList<Role> items = new ArrayList<>();
 					items = roleD.selectRoles();
 					System.err.println(items.size());
@@ -576,6 +577,7 @@ public class VueUser extends JPanel {
 							Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 5))),
 							String.valueOf(table.getValueAt(table.getSelectedRow(), 6)));
 
+
 					ArrayList<Role> items = new ArrayList<>();
 					items = roleD.selectRoles();
 					System.err.println(items.size());
@@ -591,6 +593,7 @@ public class VueUser extends JPanel {
 					}
 					// cmbRoles.setSelectedItem(SelectedRole);
 					cmbRoles.setSelectedIndex(cont);
+
 					textId.setEditable(false);
 					textNom.setEditable(false);
 					textPrenom.setEditable(false);
@@ -746,9 +749,11 @@ public class VueUser extends JPanel {
 
 		if (optionM == 2) {
 
+
 			tabbedPane.setSelectedIndex(1);
 			tabbedPane.setEnabledAt(1, true);
 			tabbedPane.setEnabledAt(0, false);
+
 
 			textId.setEditable(false);
 			textNom.setEditable(false);
@@ -768,6 +773,7 @@ public class VueUser extends JPanel {
 			lblPassword1.setText("Entrez votre mot de passe : (*)");
 			lblPassword2.setText("Entrez votre nouveau mot de passe : (*)");
 
+
 			textId.setText(String.valueOf(User.userLogin.getId()));
 			textNom.setText(String.valueOf(User.userLogin.getNom()));
 			textPrenom.setText(String.valueOf(User.userLogin.getPrenom()));
@@ -779,7 +785,6 @@ public class VueUser extends JPanel {
 			ArrayList<Role> items = new ArrayList<>();
 			items = roleD.selectRoles();
 			cmbRoles.setSelectedItem(SelectedRole);
-
 		} else {
 			tabbedPane.setEnabledAt(1, false);
 			tabbedPane.setEnabledAt(0, true);

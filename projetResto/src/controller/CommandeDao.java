@@ -210,6 +210,26 @@ public class CommandeDao implements IDao<Commande> {
 		}
 	}
 
+
+	public void rapportVente(String dateA, String dateB) {
+		Map p = new HashMap();
+		p.put("dateA", dateA);
+		p.put("dateB", dateB);
+		JasperReport report;
+		JasperPrint print;
+		try {
+			report = JasperCompileManager
+					.compileReport(new File("").getAbsolutePath() + "/src/ressources/rapports/RptVente.jrxml");
+			print = JasperFillManager.fillReport(report, p, ConnectionSql.myConnection());
+			JasperViewer view = new JasperViewer(print, false);
+			view.setTitle("VENTES");
+			view.setVisible(true);
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+
+
 	/*
 	 * methode de calcul du total hors taxes qui est renvoyé vers commande, puis
 	 * dans la BDD

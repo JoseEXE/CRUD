@@ -10,12 +10,13 @@ public class ConnectionSql {
 
 		String url = "jdbc:mysql://localhost/";
 		String dbName = "restaurant";
-		String user = "root";
-		String password = "";
+		String user = "manager";
+		String password = "Pass123";
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(url + dbName, user, password);
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

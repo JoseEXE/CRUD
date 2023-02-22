@@ -24,6 +24,7 @@ public class UserDao implements IDao<User> {
 	@Override
 	public Boolean create(User user) {
 		try {
+
 			sql = conn.prepareStatement(
 					"INSERT INTO user (id_role, nom, prenom, email, url, password) VALUES (?,?,?,?,?,PASSWORD(?))");
 			sql.setInt(1, user.getId_role().getId());
@@ -32,6 +33,7 @@ public class UserDao implements IDao<User> {
 			sql.setString(4, user.getEmail());
 			sql.setString(5, user.getUrl());
 			sql.setString(6, user.getPassword());
+
 			sql.execute();
 			return true;
 		} catch (Exception e) {
@@ -52,6 +54,7 @@ public class UserDao implements IDao<User> {
 			sql = conn.prepareStatement(
 					"SELECT *, role.id as 'idRol', role.nom as 'nomRol', role.statut as 'statutRol'  FROM User INNER JOIN role ON user.id_role = role.id WHERE user.nom LIKE ?");
 			sql.setString(1, "%" + txt + "%");
+
 			rs = sql.executeQuery();
 
 			while (rs.next()) {
@@ -175,6 +178,7 @@ public class UserDao implements IDao<User> {
 		try {
 			sql = conn.prepareStatement("SELECT email FROM user WHERE email=?");
 			sql.setString(1, txt);
+
 			rs = sql.executeQuery();
 			while (rs.next()) {
 				if (rs.getString("email").equalsIgnoreCase(txt)) {
@@ -215,6 +219,7 @@ public class UserDao implements IDao<User> {
 			sql = conn.prepareStatement(
 					"SELECT  role.id as 'idRol', role.description, role.nom as 'nomRol', role.statut as 'statutRol'  FROM role INNER JOIN user ON role.id = user.id_role WHERE user.id = ?");
 			sql.setInt(1, idUser);
+
 			rs = sql.executeQuery();
 
 			while (rs.next()) {
@@ -240,6 +245,7 @@ public class UserDao implements IDao<User> {
 					"SELECT PASSWORD(password) as 'password' FROM user WHERE id=? and password=PASSWORD(?)");
 			sql.setInt(1, id);
 			sql.setString(2, txt);
+
 			rs = sql.executeQuery();
 			while (rs.next()) {
 				rs.getString("password");
@@ -284,9 +290,11 @@ public class UserDao implements IDao<User> {
 							+ " role.id WHERE user.email=? AND user.password=PASSWORD(?) AND user.statut='Actif'");
 			sql.setString(1, email);
 			sql.setString(2, pass);
+
 			rs = sql.executeQuery();
 
 			while (rs.next()) {
+
 
 				Role role = new Role(rs.getInt("id"), rs.getString("nom"));
 				User.userLogin.setId(rs.getInt("IDUSER"));
@@ -297,7 +305,9 @@ public class UserDao implements IDao<User> {
 				User.userLogin.setId_role(role);
 				User.nomEtablissement = rs.getString("NOMET");
 
+
 			}
+
 
 			return true;
 

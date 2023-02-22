@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Date;
+import java.util.Properties;
 import java.util.Timer;
 
 import javax.swing.ImageIcon;
@@ -21,10 +23,15 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableRowSorter;
 
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
 import controller.AdresseDao;
 import controller.CommandeDao;
 import controller.DetailDao;
 import metier.CommandeMetier;
+import metier.DateLabelFormatter;
 import metier.DetailMetier;
 import model.Adresse;
 import model.Commande;
@@ -34,6 +41,7 @@ import javax.swing.SwingConstants;
 public class VueLivraison extends JPanel {
 	private JTextField textField;
 	private JTable tableCommande;
+
 	/*
 	 * instanciation Class CommandeMetier
 	 */
@@ -297,7 +305,7 @@ public class VueLivraison extends JPanel {
 						+ commandeD.total() + " registres");
 			}
 		});
-		btnChercherArchive.setBounds(524, 36, 106, 23);
+		btnChercherArchive.setBounds(458, 35, 106, 23);
 		panelArchive.add(btnChercherArchive);
 
 		JScrollPane scrollPane_2 = new JScrollPane();
@@ -319,6 +327,64 @@ public class VueLivraison extends JPanel {
 		});
 		btnGnrerUnPdf.setBounds(26, 437, 152, 23);
 		panelArchive.add(btnGnrerUnPdf);
+
+		JPanel panel_7 = new JPanel();
+		panel_7.setBorder(
+				new TitledBorder(null, "Rapport des ventes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_7.setBounds(574, 0, 527, 71);
+		panelArchive.add(panel_7);
+		panel_7.setLayout(null);
+		UtilDateModel model = new UtilDateModel();
+		UtilDateModel model1 = new UtilDateModel();
+		// model.setDate(20,04,2014);
+		// Need this...
+		Properties p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
+		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+		JDatePanelImpl datePanel1 = new JDatePanelImpl(model1, p);
+		// Don't know about the formatter, but there it is...
+		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+
+		panel_7.add(datePicker);
+
+		JDatePickerImpl datePicker1 = new JDatePickerImpl(datePanel1, new DateLabelFormatter());
+		datePicker1.setBounds(240, 29, 133, 32);
+		datePicker.setBounds(69, 29, 133, 32);
+
+		panel_7.add(datePicker1);
+
+		JButton btnRapport = new JButton("Editer rapport");
+		btnRapport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Date dateDebut = (Date) datePanel.getModel().getValue();
+				Date dateFin = (Date) datePanel1.getModel().getValue();
+				int diffDate = dateDebut.compareTo(dateFin);
+				System.out.println("Diff " + diffDate);
+				if (diffDate < 0) {
+					commandeD.rapportVente(datePicker.getJFormattedTextField().getText(),
+							datePicker1.getJFormattedTextField().getText());
+					System.out.println("From: " + datePicker.getJFormattedTextField().getText());
+					System.out.println("to: " + datePicker1.getJFormattedTextField().getText());
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"La date de fin doit être postérieure ou égale à la date du début", "Rapport",
+							JOptionPane.WARNING_MESSAGE);
+				}
+
+			}
+		});
+		btnRapport.setBounds(397, 29, 120, 21);
+		panel_7.add(btnRapport);
+
+		JLabel lblNewLabel_2 = new JLabel("DU: ");
+		lblNewLabel_2.setBounds(34, 37, 34, 13);
+		panel_7.add(lblNewLabel_2);
+
+		JLabel lblNewLabel_2_1 = new JLabel("AU: ");
+		lblNewLabel_2_1.setBounds(212, 37, 34, 13);
+		panel_7.add(lblNewLabel_2_1);
 	}
 
 	public void tableCommande(String txt) {

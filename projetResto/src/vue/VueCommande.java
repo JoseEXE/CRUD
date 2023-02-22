@@ -430,6 +430,12 @@ public class VueCommande extends JPanel {
 		lblNewLabel_1.setBounds(204, 451, 126, 26);
 		panelProduits.add(lblNewLabel_1);
 
+		JLabel lblTotalHt = new JLabel("");
+		lblTotalHt.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblTotalHt.setBounds(892, 248, 58, 19);
+		panelProduits.add(lblTotalHt);
+
+
 		textQte = new JTextField("");
 		textQte.addKeyListener(new KeyAdapter() {
 			@Override
@@ -450,6 +456,7 @@ public class VueCommande extends JPanel {
 						}
 						tableDetail(idNewCommande);
 						lblTotal.setText(String.valueOf(commandeD.totalCommande(idNewCommande)));
+						lblTotalHt.setText(String.valueOf(commandeD.totalHt(idNewCommande)));
 						textQte.setText("");
 					} else {
 						JOptionPane.showMessageDialog(null, "La quantité doit être un chiffre en 1 et 9.", "Quantité",
@@ -503,11 +510,6 @@ public class VueCommande extends JPanel {
 		lblTotal_1.setFont(new Font("Tahoma", Font.BOLD, 25));
 		lblTotal_1.setBounds(1002, 275, 58, 59);
 		panelProduits.add(lblTotal_1);
-
-		JLabel lblTotalHt = new JLabel("");
-		lblTotalHt.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblTotalHt.setBounds(892, 248, 58, 19);
-		panelProduits.add(lblTotalHt);
 
 		JPanel PanelGo = new JPanel();
 		PanelGo.setBackground(new Color(0, 0, 0));
@@ -564,6 +566,8 @@ public class VueCommande extends JPanel {
 							lblInfo.setText("La quantité a bien été modifiée");
 							tableDetail(idNewCommande);
 							lblTotal.setText(String.valueOf(commandeD.totalCommande(idNewCommande)));
+							lblTotalHt.setText(String.valueOf(commandeD.totalHt(idNewCommande)));
+
 						} else {
 							JOptionPane.showMessageDialog(null, "La ligne n'a pas pu être effacée", "Effacement",
 									JOptionPane.ERROR_MESSAGE);
@@ -632,17 +636,17 @@ public class VueCommande extends JPanel {
 			}
 		});
 		scrollPane_3.setViewportView(tableDetail);
-		
+
 		JPanel panel_7 = new JPanel();
 		panel_7.setBounds(10, 10, 57, 220);
 		panel_3.add(panel_7);
 		panel_7.setLayout(null);
-		
+
 		JLabel lblNewLabel_5 = new JLabel("New label");
 		lblNewLabel_5.setBounds(-132, 0, 189, 220);
 		panel_7.add(lblNewLabel_5);
 		lblNewLabel_5.setIcon(new ImageIcon(VueFrameMain.class.getResource("/ressources/coman.gif")));
-		
+
 		JPanel panel_3_1 = new JPanel();
 		panel_3_1.setLayout(null);
 		panel_3_1.setBackground(new Color(255, 206, 206));
