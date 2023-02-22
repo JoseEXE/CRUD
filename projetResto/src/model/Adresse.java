@@ -1,19 +1,20 @@
 package model;
 
 public class Adresse {
-	
+
 	private int id;
 	private int id_client;
 	private String rue;
 	private String cod_postal;
 	private String ville;
 	private String complement;
-	
+
 	public static Adresse adresseLast = new Adresse();
+
 	public Adresse() {
 
 	}
-	
+
 	public Adresse(int id, int id_client, String rue, String cod_postal, String ville, String complement) {
 		this.id = id;
 		this.id_client = id_client;
@@ -23,7 +24,6 @@ public class Adresse {
 		this.complement = complement;
 	}
 
-
 	public Adresse(int id_client, String rue, String cod_postal, String ville, String complement) {
 		this.id_client = id_client;
 		this.rue = rue;
@@ -31,10 +31,10 @@ public class Adresse {
 		this.ville = ville;
 		this.complement = complement;
 	}
-	
-/*
- * contructeur pur modifier l'adresse lors de la prise commande
- */
+
+	/*
+	 * contructeur pur modifier l'adresse lors de la prise commande
+	 */
 //	public Adresse(int id, String rue, String cod_postal, String ville, String complement) {
 //	
 //		this.id = id;
@@ -96,11 +96,5 @@ public class Adresse {
 	public String toString() {
 		return ville;
 	}
-	
-	
-	
-	
-	
-	
 
 }

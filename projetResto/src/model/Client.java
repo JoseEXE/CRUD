@@ -9,11 +9,10 @@ public class Client {
 	/*
 	 * variable id pour enregistrer un nouveau client
 	 */
-	public static int idNewClient=0;
+	public static int idNewClient = 0;
 	public static Client clientLast = new Client();
 	public static String newClientTel;
-	
-	
+
 	/*
 	 * Constructeur complet
 	 */
@@ -24,7 +23,7 @@ public class Client {
 		this.numtel = numtel;
 		this.statut = statut;
 	}
-	
+
 	/*
 	 * Constructeur Create()
 	 */
@@ -33,7 +32,7 @@ public class Client {
 		this.prenom = prenom;
 		this.numtel = numtel;
 	}
-	
+
 	/*
 	 * Constructeur update()
 	 */
@@ -43,7 +42,7 @@ public class Client {
 		this.prenom = prenom;
 		this.numtel = numtel;
 	}
-	
+
 	/*
 	 * contructeur pour client Last lors de la création de commande
 	 */
@@ -108,5 +107,5 @@ public class Client {
 	public String toString() {
 		return "Client [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", numtel=" + numtel + "]";
 	}
-	
+
 }

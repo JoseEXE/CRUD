@@ -13,15 +13,18 @@ public class Commande {
 	private String Type_paiement;
 	private String etat;
 	/*
-	 * Variable qui permet de récupérer le type de paiement. si 0 le paiemant n'est pas validé
+	 * Variable qui permet de récupérer le type de paiement. si 0 le paiemant n'est
+	 * pas validé
 	 */
-	public static int ready =0;
+	public static int ready = 0;
 	/*
 	 * Constante représentant la TVA pour la restauration (en %)
 	 */
-	public final static Double TVA =5.5;
+	public final static Double TVA = 5.5;
+
 	/*
-	 * constructeur pour la methode create() qui sert a hydrater la base de donnée commande
+	 * constructeur pour la methode create() qui sert a hydrater la base de donnée
+	 * commande
 	 */
 	public Commande(Client id_client, User id_user, String commentaire, Double total, Timestamp date_comm,
 			String type_paiement, String etat) {
@@ -33,54 +36,54 @@ public class Commande {
 		Type_paiement = type_paiement;
 		this.etat = etat;
 	}
-	
-/*
- * constructeur commande pour debuter la commande apres avoir identifié/creer un client, et dans le but de creer des lignes 
- * de details de commande
- */
-	
-	
+
+	/*
+	 * constructeur commande pour debuter la commande apres avoir identifié/creer un
+	 * client, et dans le but de creer des lignes de details de commande
+	 */
 
 	public Commande() {
-		
+
 	}
-/*
- * constructeur pour instancier une commande lors du findById de détail_Commande
- */
+
+	/*
+	 * constructeur pour instancier une commande lors du findById de détail_Commande
+	 */
 	public Commande(int id) {
 		this.id = id;
 	}
-	
+
 	/*
 	 * Constructeur du Read de commande
 	 */
-	public Commande(int id, Client id_client,Double totalHt, Double total, Timestamp date_comm, String type_paiement, String etat) {
-	this.id = id;
-	this.id_client = id_client;
-	this.totalHt= totalHt;
-	this.total = total;
-	this.date_comm = date_comm;
-	Type_paiement = type_paiement;
-	this.etat = etat;
-}
+	public Commande(int id, Client id_client, Double totalHt, Double total, Timestamp date_comm, String type_paiement,
+			String etat) {
+		this.id = id;
+		this.id_client = id_client;
+		this.totalHt = totalHt;
+		this.total = total;
+		this.date_comm = date_comm;
+		Type_paiement = type_paiement;
+		this.etat = etat;
+	}
 
 	/*
 	 * Constructeur du findById de Commande
 	 */
 	public Commande(int id, Client id_client, User id_user, Timestamp date_comm, String etat) {
-	this.id = id;
-	this.id_client = id_client;
-	this.id_user = id_user;
-	this.date_comm = date_comm;
-	this.etat = etat;
+		this.id = id;
+		this.id_client = id_client;
+		this.id_user = id_user;
+		this.date_comm = date_comm;
+		this.etat = etat;
 	}
 
 	/*
 	 * Constructeur du upDate, spécialement pour changer la colonne état
 	 */
-	public Commande(int id,Double totalHt, Double total, String type_paiement, String etat) {
+	public Commande(int id, Double totalHt, Double total, String type_paiement, String etat) {
 		this.id = id;
-		this.totalHt= totalHt;
+		this.totalHt = totalHt;
 		this.total = total;
 		Type_paiement = type_paiement;
 		this.etat = etat;
@@ -92,7 +95,6 @@ public class Commande {
 	public int getId() {
 		return id;
 	}
-
 
 	public void setId(int id) {
 		this.id = id;
@@ -153,6 +155,7 @@ public class Commande {
 	public void setEtat(String etat) {
 		this.etat = etat;
 	}
+
 	public Double getTotalHt() {
 		return totalHt;
 	}
@@ -167,5 +170,4 @@ public class Commande {
 				+ ", etat=" + etat + "]";
 	}
 
-	
 }
