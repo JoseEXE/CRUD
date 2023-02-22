@@ -1,4 +1,10 @@
 /bin/
 /.settings/
+<<<<<<< HEAD
 .classpath
 .project
+=======
+.calsspath
+.projet
+
+>>>>>>> cb295c3a7065dcf80a161459c292215982d77cc2
