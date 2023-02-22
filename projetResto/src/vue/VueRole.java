@@ -217,6 +217,7 @@ public class VueRole extends JPanel {
 		});
 		btnNouveau.setBounds(653, 34, 106, 23);
 		panelListe.add(btnNouveau);
+		
 		/*
 		 * passage vers la page modification de role
 		 */
