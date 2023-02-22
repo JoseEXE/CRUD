@@ -9,22 +9,24 @@ import connetion.ConnectionSql;
 import model.Adresse;
 import model.Client;
 
-public class AdresseDao implements IDao<Adresse>{
+public class AdresseDao implements IDao<Adresse> {
 	Client client = new Client();
 	Adresse adresse = new Adresse();
-	Connection conn= ConnectionSql.myConnection();
+	Connection conn = ConnectionSql.myConnection();
 	PreparedStatement sql = null;
 	ResultSet rs = null;
+
 	@Override
 	public Boolean create(Adresse adresse) {
 		try {
-			sql=conn.prepareStatement("INSERT INTO adresse (id_client, rue, cod_postal, ville, complement) VALUES (?,?,?,?,?)");
+			sql = conn.prepareStatement(
+					"INSERT INTO adresse (id_client, rue, cod_postal, ville, complement) VALUES (?,?,?,?,?)");
 			sql.setInt(1, adresse.getId_client());
 			sql.setString(2, adresse.getRue());
 			sql.setString(3, adresse.getCod_postal());
 			sql.setString(4, adresse.getVille());
-			sql.setString(5, adresse.getComplement());	
-			System.out.println("SQL Adresse Create: "+ sql);
+			sql.setString(5, adresse.getComplement());
+			System.out.println("SQL Adresse Create: " + sql);
 			sql.execute();
 
 			return true;
@@ -38,17 +40,19 @@ public class AdresseDao implements IDao<Adresse>{
 
 	@Override
 	public ArrayList<Adresse> read(String txt) {
-		ArrayList<Adresse> list=new ArrayList<>();
+		ArrayList<Adresse> list = new ArrayList<>();
 		try {
-			sql = conn.prepareStatement("SELECT ad.id, ad.id_client, ad.rue, ad.cod_postal, ad.ville, ad.complement  FROM adresse as ad WHERE ad.id_client=?");
+			sql = conn.prepareStatement(
+					"SELECT ad.id, ad.id_client, ad.rue, ad.cod_postal, ad.ville, ad.complement  FROM adresse as ad WHERE ad.id_client=?");
 			txt.trim();
-			if(txt.equalsIgnoreCase("") || txt.equals(null)) {
+			if (txt.equalsIgnoreCase("") || txt.equals(null)) {
 				txt = "0";
 			}
 			sql.setInt(1, Integer.parseInt(txt));
-			rs=sql.executeQuery();
+			rs = sql.executeQuery();
 			while (rs.next()) {
-				list.add(new Adresse(rs.getInt("id"), rs.getInt("id_client"), rs.getString("rue"), rs.getString("cod_postal"), rs.getString("ville"), rs.getString("complement")));
+				list.add(new Adresse(rs.getInt("id"), rs.getInt("id_client"), rs.getString("rue"),
+						rs.getString("cod_postal"), rs.getString("ville"), rs.getString("complement")));
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -56,12 +60,12 @@ public class AdresseDao implements IDao<Adresse>{
 		}
 		return list;
 	}
-	
+
 	public int dernierIdAdress() {
-		 int id = 0;
+		int id = 0;
 		try {
 			sql = conn.prepareStatement("SELECT LAST_INSERT_ID() as 'ID' FROM adresse");
-			rs=sql.executeQuery();
+			rs = sql.executeQuery();
 			while (rs.next()) {
 				id = rs.getInt("ID");
 			}
@@ -86,9 +90,9 @@ public class AdresseDao implements IDao<Adresse>{
 			sql.setString(2, adresse.getCod_postal());
 			sql.setString(3, adresse.getVille());
 			sql.setString(4, adresse.getComplement());
-			sql.setInt(5, adresse.getId() );
-			System.out.println("SQL Adresse update: "+ sql);
-			if(sql.executeUpdate()>0) {
+			sql.setInt(5, adresse.getId());
+			System.out.println("SQL Adresse update: " + sql);
+			if (sql.executeUpdate() > 0) {
 				return true;
 			}
 		} catch (Exception e) {
@@ -96,7 +100,7 @@ public class AdresseDao implements IDao<Adresse>{
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
-				return false;
+		return false;
 	}
 
 	@Override
@@ -105,8 +109,8 @@ public class AdresseDao implements IDao<Adresse>{
 			sql = conn.prepareStatement("DELETE FROM adresse WHERE id=?");
 			sql.setInt(1, id);
 
-			System.out.println("SQL Adresse delete: "+ sql);
-			if(sql.executeUpdate()>0) {
+			System.out.println("SQL Adresse delete: " + sql);
+			if (sql.executeUpdate() > 0) {
 				return true;
 			}
 		} catch (Exception e) {
@@ -114,7 +118,7 @@ public class AdresseDao implements IDao<Adresse>{
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
-				return false;
+		return false;
 	}
 
 	@Override
@@ -140,21 +144,21 @@ public class AdresseDao implements IDao<Adresse>{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	public int totalA(int id) {
-		int total =0;
+		int total = 0;
 		try {
 			sql = conn.prepareStatement("SELECT COUNT(*) as total FROM adresse WHERE id_client=?");
 			sql.setInt(1, id);
-			rs=sql.executeQuery();
+			rs = sql.executeQuery();
 			while (rs.next()) {
-			total =	rs.getInt("total");
+				total = rs.getInt("total");
 			}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				System.out.println(e.getMessage());
-			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
 		return total;
 	}
 

@@ -6,7 +6,7 @@ public class Detail_commande {
 	private Produit id_produit;
 	private int quantite;
 	private Double prix_unitaire;
-	
+
 	/*
 	 * Constructeur complet pour le findByID deatil_commande
 	 */
@@ -19,15 +19,16 @@ public class Detail_commande {
 	}
 
 	/*
-	 * constructeur pour la methode create() qui sert a hydrater la base de donnée detail_commande
+	 * constructeur pour la methode create() qui sert a hydrater la base de donnée
+	 * detail_commande
 	 */
-	
+
 	public Detail_commande(Commande id_commande, Produit id_produit, Double prix_unitaire) {
 		this.id_commande = id_commande;
 		this.id_produit = id_produit;
 		this.prix_unitaire = prix_unitaire;
 	}
-	
+
 	/*
 	 * constructeur pour instancier un detail lors de la prise de commande
 	 */
@@ -35,7 +36,6 @@ public class Detail_commande {
 		this.id_commande = id_commande;
 		this.id_produit = id_produit;
 	}
-
 
 	/*
 	 * generation getters setters
@@ -79,8 +79,5 @@ public class Detail_commande {
 	public void setPrix_unitaire(Double prix_unitaire) {
 		this.prix_unitaire = prix_unitaire;
 	}
-	
 
-	
-	
 }

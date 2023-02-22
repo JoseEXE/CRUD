@@ -9,17 +9,17 @@ import java.util.ArrayList;
 import connetion.ConnectionSql;
 import model.Cat_produit;
 
-public class Cat_produitDao implements IDao<Cat_produit>{
+public class Cat_produitDao implements IDao<Cat_produit> {
 	/*
-	 * Connection a la bdd
-	 * instanciation des class plusieurs fois utilisées
+	 * Connection a la bdd instanciation des class plusieurs fois utilisées
 	 */
- Connection conn= ConnectionSql.myConnection();
- PreparedStatement sql = null;
- ResultSet rs = null;
- /*
-  * methode Create du CRUD
-  */
+	Connection conn = ConnectionSql.myConnection();
+	PreparedStatement sql = null;
+	ResultSet rs = null;
+
+	/*
+	 * methode Create du CRUD
+	 */
 	@Override
 	public Boolean create(Cat_produit prod) {
 		try {
@@ -38,16 +38,16 @@ public class Cat_produitDao implements IDao<Cat_produit>{
 
 	@Override
 	public ArrayList<Cat_produit> read(String txt) {
-		ArrayList<Cat_produit> list=new ArrayList<>();
+		ArrayList<Cat_produit> list = new ArrayList<>();
 		try {
-		sql = conn.prepareStatement("SELECT * FROM cat_produit WHERE nom LIKE ?");
-		sql.setString(1, "%"+txt+"%");
-		System.out.println(sql);
-		rs=sql.executeQuery();
-		
-		while (rs.next()) {
-			list.add(new Cat_produit(rs.getInt("id"),rs.getString("nom"),rs.getString("description")));
-		}
+			sql = conn.prepareStatement("SELECT * FROM cat_produit WHERE nom LIKE ?");
+			sql.setString(1, "%" + txt + "%");
+			System.out.println(sql);
+			rs = sql.executeQuery();
+
+			while (rs.next()) {
+				list.add(new Cat_produit(rs.getInt("id"), rs.getString("nom"), rs.getString("description")));
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,15 +61,15 @@ public class Cat_produitDao implements IDao<Cat_produit>{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public Cat_produit findByName(String nom) {
-		Cat_produit catProd=null;
+		Cat_produit catProd = null;
 		try {
-			sql=conn.prepareStatement("SELECT * FROM cat_produit WHERE nom=?");
+			sql = conn.prepareStatement("SELECT * FROM cat_produit WHERE nom=?");
 			sql.setString(1, nom);
-			rs=sql.executeQuery();
+			rs = sql.executeQuery();
 			while (rs.next()) {
-			catProd= new Cat_produit(rs.getInt("id"),rs.getString("nom"));
+				catProd = new Cat_produit(rs.getInt("id"), rs.getString("nom"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -84,8 +84,8 @@ public class Cat_produitDao implements IDao<Cat_produit>{
 			sql = conn.prepareStatement("UPDATE cat_produit SET nom = ?,description = ? WHERE id=?");
 			sql.setString(1, prod.getNom());
 			sql.setString(2, prod.getDescription());
-			sql.setInt(3,prod.getId() );
-			if(sql.executeUpdate()>0) {
+			sql.setInt(3, prod.getId());
+			if (sql.executeUpdate() > 0) {
 				return true;
 			}
 		} catch (Exception e) {
@@ -93,7 +93,7 @@ public class Cat_produitDao implements IDao<Cat_produit>{
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
-				return false;
+		return false;
 	}
 
 	@Override
@@ -119,46 +119,47 @@ public class Cat_produitDao implements IDao<Cat_produit>{
 		try {
 			sql = conn.prepareStatement("SELECT nom FROM cat_produit WHERE nom=?");
 			sql.setString(1, txt);
-			rs=sql.executeQuery();
+			rs = sql.executeQuery();
 			while (rs.next()) {
-				if(rs.getString("nom").equalsIgnoreCase(txt)) {
+				if (rs.getString("nom").equalsIgnoreCase(txt)) {
 					return true;
 				}
 			}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				System.out.println(e.getMessage());
-			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
 		return false;
 	}
 
 	@Override
 	public int total() {
-		int total =0;
+		int total = 0;
 		try {
 			sql = conn.prepareStatement("SELECT COUNT(*) as total FROM cat_produit");
-			rs=sql.executeQuery();
+			rs = sql.executeQuery();
 			while (rs.next()) {
-			total =	rs.getInt("total");
+				total = rs.getInt("total");
 			}
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println(e.getMessage());
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
 		return total;
-		
+
 	}
+
 	public ArrayList<Cat_produit> selectRoles() {
 		ArrayList<Cat_produit> list = new ArrayList<>();
 		try {
-		sql = conn.prepareStatement("SELECT id, nom FROM Cat_produit");
-		rs=sql.executeQuery();
-		
-		while (rs.next()) {
-			list.add(new Cat_produit(rs.getInt("id"),rs.getString("nom")));
-		}
-		
+			sql = conn.prepareStatement("SELECT id, nom FROM Cat_produit");
+			rs = sql.executeQuery();
+
+			while (rs.next()) {
+				list.add(new Cat_produit(rs.getInt("id"), rs.getString("nom")));
+			}
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -41,6 +41,7 @@ public class VueLogin extends JFrame {
 	private User userLogin;
 	private UserMetier userM = new UserMetier();
 	private UserDao userD = new UserDao();
+
 	/**
 	 * Launch the application.
 	 */
@@ -62,7 +63,7 @@ public class VueLogin extends JFrame {
 	 * Create the frame.
 	 */
 	public VueLogin() {
-	
+
 		setTitle("Login");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,63 +80,63 @@ public class VueLogin extends JFrame {
 		panel.setBounds(10, 11, 784, 306);
 		contentPane.add(panel);
 		panel.setLayout(null);
-		
+
 		JLabel lblEmailLogin = new JLabel("Email: (*)");
 		lblEmailLogin.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblEmailLogin.setBounds(73, 65, 114, 46);
 		panel.add(lblEmailLogin);
-		
+
 		textEmailLogin = new JTextField();
 		textEmailLogin.setBounds(179, 78, 239, 25);
 		panel.add(textEmailLogin);
 		textEmailLogin.setColumns(10);
-		
+
 		JLabel lblPassword = new JLabel("Password: (*)");
 		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblPassword.setBounds(43, 122, 159, 46);
 		panel.add(lblPassword);
-		
+
 		textPasswordLogin = new JPasswordField();
 		textPasswordLogin.setBounds(179, 132, 239, 25);
 		panel.add(textPasswordLogin);
-		
+
 		JButton btnLoginEntrer = new JButton("Entrer");
 		btnLoginEntrer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				if(textEmailLogin.getText().equals("") || String.valueOf(textPasswordLogin.getText()).equals("")) {
-					 JOptionPane.showMessageDialog(null,"Merci de remplir les champs obligatoire(*) ", "Login", JOptionPane.WARNING_MESSAGE);
-					 return;
+
+				if (textEmailLogin.getText().equals("") || String.valueOf(textPasswordLogin.getText()).equals("")) {
+					JOptionPane.showMessageDialog(null, "Merci de remplir les champs obligatoire(*) ", "Login",
+							JOptionPane.WARNING_MESSAGE);
+					return;
 				}
-				if(!userM.verifMailRegix(textEmailLogin.getText()) ) {
-					JOptionPane.showMessageDialog(null, "Vous devez saisir un email valide Ex. mail@mail.com/fr.", "Login", JOptionPane.WARNING_MESSAGE);
+				if (!userM.verifMailRegix(textEmailLogin.getText())) {
+					JOptionPane.showMessageDialog(null, "Vous devez saisir un email valide Ex. mail@mail.com/fr.",
+							"Login", JOptionPane.WARNING_MESSAGE);
 					textEmailLogin.requestFocus();
 					return;
 				}
-				
-				if(userD.loginPass(textEmailLogin.getText(), String.valueOf(textPasswordLogin.getText()))) {
-					System.out.println("Termina");
-					JOptionPane.showMessageDialog(null, "Bienvenue "+User.userLogin, "Login", JOptionPane.INFORMATION_MESSAGE);
 
-				
+				if (userD.loginPass(textEmailLogin.getText(), String.valueOf(textPasswordLogin.getText()))) {
+					JOptionPane.showMessageDialog(null, "Bienvenue " + User.userLogin, "Login",
+							JOptionPane.INFORMATION_MESSAGE);
+
 					dispose();
 					VueFrameMain frm = new VueFrameMain();
 					frm.toFront();
 					frm.setVisible(true);
 					frm.setLocationRelativeTo(null);
-				}else {
-					JOptionPane.showMessageDialog(null, "Vous devez saisir un email et un password correct ", "Login", JOptionPane.ERROR_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "Vous devez saisir un email et un password correct ", "Login",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				
-				
 
 			}
 		});
 		btnLoginEntrer.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnLoginEntrer.setBounds(99, 195, 139, 37);
 		panel.add(btnLoginEntrer);
-		
+
 		JButton btnLoginSortir = new JButton("Sortir");
 		btnLoginSortir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -145,30 +146,32 @@ public class VueLogin extends JFrame {
 		btnLoginSortir.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnLoginSortir.setBounds(261, 195, 139, 37);
 		panel.add(btnLoginSortir);
-		
-		ImageIcon imageIcon = new ImageIcon(VueFrameMain.class.getResource("/ressources/logo.jpg")); // load the image to a imageIcon
-		Image image = imageIcon.getImage(); // transform it 
-		Image newimg = image.getScaledInstance(300, 300,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-		imageIcon = new ImageIcon(newimg);  // transform it back
-		
+
+		ImageIcon imageIcon = new ImageIcon(VueFrameMain.class.getResource("/ressources/logo.jpg")); // load the image
+																										// to a
+																										// imageIcon
+		Image image = imageIcon.getImage(); // transform it
+		Image newimg = image.getScaledInstance(300, 300, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		imageIcon = new ImageIcon(newimg); // transform it back
+
 		Panel panel_1 = new Panel();
 		panel_1.setBackground(new Color(0, 0, 0));
 		panel_1.setBounds(450, 11, 3, 285);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
-		
+
 		Panel panel_2 = new Panel();
 		panel_2.setBackground(new Color(0, 0, 0));
 		panel_2.setBounds(10, 260, 551, 2);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
-		
+
 		Panel panel_2_1 = new Panel();
 		panel_2_1.setLayout(null);
 		panel_2_1.setBackground(Color.BLACK);
 		panel_2_1.setBounds(663, 260, 100, 2);
 		panel.add(panel_2_1);
-		
+
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(imageIcon);
 		lblNewLabel.setBounds(462, 11, 294, 263);
