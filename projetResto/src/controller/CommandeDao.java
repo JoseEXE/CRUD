@@ -1,11 +1,15 @@
 package controller;
 
 import java.io.File;
+import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +18,7 @@ import model.Client;
 import model.Commande;
 import model.User;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -198,10 +203,18 @@ public class CommandeDao implements IDao<Commande> {
 		p.put("adresse", idAdresse);
 		JasperReport report;
 		JasperPrint print;
+		
+		File archivo = new File("C://Factures/.pdf");
+		File carpeta = archivo.getParentFile();
+		if (!carpeta.exists()){
+			carpeta.mkdirs();
+		}
+		
 		try {
-			report = JasperCompileManager
-					.compileReport(new File("").getAbsolutePath() + "/src/ressources/rapports/RptFacture.jrxml");
+			InputStream inputStream = CommandeDao.class.getResourceAsStream("/ressources/rapports/RptFacture.jrxml");
+			report = JasperCompileManager.compileReport(inputStream);
 			print = JasperFillManager.fillReport(report, p, ConnectionSql.myConnection());
+			JasperExportManager.exportReportToPdfFile(print, "C://Factures/"+commande_id+".pdf");
 			JasperViewer view = new JasperViewer(print, false);
 			view.setTitle("FACTURE");
 			view.setVisible(true);
@@ -218,8 +231,8 @@ public class CommandeDao implements IDao<Commande> {
 		JasperReport report;
 		JasperPrint print;
 		try {
-			report = JasperCompileManager
-					.compileReport(new File("").getAbsolutePath() + "/src/ressources/rapports/RptVente.jrxml");
+			InputStream inputStream = CommandeDao.class.getResourceAsStream("/ressources/rapports/RptVente.jrxml");
+			report = JasperCompileManager.compileReport(inputStream);
 			print = JasperFillManager.fillReport(report, p, ConnectionSql.myConnection());
 			JasperViewer view = new JasperViewer(print, false);
 			view.setTitle("VENTES");
