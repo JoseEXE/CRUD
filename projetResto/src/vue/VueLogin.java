@@ -104,7 +104,7 @@ public class VueLogin extends JFrame {
 		btnLoginEntrer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				if (textEmailLogin.getText().equals("") || String.valueOf(textPasswordLogin.getText()).equals("")) {
+				if (textEmailLogin.getText().equals("") || String.valueOf(textPasswordLogin.getPassword()).equals("")) {
 					JOptionPane.showMessageDialog(null, "Merci de remplir les champs obligatoire(*) ", "Login",
 							JOptionPane.WARNING_MESSAGE);
 					return;
@@ -116,7 +116,7 @@ public class VueLogin extends JFrame {
 					return;
 				}
 
-				if (userD.loginPass(textEmailLogin.getText(), String.valueOf(textPasswordLogin.getText()))) {
+				if (userD.loginPass(textEmailLogin.getText(), String.valueOf(textPasswordLogin.getPassword()))) {
 					System.out.println("Termina");
 					JOptionPane.showMessageDialog(null, "Bienvenue " + User.userLogin, "Login",
 							JOptionPane.INFORMATION_MESSAGE);

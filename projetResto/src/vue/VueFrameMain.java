@@ -293,27 +293,27 @@ public class VueFrameMain extends JFrame {
 			lblNomUtilisateur.setText("Bienvenue " + User.userLogin);
 		}
 		// VISIBILITE DE MENU PAR ROLES
-//		if(userLog.userLogin.getId_role().getNom().equalsIgnoreCase("Administrateur")) {
-//			mntmProduit.setEnabled(true);
-//			mntmCategories.setEnabled(true);
-//		
-//			mntmClients.setEnabled(true);
-//			mntmCreerCom.setEnabled(true);
-//			
-//			mntmUser.setEnabled(true);
-//			mntmChangePassword.setEnabled(true);
-//			mntmRole.setEnabled(true);
-//		}else {
-//			mntmProduit.setEnabled(false);
-//			mntmCategories.setEnabled(false);
-//		
-//			mntmClients.setEnabled(true);
-//			mntmCreerCom.setEnabled(true);
-//			
-//			mntmUser.setEnabled(false);
-//			mntmChangePassword.setEnabled(true);
-//			mntmRole.setEnabled(false);
-//		}
+		if(User.userLogin.getId_role().getId()==1) {
+			mntmProduit.setEnabled(true);
+			mntmCategories.setEnabled(true);
+		
+			mntmClients.setEnabled(true);
+			mntmCreerCom.setEnabled(true);
+			
+			mntmUser.setEnabled(true);
+			mntmChangePassword.setEnabled(true);
+			mntmRole.setEnabled(true);
+		}else {
+			mntmProduit.setEnabled(false);
+			mntmCategories.setEnabled(false);
+		
+			mntmClients.setEnabled(true);
+			mntmCreerCom.setEnabled(true);
+			
+			mntmUser.setEnabled(false);
+			mntmChangePassword.setEnabled(true);
+			mntmRole.setEnabled(false);
+		}
 
 	}
 }
