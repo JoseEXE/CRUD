@@ -325,6 +325,8 @@ public class VueLivraison extends JPanel {
 				}
 			}
 		});
+		
+		btnGnrerUnPdf.setVisible(false);
 		btnGnrerUnPdf.setBounds(26, 437, 152, 23);
 		panelArchive.add(btnGnrerUnPdf);
 
@@ -362,7 +364,7 @@ public class VueLivraison extends JPanel {
 				Date dateFin = (Date) datePanel1.getModel().getValue();
 				int diffDate = dateDebut.compareTo(dateFin);
 				System.out.println("Diff " + diffDate);
-				if (diffDate < 0) {
+				if (diffDate <= 0) {
 					commandeD.rapportVente(datePicker.getJFormattedTextField().getText(),
 							datePicker1.getJFormattedTextField().getText());
 					System.out.println("From: " + datePicker.getJFormattedTextField().getText());
